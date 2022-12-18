@@ -45,6 +45,8 @@ class SoulCartaTabView extends StatelessWidget {
 
   _soulCartaList(List<SoulCarta>? data) {
     return Wrap(
+      alignment: WrapAlignment.spaceAround,
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: data!.map((item) {
         return SoulCartaItem(
           data: item,

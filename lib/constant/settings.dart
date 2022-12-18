@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/widget/buttons/close_window_button.dart';
-import 'package:live2d_viewer/widget/buttons/maximize_window_button.dart';
-import 'package:live2d_viewer/widget/buttons/minimize_window_button.dart';
+import 'package:live2d_viewer/models/settings.dart';
 import 'package:window_manager/window_manager.dart';
 
 const appName = 'Live2D Viewer';
@@ -17,15 +15,15 @@ const defaultWindowOptions = WindowOptions(
 
 const defaultActionIconButtonSplashRadius = 20.0;
 
-const defaultAppbarActions = <Widget>[
-  MinimizeWindowButton(),
-  MaximizeWindowButton(),
-  CloseWindowButton(),
-];
-
 const defaultAppBarShape =
     Border(bottom: BorderSide(color: Colors.black, width: 1));
 
 const dcName = 'Destiny Child';
 const settingName = 'Settings';
-const diviceName = 'USB Divices';
+
+const double headerBarHeight = 47;
+const double footerBarHeight = 49;
+
+const Color barColor = Colors.black26;
+
+Settings settings = Settings();

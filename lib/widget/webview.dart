@@ -6,10 +6,17 @@ import 'package:webview_windows/webview_windows.dart';
 
 class WebView extends StatefulWidget {
   String htmlStr = '';
-
+  String? virtualHost;
+  String? folderPath;
   final WebviewController controller;
 
-  WebView({super.key, this.htmlStr = '', required this.controller});
+  WebView({
+    super.key,
+    this.htmlStr = '',
+    required this.controller,
+    this.virtualHost,
+    this.folderPath,
+  });
 
   @override
   State<StatefulWidget> createState() {
@@ -33,27 +40,28 @@ class WebViewState extends State<WebView> {
 
   Future<void> initPlatformState() async {
     try {
+      debugPrint('init platform state');
       await _controller.initialize();
       await _controller
           .setPopupWindowPolicy(webview.WebviewPopupWindowPolicy.deny);
       await _controller.loadStringContent(widget.htmlStr);
-      // await _controller.loadUrl('https://flutter.dev');
+
+      if (widget.virtualHost != null && widget.folderPath != null) {
+        debugPrint(widget.virtualHost);
+        debugPrint(widget.folderPath);
+        await _controller.addVirtualHostNameMapping(
+          widget.virtualHost!,
+          widget.folderPath!,
+          WebviewHostResourceAccessKind.denyCors,
+        );
+      }
+
       if (!mounted) {
         return;
       }
-      _controller.addVirtualHostNameMapping(
-        'local.assets',
-        'assets',
-        WebviewHostResourceAccessKind.deny,
-      );
-      _controller.executeScript('''
-      let container = window.document.getElementsByClassName('canvas-container')[0];
-      console.log(container);
-      container.width = window.innerWidth;
-      container.height = window.innerHeight;
-      ''');
       setState(() {});
     } on PlatformException catch (e) {
+      debugPrint(e.toString());
       WidgetsBinding.instance.addPostFrameCallback((_) {
         showDialog(
             context: context,

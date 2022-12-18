@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:live2d_viewer/models/settings.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'constant/routes.dart';
@@ -36,5 +40,16 @@ class CustomerWindowListener extends WindowListener {
   @override
   void onWindowResized() {
     windowManager.getSize().then((value) {});
+  }
+}
+
+Future<Settings> loadSettings() async {
+  try {
+    var content =
+        await rootBundle.loadString('assets/application/settings.json');
+    var json = jsonDecode(content);
+    return Settings.fromJson(json);
+  } catch (e) {
+    return Settings.init();
   }
 }

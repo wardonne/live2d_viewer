@@ -43,6 +43,10 @@ dependencies:
   extended_image: ^6.3.4
   local_assets_server: ^2.0.2+12
   url_launcher: ^6.1.7
+  provider: ^6.0.5
+  validatorless: ^1.2.3
+  dropdown_button2: ^1.9.2
+  file_picker: ^5.2.4
   
 
 dev_dependencies:

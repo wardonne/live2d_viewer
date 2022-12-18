@@ -10,6 +10,8 @@
     <div class="canvas-container">
         <canvas class="live2d-canvas" id="canvas"></canvas>
     </div>
+    <img onerror="console.log('error')" src="http://assets.sc.dc/avatars/ig0/00000000.png" alt="" srcset="">
+    <img onerror="console.log('error')" src="assets.sc.dc/images/ig0/00000000.png" alt="" srcset="">
 </body>
 </html>
 <style>
@@ -31,5 +33,8 @@
 
 </style>
 <script>
-  
+    let container = window.document.getElementsByClassName('canvas-container')[0];
+    console.log(container);
+    container.width = window.innerWidth;
+    container.height = window.innerHeight;
 </script>

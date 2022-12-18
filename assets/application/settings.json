@@ -1,3 +1,13 @@
 {
-    
+  "destiny_child": {
+    "live2d_version": "3",
+    "soul_carta": {
+      "virtual_host": "assets.sc.dc",
+      "path": "C:/workspace/flutter/live2d_viewer/assets/destiny_child/soul_carta"
+    },
+    "child": {
+      "virtual_host": "assets.child.dc",
+      "path": "C:/workspace/flutter/live2d_viewer/assets/destiny_child/child"
+    }
+  }
 }

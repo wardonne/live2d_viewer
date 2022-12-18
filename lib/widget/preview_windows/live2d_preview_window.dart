@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:live2d_viewer/constant/settings.dart';
 import 'package:live2d_viewer/models/live2d_preview_data.dart';
 import 'package:live2d_viewer/widget/dialog/error_dialog.dart';
 import 'package:live2d_viewer/widget/webview.dart';
@@ -23,7 +24,7 @@ class Live2DPreviewWindow extends StatelessWidget {
           return Container(
             width: width * 0.4,
             decoration: const BoxDecoration(
-              color: Colors.black26,
+              color: barColor,
               border: Border(left: BorderSide(color: Colors.white70)),
             ),
             child: Column(
@@ -43,7 +44,7 @@ class Live2DPreviewWindow extends StatelessWidget {
           debugPrint('empty data');
           return Container(
             width: 500,
-            color: Colors.black26,
+            color: barColor,
             child: const Center(
               child: Text('empty data'),
             ),
@@ -61,9 +62,9 @@ class Live2DPreviewWindow extends StatelessWidget {
 
   _buildHeader(String? title) {
     return Container(
-      height: 48,
+      height: headerBarHeight,
       decoration: const BoxDecoration(
-        color: Colors.black26,
+        color: barColor,
         border: Border(
           bottom: BorderSide(color: Colors.white70),
         ),
@@ -74,9 +75,9 @@ class Live2DPreviewWindow extends StatelessWidget {
 
   _buildFooter() {
     return Container(
-      height: 48,
+      height: footerBarHeight,
       decoration: const BoxDecoration(
-        color: Colors.black26,
+        color: barColor,
         border: Border(top: BorderSide(color: Colors.white70)),
       ),
       child: Row(
@@ -85,6 +86,12 @@ class Live2DPreviewWindow extends StatelessWidget {
           Expanded(child: Container()),
           ButtonBar(
             children: [
+              IconButton(
+                onPressed: () {
+                  _webviewController.reload();
+                },
+                icon: const Icon(Icons.replay),
+              ),
               IconButton(
                 onPressed: () async {
                   var uri = Uri.parse('https://baidu.com');
@@ -122,12 +129,14 @@ class Live2DPreviewWindow extends StatelessWidget {
           return WebView(
             htmlStr: html,
             controller: _webviewController,
+            virtualHost: data.virtualHost,
+            folderPath: data.folderPath,
           );
         } else if (snapshot.hasError) {
           debugPrint(snapshot.error.toString());
           return ErrorDialog(message: snapshot.error.toString());
         } else {
-          return const ErrorDialog(message: 'empty data');
+          return Container();
         }
       },
     );

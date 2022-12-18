@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:live2d_viewer/constant/settings.dart';
 import 'package:sidebarx/sidebarx.dart';
 
 class SideBar extends StatelessWidget {
@@ -19,7 +20,7 @@ class SideBar extends StatelessWidget {
       controller: controller,
       theme: SidebarXTheme(
         decoration: const BoxDecoration(
-          color: Colors.black26,
+          color: barColor,
           border: Border(
             right: BorderSide(color: Colors.white70),
           ),
@@ -54,7 +55,7 @@ class SideBar extends StatelessWidget {
       extendedTheme: const SidebarXTheme(
         width: 200,
         decoration: BoxDecoration(
-          color: Colors.black26,
+          color: barColor,
           border: Border(
             right: BorderSide(color: Colors.white70),
           ),
@@ -70,7 +71,7 @@ class SideBar extends StatelessWidget {
       ),
       headerBuilder: (context, extended) {
         return SizedBox(
-          height: 47,
+          height: headerBarHeight,
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: avatarImage,

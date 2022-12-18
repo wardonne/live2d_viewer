@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:live2d_viewer/constant/settings.dart';
 import 'package:live2d_viewer/models/image_preview_data.dart';
 import 'package:live2d_viewer/widget/dialog/error_dialog.dart';
 import 'package:window_manager/window_manager.dart';
@@ -27,7 +28,7 @@ class ImagePreviewWindow extends StatelessWidget {
           return Container(
             width: width * 0.4,
             decoration: const BoxDecoration(
-              color: Colors.black26,
+              color: barColor,
               border: Border(
                 left: BorderSide(
                   color: Colors.white70,
@@ -64,7 +65,7 @@ class ImagePreviewWindow extends StatelessWidget {
     return Container(
       height: 48,
       decoration: const BoxDecoration(
-        color: Colors.black26,
+        color: barColor,
         border: Border(
           bottom: BorderSide(
             color: Colors.white70,
@@ -119,9 +120,9 @@ class ImagePreviewWindow extends StatelessWidget {
 
   _buildFooter() {
     return Container(
-      height: 48,
+      height: footerBarHeight,
       decoration: const BoxDecoration(
-        color: Colors.black26,
+        color: barColor,
         border: Border(top: BorderSide(color: Colors.white70)),
       ),
       child: Row(

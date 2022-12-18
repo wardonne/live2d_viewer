@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:live2d_viewer/constant/settings.dart';
 import 'package:live2d_viewer/widget/preview_windows/preview_window.dart';
 import 'package:live2d_viewer/widget/wrappers/colored_tabbar_wrapper.dart';
 import 'components/child.dart';
@@ -48,7 +49,7 @@ class DestinyChildPageState extends State<DestinyChildPage>
                         Tab(text: 'Soul Carta'),
                       ],
                     ),
-                    color: Colors.black26,
+                    color: barColor,
                   ),
                   Expanded(
                     child: TabBarView(

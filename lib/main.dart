@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/constant/settings.dart';
+import 'package:live2d_viewer/providers/settings_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'app.dart';
@@ -16,5 +18,13 @@ void main() async {
     await windowManager.focus();
   });
 
-  runApp(const Live2DViewer());
+  settings = await loadSettings();
+
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+          create: (_) => SettingsProvider(settings: settings)),
+    ],
+    child: const Live2DViewer(),
+  ));
 }
