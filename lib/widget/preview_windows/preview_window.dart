@@ -21,7 +21,10 @@ class PreviewWindow extends StatelessWidget {
               if (data is ImagePreviewData) {
                 return ImagePreviewWindow(data: data);
               } else if (data is Live2DPreviewData) {
-                return Live2DPreviewWindow(data: data);
+                return Live2DPreviewWindow(
+                  data: data,
+                  previewWindowController: controller,
+                );
               } else {
                 return Container();
               }
@@ -48,6 +51,7 @@ class PreviewWindowController extends ChangeNotifier {
   setData(PreviewData previewData) {
     _visible = true;
     if (_previewData != previewData) {
+      debugPrint(previewData.data.toString());
       _previewData = previewData;
       notifyListeners();
     }

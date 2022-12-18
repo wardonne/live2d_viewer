@@ -1,6 +1,7 @@
 class ImagePreviewData extends Object {
   String imageSrc;
   String? title;
+  String? folder;
   ImagePreviewData({required this.imageSrc, this.title});
   @override
   String toString() {

@@ -13,7 +13,7 @@ class ChildTabView extends StatelessWidget {
       child: TextButton(
         onPressed: () {
           controller.setData(PreviewData<Live2DPreviewData>(
-              data: Live2DPreviewData(live2dSrc: '', live2dVersion: 2)));
+              data: Live2DPreviewData(live2dSrc: '', live2dVersion: '2')));
         },
         child: const Text(
           'Child',

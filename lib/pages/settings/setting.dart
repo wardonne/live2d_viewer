@@ -12,11 +12,18 @@ import 'package:live2d_viewer/widget/dialog/error_dialog.dart';
 import 'package:live2d_viewer/widget/dialog/success_dialog.dart';
 import 'package:provider/provider.dart';
 
+import 'components/webview_settings.dart';
+
 final destinyChildKey = GlobalKey();
 final soulCartaKey = GlobalKey();
 final childKey = GlobalKey();
+final webviewKey = GlobalKey();
 
 final _menuItems = [
+  SettingMenuItem(
+    anchorKey: webviewKey,
+    label: 'Webview',
+  ),
   SettingMenuItem(
     anchorKey: destinyChildKey,
     label: 'Destiny Child',
@@ -78,6 +85,7 @@ class SettingPage extends StatelessWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         children: [
+          WebviewSettingsPage(key: webviewKey, settings: _settings),
           DestinyChildSettingsPage(key: destinyChildKey, settings: _settings),
         ],
       ),

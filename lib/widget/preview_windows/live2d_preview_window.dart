@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:live2d_viewer/constant/resources.dart';
 import 'package:live2d_viewer/constant/settings.dart';
 import 'package:live2d_viewer/models/live2d_preview_data.dart';
+import 'package:live2d_viewer/models/virtual_host.dart';
+import 'package:live2d_viewer/providers/settings_provider.dart';
+import 'package:live2d_viewer/utils/render.dart';
+import 'package:live2d_viewer/utils/watch_provider.dart';
 import 'package:live2d_viewer/widget/dialog/error_dialog.dart';
+import 'package:live2d_viewer/widget/preview_windows/preview_window.dart';
 import 'package:live2d_viewer/widget/webview.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_windows/webview_windows.dart';
 import 'package:window_manager/window_manager.dart';
 
 class Live2DPreviewWindow extends StatelessWidget {
   final Live2DPreviewData data;
-  Live2DPreviewWindow({super.key, required this.data});
+  final PreviewWindowController previewWindowController;
+  Live2DPreviewWindow({
+    super.key,
+    required this.data,
+    required this.previewWindowController,
+  });
 
   final WebviewController _webviewController = WebviewController();
 
@@ -31,7 +40,7 @@ class Live2DPreviewWindow extends StatelessWidget {
               children: [
                 _buildHeader(data.title),
                 Expanded(
-                  child: _buildBody(),
+                  child: _buildBody(context),
                 ),
                 _buildFooter(),
               ],
@@ -52,12 +61,6 @@ class Live2DPreviewWindow extends StatelessWidget {
         }
       },
     );
-  }
-
-  Future<String> _loadHtml() async {
-    var content =
-        await rootBundle.loadString('assets/html/destiny_child_live2d.html');
-    return content;
   }
 
   _buildHeader(String? title) {
@@ -94,21 +97,6 @@ class Live2DPreviewWindow extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () async {
-                  var uri = Uri.parse('https://baidu.com');
-                  var canLaunch = await canLaunchUrl(uri);
-                  if (canLaunch) {
-                    launchUrl(
-                      Uri.parse('https://baidu.com'),
-                      mode: LaunchMode.externalApplication,
-                    );
-                  } else {
-                    debugPrint('can not launch uri: $uri');
-                  }
-                },
-                icon: const Icon(Icons.open_in_browser),
-              ),
-              IconButton(
-                onPressed: () async {
                   await _webviewController.openDevTools();
                 },
                 icon: const Icon(Icons.developer_board),
@@ -120,17 +108,42 @@ class Live2DPreviewWindow extends StatelessWidget {
     );
   }
 
-  _buildBody() {
+  _buildBody(BuildContext context) {
+    var settings = watchProvider<SettingsProvider>(context).settings!;
+    var webviewSettings = settings.webviewSettings!;
+    var soulCartaSettings = settings.destinyChildSettings!.soulCartaSettings!;
     return FutureBuilder(
-      future: _loadHtml(),
+      future: render(
+        data.live2dVersion == '2' ? live2dVersion2Html : live2dVersion3Html,
+        data: {
+          'backgroundImage': data.backgroundImage != null
+              ? '${soulCartaSettings.imageHost}/${data.backgroundImage}'
+              : '',
+          'webviewHost': webviewSettings.virtualHost!,
+          'live2dVersion': data.live2dVersion,
+          'live2d': data.live2dSrc,
+          'live2dHost': soulCartaSettings.live2dHost,
+        },
+      ),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           var html = snapshot.data!;
-          return WebView(
-            htmlStr: html,
-            controller: _webviewController,
-            virtualHost: data.virtualHost,
-            folderPath: data.folderPath,
+          return AnimatedBuilder(
+            animation: previewWindowController,
+            builder: (context, child) {
+              return WebView(
+                htmlStr: html,
+                controller: _webviewController,
+                virtualHosts: [
+                  VirtualHost(
+                      virtualHost: webviewSettings.virtualHost!,
+                      folderPath: webviewSettings.path!),
+                  VirtualHost(
+                      virtualHost: data.virtualHost!,
+                      folderPath: data.folderPath!)
+                ],
+              );
+            },
           );
         } else if (snapshot.hasError) {
           debugPrint(snapshot.error.toString());

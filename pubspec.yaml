@@ -86,7 +86,6 @@ flutter:
   assets:
     - assets/
     - assets/destiny_child/
-    - assets/destiny_child/soul_carta/
     - assets/application/
     - assets/html/
   # To add custom fonts to your application, add a fonts section here,

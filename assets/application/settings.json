@@ -1,13 +1,15 @@
 {
   "destiny_child": {
-    "live2d_version": "3",
+    "live2d_version": "2",
     "soul_carta": {
-      "virtual_host": "assets.sc.dc",
-      "path": "C:/workspace/flutter/live2d_viewer/assets/destiny_child/soul_carta"
+      "virtual_host": "assets.soul_carta.dc",
+      "path": "C:\\workspace\\flutter\\live2d_viewer/assets/destiny_child/soul_carta",
+      "data_path": "C:\\workspace\\flutter\\live2d_viewer/assets/destiny_child/soul_carta/data.json"
     },
     "child": {
       "virtual_host": "assets.child.dc",
-      "path": "C:/workspace/flutter/live2d_viewer/assets/destiny_child/child"
+      "path": "C:\\workspace\\flutter\\live2d_viewer/assets/destiny_child/child",
+      "data_path": "C:\\workspace\\flutter\\live2d_viewer/assets/destiny_child/child/data.json"
     }
   }
 }

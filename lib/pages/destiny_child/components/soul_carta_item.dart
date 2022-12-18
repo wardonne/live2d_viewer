@@ -20,31 +20,32 @@ class SoulCartaItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var soulCartaSettings = watchProvider<SettingsProvider>(context)
-        .settings
-        ?.destinyChildSettings
-        ?.soulCartaSettings;
+        .settings!
+        .destinyChildSettings!
+        .soulCartaSettings!;
     return SizedBox.fromSize(
       size: const Size(80, 80),
       child: Container(
         margin: const EdgeInsets.all(5),
         child: ImageButton.fromFile(
-          filepath: data.avatarPath,
+          filepath: '${soulCartaSettings.avatarPath}/${data.avatar}',
           onPressed: () {
             if (data.useLive2d) {
               debugPrint('live2d soul carta');
               debugPrint(soulCartaSettings.toString());
               controller.setData(PreviewData<Live2DPreviewData>(
                   data: Live2DPreviewData(
-                live2dSrc: '',
-                live2dVersion: 2,
-                virtualHost: soulCartaSettings?.virtualHost,
-                folderPath: soulCartaSettings?.path,
+                live2dSrc: data.live2d!,
+                live2dVersion: '2',
+                backgroundImage: data.image,
+                virtualHost: soulCartaSettings.virtualHost,
+                folderPath: soulCartaSettings.path,
               )));
             } else {
               controller.setData(
                 PreviewData<ImagePreviewData>(
                   data: ImagePreviewData(
-                    imageSrc: data.imagePath,
+                    imageSrc: '${soulCartaSettings.imagePath}/${data.image}',
                     title: data.avatar,
                   ),
                 ),

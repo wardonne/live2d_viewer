@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:live2d_viewer/constant/keys.dart';
+import 'package:live2d_viewer/models/virtual_host.dart';
 import 'package:webview_windows/webview_windows.dart' as webview;
 import 'package:webview_windows/webview_windows.dart';
 
 class WebView extends StatefulWidget {
   String htmlStr = '';
-  String? virtualHost;
-  String? folderPath;
+  List<VirtualHost>? virtualHosts;
   final WebviewController controller;
 
   WebView({
     super.key,
     this.htmlStr = '',
     required this.controller,
-    this.virtualHost,
-    this.folderPath,
+    this.virtualHosts,
   });
 
   @override
@@ -38,22 +37,25 @@ class WebViewState extends State<WebView> {
     _controller.loadStringContent(widget.htmlStr);
   }
 
+  void setStringContent(String content) {}
+
   Future<void> initPlatformState() async {
     try {
       debugPrint('init platform state');
       await _controller.initialize();
       await _controller
           .setPopupWindowPolicy(webview.WebviewPopupWindowPolicy.deny);
-      await _controller.loadStringContent(widget.htmlStr);
 
-      if (widget.virtualHost != null && widget.folderPath != null) {
-        debugPrint(widget.virtualHost);
-        debugPrint(widget.folderPath);
-        await _controller.addVirtualHostNameMapping(
-          widget.virtualHost!,
-          widget.folderPath!,
-          WebviewHostResourceAccessKind.denyCors,
-        );
+      if (widget.virtualHosts != null) {
+        for (final item in widget.virtualHosts!) {
+          debugPrint(item.virtualHost);
+          debugPrint(item.folderPath);
+          await _controller.addVirtualHostNameMapping(
+            item.virtualHost,
+            item.folderPath,
+            WebviewHostResourceAccessKind.allow,
+          );
+        }
       }
 
       if (!mounted) {
@@ -115,9 +117,21 @@ class WebViewState extends State<WebView> {
 
   @override
   Widget build(BuildContext context) {
-    return webview.Webview(
-      _controller,
-      permissionRequested: _onPermissionRequested,
+    return FutureBuilder(
+      future: _controller.loadStringContent(widget.htmlStr),
+      builder: (context, snapshot) {
+        return webview.Webview(
+          _controller,
+          permissionRequested: _onPermissionRequested,
+        );
+      },
     );
+  }
+
+  @override
+  void dispose() {
+    debugPrint('dispose webview');
+    _controller.dispose();
+    super.dispose();
   }
 }

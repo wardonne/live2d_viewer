@@ -1,8 +1,3 @@
-import 'package:json_annotation/json_annotation.dart';
-import 'package:live2d_viewer/constant/resources.dart';
-
-part 'soul_carta.g.dart';
-
 List<SoulCarta> loadSoulCarta(List<dynamic> list) {
   List<SoulCarta> result = [];
   for (var item in list) {
@@ -11,33 +6,35 @@ List<SoulCarta> loadSoulCarta(List<dynamic> list) {
   return result;
 }
 
-@JsonSerializable()
 class SoulCarta extends Object {
-  @JsonKey(name: 'image')
-  String image;
+  final String image;
 
-  @JsonKey(name: 'use_live2d')
-  bool useLive2d;
+  final bool useLive2d;
 
-  @JsonKey(name: 'avatar')
-  String avatar;
+  final String avatar;
+
+  final String? live2d;
 
   SoulCarta(
     this.image,
     this.useLive2d,
     this.avatar,
+    this.live2d,
   );
 
-  factory SoulCarta.fromJson(Map<String, dynamic> srcJson) =>
-      _$SoulCartaFromJson(srcJson);
+  SoulCarta.fromJson(Map<String, dynamic> json)
+      : image = json['image'],
+        useLive2d = json['use_live2d'],
+        avatar = json['avatar'],
+        live2d = json['live2d'];
 
-  Map<String, dynamic> toJson() => _$SoulCartaToJson(this);
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'image': image,
+        'use_live2d': useLive2d,
+        'avatar': avatar,
+        'live2d': live2d,
+      };
 
-  String get avatarPath {
-    return '$dcSoulCartaAvatarPath/$avatar';
-  }
-
-  String get imagePath {
-    return '$dcSoulCartaImagePath/$image';
-  }
+  @override
+  String toString() => toJson().toString();
 }
