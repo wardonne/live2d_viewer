@@ -2,14 +2,19 @@ import 'dart:io';
 
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/constant/settings.dart';
-import 'package:live2d_viewer/models/image_preview_data.dart';
-import 'package:live2d_viewer/widget/dialog/error_dialog.dart';
-import 'package:window_manager/window_manager.dart';
+import 'package:live2d_viewer/constants/destiny_child.dart';
+import 'package:live2d_viewer/constants/settings.dart';
+import 'package:live2d_viewer/models/preview_data/image_preview_data.dart';
+import 'package:live2d_viewer/services/destiny_child/destiny_child_service.dart';
+import 'package:live2d_viewer/widget/buttons/image_button.dart';
+import 'package:live2d_viewer/widget/preview_windows/preview_window.dart';
+import 'package:live2d_viewer/widget/toolbar.dart';
 
 class ImagePreviewWindow extends StatelessWidget {
   final double maxScale = 2.0;
   final double minScale = 0.5;
+  final PreviewWindowController previewWindowController =
+      DestinyChildConstant.soulCartaViewController;
   late final ImagePreviewWindowController _controller;
 
   final ImagePreviewData data;
@@ -19,61 +24,32 @@ class ImagePreviewWindow extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: windowManager.getSize(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          var width = snapshot.data!.width;
-          var title = data.title;
-          return Container(
-            width: width * 0.4,
-            decoration: const BoxDecoration(
-              color: barColor,
-              border: Border(
-                left: BorderSide(
-                  color: Colors.white70,
-                  width: 1,
-                ),
-              ),
-            ),
-            child: Column(
-              children: [
-                _buildHeader(title),
-                _buildBody(),
-                _buildFooter(),
-              ],
-            ),
-          );
-        } else if (snapshot.hasError) {
-          debugPrint(snapshot.error.toString());
-          return ErrorDialog(message: snapshot.error.toString());
-        } else {
-          debugPrint('empty data');
-          return Container(
-            width: 500,
-            color: Colors.black87,
-            child: const Center(
-              child: Text('empty data'),
-            ),
-          );
-        }
-      },
+    return Container(
+      color: barColor,
+      child: Column(
+        children: [
+          _buildHeader(data.title),
+          _buildBody(),
+          _buildFooter(),
+        ],
+      ),
     );
   }
 
   _buildHeader(String? title) {
-    return Container(
-      height: 48,
-      decoration: const BoxDecoration(
-        color: barColor,
-        border: Border(
-          bottom: BorderSide(
-            color: Colors.white70,
-            width: 1,
-          ),
-        ),
+    return Toolbar.header(
+      height: headerBarHeight,
+      title: Center(
+        child: Text(title ?? ''),
       ),
-      child: title != null ? Center(child: Text(title)) : const Center(),
+      leadingActions: [
+        ImageButton.fromIcon(
+            icon: Icons.arrow_forward_ios,
+            onPressed: () {
+              previewWindowController.clear();
+              DestinyChildService.openItemsWindow();
+            }),
+      ],
     );
   }
 
@@ -96,6 +72,7 @@ class ImagePreviewWindow extends StatelessWidget {
             mode: ExtendedImageMode.gesture,
             fit: BoxFit.contain,
             width: double.infinity,
+            filterQuality: FilterQuality.high,
             initGestureConfigHandler: (state) {
               var initScale = _controller.scale;
               if (_controller.scaleIsChanged) {
@@ -163,7 +140,7 @@ class ImagePreviewWindowController extends ChangeNotifier {
   double _scale = 1.0;
   bool _scaleIsChanged = false;
   setScale(double scale) {
-    scale = _getInvalidScale(scale);
+    scale = _getValidScale(scale);
     if (_scale != scale) {
       _originalScale = _scale;
       _scale = scale;
@@ -175,7 +152,7 @@ class ImagePreviewWindowController extends ChangeNotifier {
   }
 
   changeScale(double scale) {
-    scale = _getInvalidScale(scale);
+    scale = _getValidScale(scale);
     if (_scale != scale) {
       _originalScale = _scale;
       _scale = scale;
@@ -185,7 +162,7 @@ class ImagePreviewWindowController extends ChangeNotifier {
     }
   }
 
-  _getInvalidScale(double scale) {
+  _getValidScale(double scale) {
     if (scale >= maxScale) {
       scale = maxScale;
     } else if (scale <= minScale) {

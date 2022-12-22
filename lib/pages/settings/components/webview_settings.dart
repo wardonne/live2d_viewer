@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/models/settings.dart';
+import 'package:live2d_viewer/models/settings/settings.dart';
 import 'package:live2d_viewer/widget/form/form_field_with_label.dart';
 import 'package:live2d_viewer/widget/form/form_file_picker.dart';
 import 'package:live2d_viewer/widget/form/form_text_input.dart';

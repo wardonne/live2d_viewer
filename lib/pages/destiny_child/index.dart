@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/constant/settings.dart';
-import 'package:live2d_viewer/widget/preview_windows/preview_window.dart';
-import 'package:live2d_viewer/widget/wrappers/colored_tabbar_wrapper.dart';
-import 'components/child.dart';
-import 'components/soul_carta.dart';
+import 'package:live2d_viewer/constants/destiny_child.dart';
+import 'package:live2d_viewer/pages/destiny_child/components/child_view.dart';
+import 'package:live2d_viewer/pages/destiny_child/components/items.dart';
+import 'package:live2d_viewer/providers/settings_provider.dart';
+import 'package:live2d_viewer/services/destiny_child/soul_carta_service.dart';
+import 'package:live2d_viewer/utils/watch_provider.dart';
 
 class DestinyChildPage extends StatefulWidget {
   const DestinyChildPage({super.key});
@@ -15,63 +16,55 @@ class DestinyChildPage extends StatefulWidget {
 
 class DestinyChildPageState extends State<DestinyChildPage>
     with SingleTickerProviderStateMixin {
-  final PreviewWindowController controller = PreviewWindowController();
+  final soulCartaEditModeController =
+      DestinyChildConstant.soulCartaEditModeController;
+  final ChildViewController childViewController = ChildViewController();
   late TabController tabController;
+  late SoulCartaService? soulCartaService;
   @override
   void initState() {
     super.initState();
-    tabController = TabController(length: 2, vsync: this)
-      ..addListener(() {
-        if (tabController.indexIsChanging && controller.visible) {
-          controller.hidden();
-        }
-      });
+    tabController =
+        TabController(length: DestinyChildConstant.tabbars.length, vsync: this)
+          ..addListener(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    var destinyChildSettings = watchProvider<SettingsProvider>(context)
+        .settings!
+        .destinyChildSettings!;
+    soulCartaService = SoulCartaService(destinyChildSettings);
+    tabController.animateTo(
+        destinyChildSettings.defaultHome ?? DestinyChildConstant.defaultHome);
     return AnimatedBuilder(
       animation: tabController,
       builder: (context, child) {
-        return Row(
-          children: [
-            Expanded(
-              child: Column(
-                children: [
-                  ColoredTabBarWrapper(
-                    tabBar: TabBar(
-                      indicator: const BoxDecoration(
-                        color: Colors.black54,
-                      ),
-                      controller: tabController,
-                      tabs: const [
-                        Tab(text: 'Child'),
-                        Tab(text: 'Soul Carta'),
-                      ],
-                    ),
-                    color: barColor,
-                  ),
+        return AnimatedBuilder(
+          animation: DestinyChildConstant.exhibitionWindowController,
+          builder: (context, child) {
+            return Row(
+              children: [
+                if (DestinyChildConstant.exhibitionWindowController.visible)
                   Expanded(
-                    child: TabBarView(
-                      controller: tabController,
-                      children: [
-                        ChildTabView(
-                          controller: controller,
-                        ),
-                        SoulCartaTabView(
-                          controller: controller,
-                        ),
-                      ],
+                    child: ItemList(
+                      tabController: tabController,
                     ),
                   ),
-                ],
-              ),
-            ),
-            PreviewWindow(controller: controller)
-          ],
+                if (!DestinyChildConstant.exhibitionWindowController.visible)
+                  Expanded(
+                    child: _getDetailWidgetByIndex(tabController.index),
+                  ),
+              ],
+            );
+          },
         );
       },
     );
+  }
+
+  Widget _getDetailWidgetByIndex(int index) {
+    return DestinyChildConstant.detailWindows[index];
   }
 
   @override

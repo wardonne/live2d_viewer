@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:live2d_viewer/constant/keys.dart';
+import 'package:live2d_viewer/constants/keys.dart';
 import 'package:live2d_viewer/models/virtual_host.dart';
 import 'package:webview_windows/webview_windows.dart' as webview;
 import 'package:webview_windows/webview_windows.dart';
@@ -33,23 +33,14 @@ class WebViewState extends State<WebView> {
     initPlatformState();
   }
 
-  void setUrl(String targetUrl) {
-    _controller.loadStringContent(widget.htmlStr);
-  }
-
-  void setStringContent(String content) {}
-
   Future<void> initPlatformState() async {
     try {
-      debugPrint('init platform state');
       await _controller.initialize();
       await _controller
           .setPopupWindowPolicy(webview.WebviewPopupWindowPolicy.deny);
 
       if (widget.virtualHosts != null) {
         for (final item in widget.virtualHosts!) {
-          debugPrint(item.virtualHost);
-          debugPrint(item.folderPath);
           await _controller.addVirtualHostNameMapping(
             item.virtualHost,
             item.folderPath,
@@ -63,7 +54,6 @@ class WebViewState extends State<WebView> {
       }
       setState(() {});
     } on PlatformException catch (e) {
-      debugPrint(e.toString());
       WidgetsBinding.instance.addPostFrameCallback((_) {
         showDialog(
             context: context,
@@ -130,7 +120,6 @@ class WebViewState extends State<WebView> {
 
   @override
   void dispose() {
-    debugPrint('dispose webview');
     _controller.dispose();
     super.dispose();
   }

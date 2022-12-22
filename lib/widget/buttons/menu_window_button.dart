@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/constant/settings.dart';
+import 'package:live2d_viewer/constants/settings.dart';
 
 class MenuWindowButton extends StatefulWidget {
   const MenuWindowButton({super.key});

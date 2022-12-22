@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/models/sidebar_item.dart';
 import 'package:live2d_viewer/pages/destiny_child/index.dart';
-import 'package:live2d_viewer/pages/settings/setting.dart';
+import 'package:live2d_viewer/pages/settings/index.dart';
 
 import 'settings.dart';
 

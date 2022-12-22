@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:live2d_viewer/models/destiny_child_settings.dart';
-import 'package:live2d_viewer/models/webview_settings.dart';
+import 'package:live2d_viewer/models/settings/destiny_child_settings.dart';
+import 'package:live2d_viewer/models/settings/webview_settings.dart';
 
 class Settings extends Object {
   WebviewSettings? webviewSettings;

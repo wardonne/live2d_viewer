@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/constant/settings.dart';
+import 'package:live2d_viewer/constants/settings.dart';
+import 'package:live2d_viewer/widget/toolbar.dart';
 
 class SettingsMenu extends StatelessWidget {
   final List<SettingMenuItem> items;
@@ -14,13 +15,8 @@ class SettingsMenu extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Container(
+          Toolbar.header(
             height: headerBarHeight,
-            color: barColor,
-          ),
-          const Divider(
-            color: Colors.white70,
-            height: 1,
           ),
           Expanded(
             child: Container(
@@ -33,12 +29,8 @@ class SettingsMenu extends StatelessWidget {
               ),
             ),
           ),
-          Container(
+          Toolbar.footer(
             height: footerBarHeight,
-            decoration: const BoxDecoration(
-              color: barColor,
-              border: Border(top: BorderSide(color: Colors.white70)),
-            ),
           ),
         ],
       ),
@@ -71,7 +63,6 @@ class SettingMenuItem extends StatelessWidget {
           )
         : ExpansionTile(
             title: Text(label),
-            initiallyExpanded: true,
             children: children!.map((child) {
               return child.build(context);
             }).toList(),

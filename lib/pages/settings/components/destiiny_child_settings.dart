@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/models/settings.dart';
-import 'package:live2d_viewer/pages/settings/setting.dart';
+import 'package:live2d_viewer/constants/destiny_child.dart';
+import 'package:live2d_viewer/models/settings/settings.dart';
+import 'package:live2d_viewer/pages/settings/index.dart';
 import 'package:live2d_viewer/widget/form/form_dropdown.dart';
 import 'package:live2d_viewer/widget/form/form_field_with_label.dart';
 import 'package:live2d_viewer/widget/form/form_file_picker.dart';
@@ -69,7 +70,25 @@ class DestinyChildSettingsPage extends StatelessWidget {
             },
             validator: Validatorless.required('Live2D version is required'),
           ),
-        )
+        ),
+        FormFieldWithLabel(
+          label: 'Default Home',
+          field: FormDropdown(
+            value: _settings?.destinyChildSettings?.defaultHome,
+            items: DestinyChildConstant.tabbars
+                .map(
+                  (value) => DropdownMenuItem(
+                      value: DestinyChildConstant.tabbars.indexOf(value),
+                      child: value),
+                )
+                .toList(),
+            onChanged: (value) {},
+            onSaved: (value) {
+              _settings?.destinyChildSettings?.defaultHome =
+                  value ?? DestinyChildConstant.defaultHome;
+            },
+          ),
+        ),
       ],
     );
   }
@@ -111,6 +130,13 @@ class DestinyChildSettingsPage extends StatelessWidget {
                       value;
                 },
                 validator: Validatorless.required('Folder is required'),
+              ),
+            ),
+            FormFieldWithLabel(
+              label: 'Backups',
+              field: FormTextInput(
+                readOnly: true,
+                value: _settings?.destinyChildSettings?.childSettings?.backups,
               ),
             ),
           ],
@@ -155,6 +181,13 @@ class DestinyChildSettingsPage extends StatelessWidget {
                   _settings?.destinyChildSettings?.childSettings?.path = value;
                 },
                 validator: Validatorless.required('Folder is required'),
+              ),
+            ),
+            FormFieldWithLabel(
+              label: 'Backups',
+              field: FormTextInput(
+                readOnly: true,
+                value: _settings?.destinyChildSettings?.childSettings?.backups,
               ),
             ),
           ],

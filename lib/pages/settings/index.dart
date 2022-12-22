@@ -1,8 +1,8 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/constant/settings.dart';
-import 'package:live2d_viewer/models/settings.dart';
+import 'package:live2d_viewer/constants/settings.dart';
+import 'package:live2d_viewer/models/settings/settings.dart';
 import 'package:live2d_viewer/pages/settings/components/destiiny_child_settings.dart';
 import 'package:live2d_viewer/pages/settings/components/settings_menu.dart';
 import 'package:live2d_viewer/providers/settings_provider.dart';
@@ -10,6 +10,7 @@ import 'package:live2d_viewer/utils/watch_provider.dart';
 import 'package:live2d_viewer/widget/buttons/image_button.dart';
 import 'package:live2d_viewer/widget/dialog/error_dialog.dart';
 import 'package:live2d_viewer/widget/dialog/success_dialog.dart';
+import 'package:live2d_viewer/widget/toolbar.dart';
 import 'package:provider/provider.dart';
 
 import 'components/webview_settings.dart';
@@ -110,54 +111,44 @@ class SettingPage extends StatelessWidget {
   }
 
   _buildFooter(BuildContext context) {
-    return Container(
+    return Toolbar.footer(
       height: footerBarHeight,
-      decoration: const BoxDecoration(
-        color: barColor,
-        border: Border(top: BorderSide(color: Colors.white70)),
-      ),
-      child: Row(
-        children: [
-          Expanded(child: Container()),
-          ButtonBar(
-            children: [
-              ImageButton.fromIcon(
-                icon: Icons.save,
-                onPressed: () async {
-                  var formContext = formKey.currentState as FormState;
-                  if (formContext.validate()) {
-                    try {
-                      formContext.save();
-                      await Provider.of<SettingsProvider>(context,
-                              listen: false)
-                          .updateSettings();
-                      showDialog(
-                          context: context,
-                          builder: (context) =>
-                              const SuccessDialog(message: 'Update succeeded'));
-                    } catch (e) {
-                      showDialog(
-                        context: context,
-                        builder: (context) =>
-                            ErrorDialog(message: e.toString()),
-                      );
-                    }
-                  } else {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return const ErrorDialog(
-                          message: 'form validated failed',
-                        );
-                      },
-                    );
-                  }
-                },
-              ),
-            ],
-          ),
-        ],
-      ),
+      borderColor: Colors.white70,
+      endActions: [_submitAction(context)],
+    );
+  }
+
+  _submitAction(BuildContext context) {
+    return ImageButton.fromIcon(
+      icon: Icons.save,
+      onPressed: () async {
+        var formContext = formKey.currentState as FormState;
+        if (formContext.validate()) {
+          try {
+            formContext.save();
+            await Provider.of<SettingsProvider>(context, listen: false)
+                .updateSettings();
+            showDialog(
+                context: context,
+                builder: (context) =>
+                    const SuccessDialog(message: 'Update succeeded'));
+          } catch (e) {
+            showDialog(
+              context: context,
+              builder: (context) => ErrorDialog(message: e.toString()),
+            );
+          }
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return const ErrorDialog(
+                message: 'form validated failed',
+              );
+            },
+          );
+        }
+      },
     );
   }
 }

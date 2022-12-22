@@ -52,3 +52,10 @@ assets/destiny_child/soul_carta/images/*
 assets/destiny_child/soul_carta/avatars/*
 !assets/destiny_child/soul_carta/avatars/.gitkeep
 assets/destiny_child/soul_carta/live2d/*
+
+assets/destiny_child/child/data.json
+assets/destiny_child/child/avatars/*
+!assets/destiny_child/child/avatars/.gitkeep
+assets/destiny_child/child/live2d/*
+
+backups.json

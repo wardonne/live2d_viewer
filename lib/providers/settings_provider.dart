@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:live2d_viewer/models/settings.dart';
+import 'package:live2d_viewer/models/settings/settings.dart';
 
 class SettingsProvider with ChangeNotifier, DiagnosticableTreeMixin {
   Settings? _settings;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/constant/settings.dart';
+import 'package:live2d_viewer/constants/settings.dart';
+import 'package:live2d_viewer/widget/toolbar.dart';
 import 'package:sidebarx/sidebarx.dart';
 
 class SideBar extends StatelessWidget {
@@ -61,23 +62,20 @@ class SideBar extends StatelessWidget {
           ),
         ),
       ),
-      footerDivider: const Divider(
-        color: Colors.white70,
-        height: 1,
-      ),
-      headerDivider: const Divider(
-        color: Colors.white70,
-        height: 1,
-      ),
       headerBuilder: (context, extended) {
-        return SizedBox(
+        return Toolbar.header(
           height: headerBarHeight,
-          child: Padding(
+          borderColor: Colors.white70,
+          title: Padding(
             padding: const EdgeInsets.all(10),
             child: avatarImage,
           ),
         );
       },
+      footerDivider: const Divider(
+        color: Colors.white70,
+        height: 1,
+      ),
       separatorBuilder: (context, index) => const SizedBox(),
       items: items,
     );

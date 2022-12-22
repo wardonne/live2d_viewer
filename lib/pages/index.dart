@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/constant/controllers.dart';
-import 'package:live2d_viewer/constant/resources.dart';
-import 'package:live2d_viewer/constant/sidebar.dart';
+import 'package:live2d_viewer/constants/controllers.dart';
+import 'package:live2d_viewer/constants/resources.dart';
+import 'package:live2d_viewer/constants/sidebar.dart';
 import 'package:live2d_viewer/widget/sidebar.dart';
 import 'package:sidebarx/sidebarx.dart';
 

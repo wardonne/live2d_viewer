@@ -1,4 +1,4 @@
-import 'package:live2d_viewer/constant/webview.dart';
+import 'package:live2d_viewer/constants/webview.dart';
 
 class WebviewSettings extends Object {
   String? virtualHost;

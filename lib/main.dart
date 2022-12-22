@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/constant/settings.dart';
+import 'package:live2d_viewer/constants/settings.dart';
 import 'package:live2d_viewer/providers/settings_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
@@ -18,7 +18,7 @@ void main() async {
     await windowManager.focus();
   });
 
-  settings = await loadSettings();
+  var settings = await loadSettings();
 
   runApp(MultiProvider(
     providers: [

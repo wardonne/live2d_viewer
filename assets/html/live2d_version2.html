@@ -5,29 +5,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Destiny Child Live2D</title>
-    <script src="http://${webviewHost}/js/live2d-v2/lib/live2d.min.js"></script>
-    <script src="http://${webviewHost}/js/live2d-v2/framework/Live2DFramework.js"></script>
-    <script src="http://${webviewHost}/js/live2d-v2/src/utils/MatrixStack.js"></script>
-    <script src="http://${webviewHost}/js/live2d-v2/src/utils/ModelSettingJson.js"></script>
-    <script src="http://${webviewHost}/js/live2d-v2/src/PlatformManager.js"></script>
-    <script src="http://${webviewHost}/js/live2d-v2/src/LAppDefine.js"></script>
-    <script src="http://${webviewHost}/js/live2d-v2/src/LAppModel.js"></script>
-    <script src="http://${webviewHost}/js/live2d-v2/src/LAppLive2DManager.js"></script>
-    <script src="http://${webviewHost}/js/live2d-v2/src/LAppModelLoader.js"></script>
 </head>
 <body>
     <canvas class="live2d-canvas" id="canvas"></canvas>
 </body>
 </html>
 <script>
-    window.onload = function () {
+    let data = {{data}};
+
+    function includeJS(path, onload = () => {}) {
+        let script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        script.setAttribute("src", path);
+        script.async = false;
+        script.onload = onload;
+        document.getElementsByTagName('head')[0].appendChild(script);        
+    } 
+
+    function init() {
+        document.onwheel = () => {
+            console.log(12);
+        };
+
         let canvas = window.document.getElementById('canvas');
         canvas.style.backgroundColor = '#333';
         canvas.width = window.innerWidth * 2;
         canvas.height = window.innerHeight * 2;
 
-        if('${backgroundImage}'.length > 0) {
-            canvas.style.backgroundImage = "url('http://${backgroundImage}')";
+        if(data.has_background_image) {
+            canvas.style.backgroundImage = `url('http://${data.background_image}')`;
             canvas.style.backgroundRepeat = 'no-repeat';
             canvas.style.backgroundPosition = 'center';
             canvas.style.backgroundSize = 'contain';
@@ -35,13 +41,28 @@
 
         setCanvas('canvas');
 
-        let activeModel = live2DMgr.getModel(0);
-        if(activeModel) {
-            live2DMgr.releaseModel(0, gl);
-        }
-
-        loadLive2d('http://${live2dHost}/${live2d}/model.json');
+        loadLive2d(`http://${data.live2d}`);
     }
+
+    window.onload = () => {
+        
+        let libs = [
+            {'href': `http://${data.webview_host}/js/live2d-v2/lib/live2d.min.js`, 'onload': () => {}},
+            {'href': `http://${data.webview_host}/js/live2d-v2/framework/Live2DFramework.js`, 'onload': () => {}},
+            {'href': `http://${data.webview_host}/js/live2d-v2/src/utils/MatrixStack.js`, 'onload': () => {}},  
+            {'href': `http://${data.webview_host}/js/live2d-v2/src/utils/ModelSettingJson.js`, 'onload': () => {}},
+            {'href': `http://${data.webview_host}/js/live2d-v2/src/PlatformManager.js`, 'onload': () => {}},
+            {'href': `http://${data.webview_host}/js/live2d-v2/src/LAppDefine.js`, 'onload': () => {}},
+            {'href': `http://${data.webview_host}/js/live2d-v2/src/LAppModel.js`, 'onload': () => {}},
+            {'href': `http://${data.webview_host}/js/live2d-v2/src/LAppLive2DManager.js`, 'onload': () => {}},
+            {'href': `http://${data.webview_host}/js/live2d-v2/src/LAppModelLoader.js`, 'onload': init},
+        ];
+        
+        for(let index in libs) {
+            let script = libs[index];
+            includeJS(script.href, script.onload);
+        }
+    };
     
 </script>
 <style>
@@ -53,6 +74,10 @@
     html, body {
         height: 100%;
         width: 100%;
+    }
+
+    body {
+        background-color: #333;
     }
 
     #canvas {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/models/settings.dart';
 import 'package:window_manager/window_manager.dart';
 
 const appName = 'Live2D Viewer';
@@ -21,9 +20,7 @@ const defaultAppBarShape =
 const dcName = 'Destiny Child';
 const settingName = 'Settings';
 
-const double headerBarHeight = 47;
+const double headerBarHeight = 48;
 const double footerBarHeight = 49;
 
 const Color barColor = Colors.black26;
-
-Settings settings = Settings();

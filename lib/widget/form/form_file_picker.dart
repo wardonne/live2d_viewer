@@ -1,6 +1,7 @@
-import 'package:file_picker/file_picker.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/widget/buttons/image_button.dart';
+import 'package:live2d_viewer/widget/buttons/file_picker_button.dart';
 
 class FormFilePicker extends StatelessWidget {
   final TextEditingController controller;
@@ -40,19 +41,15 @@ class FormFilePicker extends StatelessWidget {
                 ),
                 suffixIcon: Padding(
                   padding: const EdgeInsetsDirectional.only(end: 10, start: 10),
-                  child: MouseRegion(
-                    cursor: SystemMouseCursors.click,
-                    child: ImageButton.fromIcon(
-                      icon: Icons.folder_copy_outlined,
-                      onPressed: () async {
-                        var result = await FilePicker.platform.getDirectoryPath(
-                          lockParentWindow: true,
-                        );
-                        if (result != null) {
-                          controller.value = TextEditingValue(text: result);
-                        }
-                      },
-                    ),
+                  child: FilePickerIconButton(
+                    icon: const Icon(Icons.file_upload),
+                    pickDirectory: true,
+                    initialDirectory: Directory.current.path,
+                    onDirectirySelected: (value) {
+                      if (value != null) {
+                        controller.value = TextEditingValue(text: value);
+                      }
+                    },
                   ),
                 ),
               ),

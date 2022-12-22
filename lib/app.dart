@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:live2d_viewer/models/settings.dart';
+import 'package:live2d_viewer/models/settings/settings.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'constant/routes.dart';
+import 'constants/routes.dart';
 import 'router/router.dart';
 
 class Live2DViewer extends StatelessWidget {

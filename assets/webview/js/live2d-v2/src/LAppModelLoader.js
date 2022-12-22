@@ -79,7 +79,8 @@ function init() {
     this.viewMatrix.setMinScale(LAppDefine.VIEW_MIN_SCALE);
 
     this.projMatrix = new L2DMatrix44();
-    this.projMatrix.multScale(1, (width / height));
+    this.projMatrix.multScale((height / width), 1);
+    this.projMatrix.multScale(.6, .6);
 
     this.deviceToScreen = new L2DMatrix44();
     this.deviceToScreen.multTranslate(-width / 2.0, -height / 2.0);
