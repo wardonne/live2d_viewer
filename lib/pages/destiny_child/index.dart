@@ -26,7 +26,11 @@ class DestinyChildPageState extends State<DestinyChildPage>
     super.initState();
     tabController =
         TabController(length: DestinyChildConstant.tabbars.length, vsync: this)
-          ..addListener(() {});
+          ..addListener(() {
+            if (tabController.indexIsChanging) {
+              DestinyChildConstant.activeTabIndex = tabController.index;
+            }
+          });
   }
 
   @override
@@ -35,23 +39,24 @@ class DestinyChildPageState extends State<DestinyChildPage>
         .settings!
         .destinyChildSettings!;
     soulCartaService = SoulCartaService(destinyChildSettings);
-    tabController.animateTo(
-        destinyChildSettings.defaultHome ?? DestinyChildConstant.defaultHome);
+    tabController.animateTo(DestinyChildConstant.activeTabIndex ??
+        destinyChildSettings.defaultHome ??
+        DestinyChildConstant.defaultHome);
     return AnimatedBuilder(
       animation: tabController,
       builder: (context, child) {
         return AnimatedBuilder(
-          animation: DestinyChildConstant.exhibitionWindowController,
+          animation: DestinyChildConstant.itemListController,
           builder: (context, child) {
             return Row(
               children: [
-                if (DestinyChildConstant.exhibitionWindowController.visible)
+                if (DestinyChildConstant.itemListController.visible)
                   Expanded(
                     child: ItemList(
                       tabController: tabController,
                     ),
                   ),
-                if (!DestinyChildConstant.exhibitionWindowController.visible)
+                if (!DestinyChildConstant.itemListController.visible)
                   Expanded(
                     child: _getDetailWidgetByIndex(tabController.index),
                   ),

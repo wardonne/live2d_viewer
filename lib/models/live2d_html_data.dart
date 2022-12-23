@@ -5,11 +5,15 @@ class Live2DHtmlData extends Object {
   final String? backgroundImage;
   final bool hasBackgroundImage;
   final String? webviewHost;
+  final bool canSetMotion;
+  final bool canSetExpression;
 
   Live2DHtmlData({
     this.live2d,
     this.backgroundImage,
     this.webviewHost,
+    this.canSetExpression = true,
+    this.canSetMotion = true,
   }) : hasBackgroundImage = backgroundImage != null;
 
   Map<String, dynamic> toJson() => {
@@ -17,6 +21,8 @@ class Live2DHtmlData extends Object {
         'background_image': backgroundImage,
         'has_background_image': hasBackgroundImage,
         'webview_host': webviewHost,
+        'can_set_expression': canSetExpression,
+        'can_set_motion': canSetMotion,
       };
 
   @override

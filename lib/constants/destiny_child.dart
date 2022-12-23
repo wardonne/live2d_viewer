@@ -8,7 +8,6 @@ import 'package:live2d_viewer/pages/destiny_child/components/items.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/soul_carta_tabview.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/soul_carta_view.dart';
 import 'package:live2d_viewer/pages/destiny_child/controllers/edit_mode_controller.dart';
-import 'package:live2d_viewer/widget/preview_windows/preview_window.dart';
 
 class DestinyChildConstant {
   static EditModeController childEditModeController =
@@ -16,12 +15,11 @@ class DestinyChildConstant {
   static EditModeController soulCartaEditModeController =
       EditModeController.disable();
 
-  static PreviewWindowController soulCartaViewController =
-      PreviewWindowController();
   static ChildViewController childViewController = ChildViewController();
+  static SoulCartaViewController soulCartaViewController =
+      SoulCartaViewController();
 
-  static ExhibitionWindowController exhibitionWindowController =
-      ExhibitionWindowController();
+  static ItemListController itemListController = ItemListController();
 
   static const String defaultLive2DVersion = '2';
   static const int defaultHome = 0;
@@ -60,4 +58,6 @@ class DestinyChildConstant {
     ChildView(),
     SoulCartaView(),
   ];
+
+  static int? activeTabIndex;
 }

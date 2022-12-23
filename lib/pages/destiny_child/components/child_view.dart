@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/constants/destiny_child.dart';
 import 'package:live2d_viewer/constants/settings.dart';
@@ -6,21 +10,22 @@ import 'package:live2d_viewer/models/settings/destiny_child_settings.dart';
 import 'package:live2d_viewer/models/settings/webview_settings.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/skin_list.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/skin_live2d.dart';
-import 'package:live2d_viewer/pages/destiny_child/components/skin_options.dart';
 import 'package:live2d_viewer/providers/settings_provider.dart';
 import 'package:live2d_viewer/services/destiny_child/child_service.dart';
 import 'package:live2d_viewer/services/destiny_child/destiny_child_service.dart';
 import 'package:live2d_viewer/utils/watch_provider.dart';
 import 'package:live2d_viewer/widget/buttons/image_button.dart';
-import 'package:live2d_viewer/widget/preview_windows/preview_window.dart';
+import 'package:live2d_viewer/widget/preview_windows/snapshot_preview_window.dart';
 import 'package:live2d_viewer/widget/toolbar.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:webview_windows/webview_windows.dart';
 
+// ignore: must_be_immutable
 class ChildView extends StatelessWidget {
   final ChildViewController controller =
       DestinyChildConstant.childViewController;
-  final PreviewWindowController previewWindowController =
-      PreviewWindowController();
+  final SnapshotPreviewWindowController snapshotPreviewWindowController =
+      SnapshotPreviewWindowController();
   late WebviewController webviewController;
   late DestinyChildSettings destinyChildSettings;
   late WebviewSettings webviewSettings;
@@ -30,6 +35,19 @@ class ChildView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     webviewController = WebviewController();
+    webviewController.webMessage.listen((data) {
+      getApplicationDocumentsDirectory().then((value) {
+        final path =
+            '${value.path}/Live2DViewer/DestinyChild/${DateTime.now().millisecondsSinceEpoch}.jpeg';
+        final file = File(path);
+        file.createSync(recursive: true);
+        file.writeAsBytesSync(base64Decode(data));
+        snapshotPreviewWindowController.setImage(path);
+        Timer(const Duration(seconds: 5), () {
+          snapshotPreviewWindowController.hide();
+        });
+      });
+    });
     final settings = watchProvider<SettingsProvider>(context).settings!;
     destinyChildSettings = settings.destinyChildSettings!;
     webviewSettings = settings.webviewSettings!;
@@ -61,9 +79,12 @@ class ChildView extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          SkinLive2D(
+            skin: skin,
+            controller: webviewController,
+            snapshotPreviewWindowController: snapshotPreviewWindowController,
+          ),
           SkinList(skins: controller.data?.skins ?? []),
-          SkinLive2D(skin: skin, controller: webviewController),
-          SkinOptions(skin: skin, webviewController: webviewController),
         ],
       ),
     );
@@ -89,6 +110,81 @@ class ChildView extends StatelessWidget {
           },
         ),
       ],
+      endActions: [
+        _buildSnapshotButton(),
+        if (skin.motions?.isNotEmpty ?? false) _buildMotionDropdownList(),
+        if (skin.expressions?.isNotEmpty ?? false)
+          _buildExpressionDropdownList(),
+      ],
+    );
+  }
+
+  Widget _buildSnapshotButton() {
+    return ImageButton(
+      icon: const Icon(
+        Icons.photo_camera,
+        size: 20,
+      ),
+      onPressed: () {
+        webviewController.executeScript('snapshot();');
+      },
+    );
+  }
+
+  Widget _buildMotionDropdownList() {
+    final skin = controller.selectedSkin;
+    return PopupMenuButton(
+      tooltip: 'show motions',
+      splashRadius: 30,
+      itemBuilder: (BuildContext context) {
+        return skin.motions!.map((motion) {
+          return PopupMenuItem(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 5),
+              child: Text(motion.name),
+            ),
+            onTap: () async {
+              await webviewController
+                  .executeScript('setMotion("${motion.name}");');
+            },
+          );
+        }).toList();
+      },
+      offset: const Offset(0, 38),
+      child: const Icon(
+        Icons.animation,
+        size: 20,
+      ),
+    );
+  }
+
+  Widget _buildExpressionDropdownList() {
+    final skin = controller.selectedSkin;
+    return PopupMenuButton(
+      constraints: const BoxConstraints(
+        maxHeight: 400,
+      ),
+      splashRadius: 30,
+      tooltip: 'show expressions',
+      itemBuilder: (BuildContext context) {
+        return skin.expressions!.map((expression) {
+          return PopupMenuItem(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 5),
+              child: Text(expression.name),
+            ),
+            onTap: () async {
+              await webviewController
+                  .executeScript("setExpression('${expression.name}');");
+            },
+          );
+        }).toList();
+      },
+      offset: const Offset(0, 38),
+      child: const Icon(
+        Icons.face_retouching_natural,
+        size: 20,
+      ),
     );
   }
 
@@ -96,14 +192,14 @@ class ChildView extends StatelessWidget {
     return Toolbar.footer(
       height: footerBarHeight,
       endActions: [
-        ImageButton.fromIcon(
-          icon: Icons.refresh,
+        ImageButton(
+          icon: const Icon(Icons.refresh, size: 20),
           onPressed: () {
             webviewController.reload();
           },
         ),
-        ImageButton.fromIcon(
-          icon: Icons.developer_board,
+        ImageButton(
+          icon: const Icon(Icons.developer_board, size: 20),
           onPressed: () {
             webviewController.openDevTools();
           },
@@ -119,9 +215,13 @@ class ChildViewController extends ChangeNotifier {
 
   ChildViewController({this.data, this.selectedIndex = 0});
 
-  setData(Child data) {
-    if (this.data != data) {
+  setData(Child data, {int? skinIndex}) {
+    if (this.data != data ||
+        (this.data == data &&
+            skinIndex != null &&
+            selectedIndex != skinIndex)) {
       this.data = data;
+      selectedIndex = skinIndex ?? 0;
       notifyListeners();
     }
   }

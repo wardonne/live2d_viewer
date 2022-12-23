@@ -2,9 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:live2d_viewer/constants/destiny_child.dart';
-import 'package:live2d_viewer/models/preview_data/image_preview_data.dart';
-import 'package:live2d_viewer/models/preview_data/live2d_preview_data.dart';
-import 'package:live2d_viewer/models/preview_data/preview_data.dart';
 import 'package:live2d_viewer/models/destiny_child/soul_carta.dart';
 import 'package:live2d_viewer/services/backup_service.dart';
 import 'package:live2d_viewer/services/destiny_child/destiny_child_service.dart';
@@ -54,42 +51,11 @@ class SoulCartaService extends DestinyChildService {
     }
   }
 
-  void initViewWindow({
-    required bool useLive2d,
-    required SoulCarta data,
-  }) {
-    if (useLive2d) {
-      initLive2DWindow(data);
-    } else {
-      initImageWindow(data);
-    }
+  static void initViewWindow(SoulCarta data) {
+    DestinyChildConstant.soulCartaViewController.setData(data);
   }
 
   static void clearViewWindow() {
     DestinyChildConstant.soulCartaViewController.clear();
-  }
-
-  void initLive2DWindow(SoulCarta data) {
-    DestinyChildConstant.soulCartaViewController.setData(PreviewData(
-      data: Live2DPreviewData(
-        title: data.name ?? data.live2d ?? data.avatar,
-        live2dVersion: destinyChildSettings.live2dVersion ?? '2',
-        live2dSrc: data.live2d!,
-        backgroundImage: data.image,
-        virtualHost: destinyChildSettings.soulCartaSettings!.virtualHost,
-        folderPath: destinyChildSettings.soulCartaSettings!.path,
-      ),
-    ));
-  }
-
-  void initImageWindow(SoulCarta data) {
-    DestinyChildConstant.soulCartaViewController
-        .setData(PreviewData<ImagePreviewData>(
-      data: ImagePreviewData(
-        title: data.name ?? data.avatar,
-        imageSrc:
-            '${destinyChildSettings.soulCartaSettings!.imagePath}/${data.image}',
-      ),
-    ));
   }
 }

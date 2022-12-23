@@ -7,8 +7,8 @@ import 'package:live2d_viewer/widget/toolbar.dart';
 import 'package:live2d_viewer/widget/wrappers/colored_tabbar_wrapper.dart';
 
 class ItemList extends StatelessWidget {
-  final ExhibitionWindowController _exhibitionWindowController =
-      DestinyChildConstant.exhibitionWindowController;
+  final ItemListController _exhibitionWindowController =
+      DestinyChildConstant.itemListController;
 
   final TabController tabController;
   ItemList({super.key, required this.tabController});
@@ -60,8 +60,12 @@ class ItemList extends StatelessWidget {
       animation: controller!,
       builder: (context, child) {
         var isEditMode = controller.isEditMode;
-        return ImageButton.fromIcon(
-            icon: isEditMode ? Icons.grid_view : Icons.table_view,
+        return ImageButton(
+            icon: Icon(
+              isEditMode ? Icons.grid_view : Icons.table_view,
+              size: 20,
+              color: Colors.white70,
+            ),
             onPressed: () {
               controller.toggleEidtMode();
             });
@@ -74,10 +78,10 @@ class ItemList extends StatelessWidget {
   }
 }
 
-class ExhibitionWindowController extends ChangeNotifier {
+class ItemListController extends ChangeNotifier {
   bool visible;
 
-  ExhibitionWindowController({
+  ItemListController({
     this.visible = true,
   });
 

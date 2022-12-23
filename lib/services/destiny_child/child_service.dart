@@ -51,8 +51,9 @@ class ChildService extends DestinyChildService {
     }
   }
 
-  static void initViewWindow(Child data) {
-    DestinyChildConstant.childViewController.setData(data);
+  static void initViewWindow(Child data, {int? skinIndex}) {
+    DestinyChildConstant.childViewController
+        .setData(data, skinIndex: skinIndex);
   }
 
   static void loadOptions(Skin skin, {required String modelJson}) {

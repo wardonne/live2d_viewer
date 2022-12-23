@@ -18,7 +18,7 @@ class ChildTabView extends StatelessWidget {
     final destinyChildSettings = watchProvider<SettingsProvider>(context)
         .settings!
         .destinyChildSettings!;
-    final children = ChildService(destinyChildSettings).load();
+    final items = ChildService(destinyChildSettings).load();
     return AnimatedBuilder(
       animation: editModeController,
       builder: (context, child) {
@@ -27,9 +27,14 @@ class ChildTabView extends StatelessWidget {
           padding: const EdgeInsets.all(10),
           child: SingleChildScrollView(
             child: editModeController.isEditMode
-                ? ChildTable()
+                ? ChildTable(
+                    source: ChildTableSource(
+                      items: items,
+                      destinyChildSettings: destinyChildSettings,
+                    ),
+                  )
                 : ChildGrid(
-                    children: children,
+                    items: items,
                     destinyChildSettings: destinyChildSettings,
                   ),
           ),

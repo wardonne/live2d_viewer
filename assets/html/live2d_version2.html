@@ -23,10 +23,6 @@
     } 
 
     function init() {
-        document.onwheel = () => {
-            console.log(12);
-        };
-
         let canvas = window.document.getElementById('canvas');
         canvas.style.backgroundColor = '#333';
         canvas.width = window.innerWidth * 2;
@@ -42,6 +38,54 @@
         setCanvas('canvas');
 
         loadLive2d(`http://${data.live2d}`);
+
+        window.animeFrame = function() {
+            let animationFrame = window.requestAnimationFrame;
+            if (window.Live2D.captureFrame) {
+                window.Live2D.captureFrame = false;
+                let dataURL = window.canvas.toDataURL("image/jpeg", 1.0);
+                let dataURLParts = dataURL.split(",");
+                let base64Data = dataURLParts[1];
+                let mime = dataURLParts[0].match(/:(.*?);/)[1];
+                window.chrome.webview.postMessage(base64Data);
+            }
+            animationFrame(window.animeFrame);
+        }
+
+        window.animeFrame();
+    }
+
+    // don't change this function name or delete this function
+    // because this function will be called by the application through webview.executeScript
+    function setMotion(motion) {
+        if(!data.can_set_motion) {
+            return;
+        }
+        let model = window.live2DMgr.getModel(0);
+        if(!model) {
+            return;
+        }
+        model.startRandomMotion(motion, window.LAppDefine.PRIORITY_FORCE);
+    }
+
+    // don't change this function name or delete this function
+    // because this function will be called by the application through webview.executeScript
+    function setExpression(expression) {
+        if(!data.can_set_expression) {
+            return;
+        }
+        let model = window.live2DMgr.getModel(0);
+        if(!model) {
+            return;
+        }
+        model.setExpression(expression);
+    }
+
+    
+
+    
+    function snapshot() {
+        window.Live2D.captureFrame = true;
     }
 
     window.onload = () => {
@@ -62,6 +106,8 @@
             let script = libs[index];
             includeJS(script.href, script.onload);
         }
+
+        
     };
     
 </script>

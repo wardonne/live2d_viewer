@@ -5,8 +5,6 @@ import 'package:live2d_viewer/constants/sidebar.dart';
 import 'package:live2d_viewer/widget/sidebar.dart';
 import 'package:sidebarx/sidebarx.dart';
 
-var activeTabIndex = 0;
-
 class IndexPage extends StatelessWidget {
   final SidebarXController _controller = sideBarController;
 

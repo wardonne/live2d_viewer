@@ -19,6 +19,9 @@ class Live2DViewer extends StatelessWidget {
       title: 'Live2D Viewer',
       theme: ThemeData(
         brightness: Brightness.dark,
+        iconTheme: const IconThemeData(
+          color: Colors.white70,
+        ),
       ),
       initialRoute: index,
       routes: routes,

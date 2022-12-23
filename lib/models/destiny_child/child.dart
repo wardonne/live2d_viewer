@@ -1,16 +1,33 @@
 class Child extends Object {
   final String name;
-  final String avatar;
+  String avatar;
   final List<Skin> skins;
+  bool enable;
 
-  Child({required this.name, required this.avatar, required this.skins});
+  Child({
+    required this.name,
+    required this.avatar,
+    required this.skins,
+    this.enable = true,
+  });
 
   Child.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         avatar = json['avatar'],
         skins = (json['skins'] as List<dynamic>)
             .map((e) => Skin.fromJson(e as Map<String, dynamic>))
-            .toList();
+            .toList(),
+        enable = json['enable'] ?? true;
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'avatar': avatar,
+        'enable': enable,
+        'skins': skins.map((e) => e.toJson()).toList(),
+      };
+
+  @override
+  String toString() => toJson().toString();
 }
 
 class Skin extends Object {
@@ -19,6 +36,7 @@ class Skin extends Object {
   final String description;
   final String avatar;
   final String live2d;
+  bool enable;
 
   List<Expression>? expressions;
   List<Motion>? motions;
@@ -29,6 +47,7 @@ class Skin extends Object {
     required this.description,
     required this.avatar,
     required this.live2d,
+    this.enable = true,
   });
 
   Skin.fromJson(Map<String, dynamic> json)
@@ -36,14 +55,16 @@ class Skin extends Object {
         name = json['name'] as String,
         description = json['description'] as String,
         avatar = json['avatar'] as String,
-        live2d = json['live2d'] as String;
+        live2d = json['live2d'] as String,
+        enable = json['enable'] ?? true;
 
-  Map<String, String> toJson() => {
+  Map<String, dynamic> toJson() => {
         'code': code,
         'name': name,
         'description': description,
         'avatar': avatar,
         'live2d': live2d,
+        'enable': enable,
       };
 
   @override

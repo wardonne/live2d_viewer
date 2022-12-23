@@ -1,14 +1,13 @@
 import 'dart:io';
 
-import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/constants/destiny_child.dart';
 import 'package:live2d_viewer/models/settings/destiny_child_settings.dart';
 import 'package:live2d_viewer/models/destiny_child/soul_carta.dart';
+import 'package:live2d_viewer/services/app_service.dart';
+import 'package:live2d_viewer/services/destiny_child/destiny_child_service.dart';
 import 'package:live2d_viewer/services/destiny_child/soul_carta_service.dart';
 import 'package:live2d_viewer/widget/buttons/image_button.dart';
-import 'package:live2d_viewer/widget/dialog/error_dialog.dart';
-import 'package:live2d_viewer/widget/preview_windows/preview_window.dart';
+import 'package:live2d_viewer/widget/editable_cell.dart';
 
 class SoulCartaTable extends StatefulWidget {
   final List<SoulCarta> soulCartas;
@@ -49,6 +48,7 @@ class SoulCartaTableState extends State<SoulCartaTable> {
       _buildHeaderCell('Index'),
       _buildHeaderCell('Avatar'),
       _buildHeaderCell('Name'),
+      _buildHeaderCell('Enable'),
       _buildHeaderCell('Operations'),
     ];
   }
@@ -67,8 +67,7 @@ class SoulCartaTableState extends State<SoulCartaTable> {
 class SoulCartaTableSource extends DataTableSource {
   final int _selectedCount = 0;
   final DestinyChildSettings destinyChildSettings;
-  final PreviewWindowController previewWindowController =
-      DestinyChildConstant.soulCartaViewController;
+
   final List<SoulCarta> items;
   final BuildContext context;
   final SoulCartaService soulCartaService;
@@ -85,46 +84,59 @@ class SoulCartaTableSource extends DataTableSource {
       throw FlutterError('index out of range');
     }
     final item = items[index];
+    final avatarPath = destinyChildSettings.soulCartaSettings!.avatarPath;
+
+    final textEditingController = TextEditingController.fromValue(
+        TextEditingValue(text: item.name ?? ''));
+    final controller = EditableCellInputController(readOnly: true);
+    final focusNode = FocusNode();
+    focusNode.addListener(() {
+      if (!focusNode.hasFocus &&
+          textEditingController.value.text != item.name) {
+        items[index].name = textEditingController.value.text;
+        soulCartaService.save(items, backupBeforeSave: false);
+        notifyListeners();
+      }
+    });
+
     return DataRow.byIndex(index: index, selected: false, cells: [
       DataCell(Center(child: Text('${index + 1}'))),
+      DataCell(Center(child: Image.file(File('$avatarPath/${item.avatar}')))),
+      DataCell(
+        EditableCellInput(
+          controller: controller,
+          textEditingController: textEditingController,
+          focusNode: focusNode,
+          textAlign: TextAlign.center,
+        ),
+        showEditIcon: true,
+        onTap: () {
+          controller.setReadOnly(!controller.readOnly);
+          if (!controller.readOnly) {
+            focusNode.requestFocus();
+          }
+        },
+      ),
       DataCell(Center(
-          child: Image.file(File(
-              '${destinyChildSettings.soulCartaSettings!.avatarPath}/${item.avatar}')))),
-      DataCell(Center(child: Text(item.name ?? ''))),
+        child: Switch(
+          value: item.enable,
+          onChanged: (value) {
+            items[index].enable = value;
+            soulCartaService.save(items, backupBeforeSave: false);
+            notifyListeners();
+          },
+        ),
+      )),
       DataCell(Center(
         child: ButtonBar(
           alignment: MainAxisAlignment.center,
           children: [
             ImageButton(
-              icon: const Icon(Icons.search),
+              icon: const Icon(Icons.search, color: Colors.white70, size: 20),
               onPressed: () {
-                soulCartaService.initViewWindow(
-                  useLive2d: item.useLive2d,
-                  data: item,
-                );
-              },
-            ),
-            ImageButton(
-              icon: const Icon(Icons.edit),
-              onPressed: () {},
-            ),
-            ImageButton(
-              icon: const Icon(Icons.delete),
-              onPressed: () async {
-                var confirmed = await confirm(context,
-                    content: const Text('Confirm to remove?'));
-                if (confirmed) {
-                  try {
-                    items.removeAt(index);
-                    soulCartaService.save(items);
-                    notifyListeners();
-                  } catch (e) {
-                    showDialog(
-                        context: context,
-                        builder: (context) =>
-                            ErrorDialog(message: e.toString()));
-                  }
-                }
+                SoulCartaService.initViewWindow(item);
+                AppService.unextendSidebar();
+                DestinyChildService.closeItemsWindow();
               },
             ),
           ],

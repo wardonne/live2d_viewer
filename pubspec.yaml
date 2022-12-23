@@ -45,8 +45,9 @@ dependencies:
   validatorless: ^1.2.3
   dropdown_button2: ^1.9.2
   file_picker: ^5.2.4
-  confirm_dialog: ^1.0.1
-  wheel_chooser: ^1.0.0
+  flutter_expandable_table: ^1.1.1
+  path_provider: ^2.0.11
+  url_launcher: ^6.1.7
 
 dev_dependencies:
   flutter_test:

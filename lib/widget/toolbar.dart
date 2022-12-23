@@ -67,6 +67,8 @@ class Toolbar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ButtonBar(
+            alignment: MainAxisAlignment.center,
+            buttonPadding: const EdgeInsets.only(left: 30),
             children: leadingActions ?? [],
           ),
           Expanded(
@@ -75,6 +77,8 @@ class Toolbar extends StatelessWidget {
             ),
           ),
           ButtonBar(
+            alignment: MainAxisAlignment.center,
+            buttonPadding: const EdgeInsets.only(right: 30),
             children: endActions ?? [],
           ),
         ],
