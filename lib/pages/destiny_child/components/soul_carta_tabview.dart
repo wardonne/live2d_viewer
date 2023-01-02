@@ -9,7 +9,7 @@ import 'package:live2d_viewer/utils/watch_provider.dart';
 
 class SoulCartaTabView extends StatelessWidget {
   final EditModeController editModeController =
-      DestinyChildConstant.soulCartaEditModeController;
+      DestinyChildConstants.soulCartaEditModeController;
 
   SoulCartaTabView({super.key});
 

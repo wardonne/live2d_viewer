@@ -17,7 +17,7 @@ class DestinyChildPage extends StatefulWidget {
 class DestinyChildPageState extends State<DestinyChildPage>
     with SingleTickerProviderStateMixin {
   final soulCartaEditModeController =
-      DestinyChildConstant.soulCartaEditModeController;
+      DestinyChildConstants.soulCartaEditModeController;
   final ChildViewController childViewController = ChildViewController();
   late TabController tabController;
   late SoulCartaService? soulCartaService;
@@ -25,10 +25,10 @@ class DestinyChildPageState extends State<DestinyChildPage>
   void initState() {
     super.initState();
     tabController =
-        TabController(length: DestinyChildConstant.tabbars.length, vsync: this)
+        TabController(length: DestinyChildConstants.tabbars.length, vsync: this)
           ..addListener(() {
             if (tabController.indexIsChanging) {
-              DestinyChildConstant.activeTabIndex = tabController.index;
+              DestinyChildConstants.activeTabIndex = tabController.index;
             }
           });
   }
@@ -39,24 +39,24 @@ class DestinyChildPageState extends State<DestinyChildPage>
         .settings!
         .destinyChildSettings!;
     soulCartaService = SoulCartaService(destinyChildSettings);
-    tabController.animateTo(DestinyChildConstant.activeTabIndex ??
+    tabController.animateTo(DestinyChildConstants.activeTabIndex ??
         destinyChildSettings.defaultHome ??
-        DestinyChildConstant.defaultHome);
+        DestinyChildConstants.defaultHome);
     return AnimatedBuilder(
       animation: tabController,
       builder: (context, child) {
         return AnimatedBuilder(
-          animation: DestinyChildConstant.itemListController,
+          animation: DestinyChildConstants.itemListController,
           builder: (context, child) {
             return Row(
               children: [
-                if (DestinyChildConstant.itemListController.visible)
+                if (DestinyChildConstants.itemListController.visible)
                   Expanded(
                     child: ItemList(
                       tabController: tabController,
                     ),
                   ),
-                if (!DestinyChildConstant.itemListController.visible)
+                if (!DestinyChildConstants.itemListController.visible)
                   Expanded(
                     child: _getDetailWidgetByIndex(tabController.index),
                   ),
@@ -69,7 +69,7 @@ class DestinyChildPageState extends State<DestinyChildPage>
   }
 
   Widget _getDetailWidgetByIndex(int index) {
-    return DestinyChildConstant.detailWindows[index];
+    return DestinyChildConstants.detailWindows[index];
   }
 
   @override

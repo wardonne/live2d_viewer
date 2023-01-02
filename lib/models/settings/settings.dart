@@ -37,7 +37,7 @@ class Settings extends Object {
     if (await file.exists()) {
       await file.copy(kDebugMode
           ? '${Directory.current.path}/assets/application/settings.backup.json'
-          : '${Directory.current.path}/data/flutter_data/assets/application/settings.backup.json');
+          : '${Directory.current.path}/data/flutter_assets/assets/application/settings.backup.json');
     }
 
     var encoder = const JsonEncoder.withIndent('  ');

@@ -17,23 +17,90 @@ class ChildTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MaterialLocalizations localizations =
+        MaterialLocalizations.of(context);
     return AnimatedBuilder(
       animation: source,
       builder: (context, child) {
         final startIndex = (source.page - 1) * source.pageSize;
-        final endIndex = source.page * source.pageSize - 1;
+        var endIndex = source.page * source.pageSize - 1;
+        endIndex = endIndex > (source.total - 1) ? source.total - 1 : endIndex;
         final items = source.getRange(startIndex, endIndex);
-        return SizedBox(
-          height: 600,
-          child: ListView.separated(
-            itemBuilder: (context, index) => items[index],
-            itemCount: items.length,
-            separatorBuilder: (context, index) {
-              return Container(
-                height: 5,
-              );
-            },
-          ),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(
+              height: 540,
+              child: ListView.separated(
+                itemBuilder: (context, index) => items[index],
+                itemCount: items.length,
+                separatorBuilder: (context, index) {
+                  return Container(
+                    height: 5,
+                  );
+                },
+              ),
+            ),
+            DefaultTextStyle(
+              style: Theme.of(context).textTheme.caption!,
+              child: IconTheme.merge(
+                data: const IconThemeData(
+                  opacity: 0.54,
+                ),
+                child: SizedBox(
+                  height: 56,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    reverse: true,
+                    child: Row(
+                      children: [
+                        Container(width: 32.0),
+                        Text(
+                          localizations.pageRowsInfoTitle(
+                            startIndex + 1,
+                            endIndex + 1,
+                            source.total,
+                            false,
+                          ),
+                        ),
+                        Container(width: 32.0),
+                        IconButton(
+                          onPressed: startIndex <= 0 ? null : source.firstPage,
+                          icon: const Icon(Icons.skip_previous),
+                          padding: EdgeInsets.zero,
+                          tooltip: localizations.firstPageTooltip,
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.chevron_left),
+                          padding: EdgeInsets.zero,
+                          tooltip: localizations.previousPageTooltip,
+                          onPressed: startIndex <= 0 ? null : source.prePage,
+                        ),
+                        Container(width: 24.0),
+                        IconButton(
+                          icon: const Icon(Icons.chevron_right),
+                          padding: EdgeInsets.zero,
+                          tooltip: localizations.nextPageTooltip,
+                          onPressed: !source.isNextPageAvailable()
+                              ? null
+                              : source.nextPage,
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.skip_next),
+                          padding: EdgeInsets.zero,
+                          tooltip: localizations.lastPageTooltip,
+                          onPressed: !source.isNextPageAvailable()
+                              ? null
+                              : source.lastPage,
+                        ),
+                        Container(width: 14.0),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         );
       },
     );
@@ -42,7 +109,7 @@ class ChildTable extends StatelessWidget {
 
 class ChildTableSource extends ChangeNotifier {
   final List<Child> items;
-  final int page;
+  int page;
   final int pageSize;
   final DestinyChildSettings destinyChildSettings;
   final ChildService childService;
@@ -50,13 +117,42 @@ class ChildTableSource extends ChangeNotifier {
   ChildTableSource({
     required this.items,
     this.page = 1,
-    this.pageSize = 10,
+    this.pageSize = 8,
     required this.destinyChildSettings,
   }) : childService = ChildService(destinyChildSettings);
 
+  int get total => items.length;
+
+  pageTo(int page) {
+    if (this.page != page && page > 0) {
+      this.page = page;
+      notifyListeners();
+    }
+  }
+
+  prePage() {
+    pageTo(page - 1);
+  }
+
+  nextPage() {
+    pageTo(page + 1);
+  }
+
+  firstPage() {
+    pageTo(1);
+  }
+
+  lastPage() {
+    pageTo(((total) / pageSize).floor() + 1);
+  }
+
+  bool isNextPageAvailable() {
+    return page * pageSize < total;
+  }
+
   List<Widget> getRange(int startIndex, int endIndex) {
     final List<Widget> items = [];
-    for (var index = startIndex; index < endIndex; index++) {
+    for (var index = startIndex; index <= endIndex; index++) {
       final item = getRow(index);
       if (item != null) {
         items.add(item);
@@ -131,7 +227,8 @@ class ChildTableSource extends ChangeNotifier {
               ],
               rows: item.skins.map((skin) {
                 return DataRow(cells: [
-                  DataCell(Center(child: Text('${index + 1}'))),
+                  DataCell(
+                      Center(child: Text('${item.skins.indexOf(skin) + 1}'))),
                   DataCell(Padding(
                     padding: const EdgeInsets.all(2),
                     child: Center(

@@ -15,7 +15,7 @@ class SkinList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final childViewController = DestinyChildConstant.childViewController;
+    final childViewController = DestinyChildConstants.childViewController;
     final selectedIndex = childViewController.selectedIndex;
     final avatarPath = watchProvider<SettingsProvider>(context)
         .settings!

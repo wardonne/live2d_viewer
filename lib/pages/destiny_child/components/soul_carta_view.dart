@@ -26,7 +26,7 @@ class SoulCartaView extends StatelessWidget {
   static const maxScale = 3.0;
   static const minScale = 0.5;
   final SoulCartaViewController controller =
-      DestinyChildConstant.soulCartaViewController;
+      DestinyChildConstants.soulCartaViewController;
   final ImagePreviewWindowController imagePreviewWindowController =
       ImagePreviewWindowController(maxScale: maxScale, minScale: minScale);
   late WebviewController webviewController;

@@ -8,7 +8,7 @@ import 'package:live2d_viewer/widget/wrappers/colored_tabbar_wrapper.dart';
 
 class ItemList extends StatelessWidget {
   final ItemListController _exhibitionWindowController =
-      DestinyChildConstant.itemListController;
+      DestinyChildConstants.itemListController;
 
   final TabController tabController;
   ItemList({super.key, required this.tabController});
@@ -28,14 +28,14 @@ class ItemList extends StatelessWidget {
                     color: Colors.black54,
                   ),
                   controller: tabController,
-                  tabs: DestinyChildConstant.tabbars,
+                  tabs: DestinyChildConstants.tabbars,
                 ),
                 color: barColor,
               ),
               Expanded(
                 child: TabBarView(
                   controller: tabController,
-                  children: DestinyChildConstant.tabviews
+                  children: DestinyChildConstants.tabviews
                       .map((e) => e(context))
                       .toList(),
                 ),
@@ -74,7 +74,7 @@ class ItemList extends StatelessWidget {
   }
 
   EditModeController? _getEditModeControllerByIndex(int index) {
-    return DestinyChildConstant.indexedEditModeController[index];
+    return DestinyChildConstants.indexedEditModeController[index];
   }
 }
 

@@ -9,7 +9,9 @@ import 'package:live2d_viewer/pages/destiny_child/components/soul_carta_tabview.
 import 'package:live2d_viewer/pages/destiny_child/components/soul_carta_view.dart';
 import 'package:live2d_viewer/pages/destiny_child/controllers/edit_mode_controller.dart';
 
-class DestinyChildConstant {
+class DestinyChildConstants {
+  static const menuName = 'Destiny Child';
+
   static EditModeController childEditModeController =
       EditModeController.disable();
   static EditModeController soulCartaEditModeController =

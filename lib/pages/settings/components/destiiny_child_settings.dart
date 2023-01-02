@@ -75,17 +75,17 @@ class DestinyChildSettingsPage extends StatelessWidget {
           label: 'Default Home',
           field: FormDropdown(
             value: _settings?.destinyChildSettings?.defaultHome,
-            items: DestinyChildConstant.tabbars
+            items: DestinyChildConstants.tabbars
                 .map(
                   (value) => DropdownMenuItem(
-                      value: DestinyChildConstant.tabbars.indexOf(value),
+                      value: DestinyChildConstants.tabbars.indexOf(value),
                       child: value),
                 )
                 .toList(),
             onChanged: (value) {},
             onSaved: (value) {
               _settings?.destinyChildSettings?.defaultHome =
-                  value ?? DestinyChildConstant.defaultHome;
+                  value ?? DestinyChildConstants.defaultHome;
             },
           ),
         ),

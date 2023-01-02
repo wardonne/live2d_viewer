@@ -23,7 +23,7 @@ import 'package:webview_windows/webview_windows.dart';
 // ignore: must_be_immutable
 class ChildView extends StatelessWidget {
   final ChildViewController controller =
-      DestinyChildConstant.childViewController;
+      DestinyChildConstants.childViewController;
   final SnapshotPreviewWindowController snapshotPreviewWindowController =
       SnapshotPreviewWindowController();
   late WebviewController webviewController;

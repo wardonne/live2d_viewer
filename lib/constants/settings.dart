@@ -18,6 +18,7 @@ const defaultAppBarShape =
     Border(bottom: BorderSide(color: Colors.black, width: 1));
 
 const dcName = 'Destiny Child';
+const nikkiName = 'Nikki';
 const settingName = 'Settings';
 
 const double headerBarHeight = 48;

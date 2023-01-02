@@ -36,12 +36,28 @@ class SnapshotPreviewWindow extends StatelessWidget {
         opacity: controller.visible ? 1 : 0,
         duration: const Duration(milliseconds: 500),
         child: controller.path != null
-            ? ImageButton.fromFile(
-                filepath: controller.path!,
-                onPressed: () async {
-                  final uri = Uri.parse(controller.path!);
-                  launchUrl(uri);
-                },
+            ? Container(
+                child: Stack(
+                  children: [
+                    ImageButton.fromFile(
+                      filepath: controller.path!,
+                      onPressed: () async {
+                        final uri = Uri.parse(controller.path!);
+                        launchUrl(uri);
+                      },
+                    ),
+                    Positioned(
+                      right: 2,
+                      top: 2,
+                      child: ImageButton.fromIcon(
+                        icon: Icons.close,
+                        onPressed: () {
+                          controller.hide();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               )
             : null,
       ),

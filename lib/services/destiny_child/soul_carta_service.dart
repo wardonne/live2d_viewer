@@ -52,10 +52,10 @@ class SoulCartaService extends DestinyChildService {
   }
 
   static void initViewWindow(SoulCarta data) {
-    DestinyChildConstant.soulCartaViewController.setData(data);
+    DestinyChildConstants.soulCartaViewController.setData(data);
   }
 
   static void clearViewWindow() {
-    DestinyChildConstant.soulCartaViewController.clear();
+    DestinyChildConstants.soulCartaViewController.clear();
   }
 }

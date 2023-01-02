@@ -7,10 +7,10 @@ class DestinyChildService {
   DestinyChildService(this.destinyChildSettings);
 
   static void openItemsWindow() {
-    DestinyChildConstant.itemListController.show();
+    DestinyChildConstants.itemListController.show();
   }
 
   static void closeItemsWindow() {
-    DestinyChildConstant.itemListController.hidden();
+    DestinyChildConstants.itemListController.hidden();
   }
 }

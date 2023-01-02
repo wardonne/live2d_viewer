@@ -31,7 +31,7 @@ class SkinLive2D extends StatefulWidget {
 class SkinLive2DState extends State<SkinLive2D> {
   @override
   Widget build(BuildContext context) {
-    final childViewController = DestinyChildConstant.childViewController;
+    final childViewController = DestinyChildConstants.childViewController;
     final skin = childViewController.selectedSkin;
     final settings = watchProvider<SettingsProvider>(context).settings!;
     final destinyChildSettings = settings.destinyChildSettings!;

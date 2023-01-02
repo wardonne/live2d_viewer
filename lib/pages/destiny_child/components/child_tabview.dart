@@ -9,7 +9,7 @@ import 'package:live2d_viewer/utils/watch_provider.dart';
 
 class ChildTabView extends StatelessWidget {
   final EditModeController editModeController =
-      DestinyChildConstant.childEditModeController;
+      DestinyChildConstants.childEditModeController;
 
   ChildTabView({super.key});
 
