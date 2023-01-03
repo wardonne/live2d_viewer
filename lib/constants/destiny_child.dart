@@ -7,7 +7,8 @@ import 'package:live2d_viewer/pages/destiny_child/components/child_view.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/items.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/soul_carta_tabview.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/soul_carta_view.dart';
-import 'package:live2d_viewer/pages/destiny_child/controllers/edit_mode_controller.dart';
+import 'package:live2d_viewer/controllers/edit_mode_controller.dart';
+import 'package:path/path.dart' as p;
 
 class DestinyChildConstants {
   static const menuName = 'Destiny Child';
@@ -27,19 +28,21 @@ class DestinyChildConstants {
   static const int defaultHome = 0;
 
   static String assetsPath = kDebugMode
-      ? 'assets/destiny_child'
-      : 'data/flutter_assets/assets/destiny_child';
+      ? p.join('assets', 'destiny_child')
+      : p.join('data', 'flutter_assets', 'assets', 'destiny_child');
   static const String defaultSoulCartaVirtualHost = 'assets.soul_carta.dc';
   static String defaultSoulCartaPath =
-      '${Directory.current.path}/$assetsPath/soul_carta';
-  static String defaultSoulCartaDataPath = '$defaultSoulCartaPath/data.json';
-  static String defaultSoulCartaBackups = '$defaultSoulCartaPath/backups.json';
+      p.join(Directory.current.path, assetsPath, 'soul_carta');
+  static String defaultSoulCartaDataPath =
+      p.join(defaultSoulCartaPath, 'data.json');
+  static String defaultSoulCartaBackups =
+      p.join(defaultSoulCartaPath, 'backups.json');
 
   static const String defaultChildVirtualHost = 'assets.child.dc';
   static String defaultChildPath =
-      '${Directory.current.path}/$assetsPath/child';
-  static String defaultChildDataPath = '$defaultChildPath/data.json';
-  static String defaultChildBackups = '$defaultChildPath/backups.json';
+      p.join(Directory.current.path, assetsPath, 'child');
+  static String defaultChildDataPath = p.join(defaultChildPath, 'data.json');
+  static String defaultChildBackups = p.join(defaultChildPath, 'backups.json');
 
   static List<Widget> tabbars = [
     const Tab(text: 'Child'),

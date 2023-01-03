@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:live2d_viewer/constants/destiny_child.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/soul_carta_grid.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/soul_carta_table.dart';
-import 'package:live2d_viewer/pages/destiny_child/controllers/edit_mode_controller.dart';
+import 'package:live2d_viewer/controllers/edit_mode_controller.dart';
 import 'package:live2d_viewer/providers/settings_provider.dart';
 import 'package:live2d_viewer/services/destiny_child/soul_carta_service.dart';
 import 'package:live2d_viewer/utils/watch_provider.dart';

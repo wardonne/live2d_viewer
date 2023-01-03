@@ -6,7 +6,7 @@ import 'package:live2d_viewer/pages/destiny_child/index.dart';
 import 'package:live2d_viewer/pages/nikki/index.dart';
 import 'package:live2d_viewer/pages/settings/index.dart';
 
-import 'settings.dart';
+import 'application.dart';
 
 final sidebarItems = <SidebarItem>[
   SidebarItem(

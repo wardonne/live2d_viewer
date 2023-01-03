@@ -54,7 +54,8 @@ class ChildSettings extends Object {
   ChildSettings.init()
       : virtualHost = DestinyChildConstants.defaultChildVirtualHost,
         path = DestinyChildConstants.defaultChildPath,
-        dataPath = DestinyChildConstants.defaultChildDataPath;
+        dataPath = DestinyChildConstants.defaultChildDataPath,
+        backups = DestinyChildConstants.defaultChildBackups;
 
   ChildSettings.fromJson(Map<String, dynamic>? json)
       : virtualHost = json?['virtual_host'] ??

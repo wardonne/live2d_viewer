@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/constants/destiny_child.dart';
-import 'package:live2d_viewer/constants/settings.dart';
+import 'package:live2d_viewer/constants/application.dart';
 import 'package:live2d_viewer/models/destiny_child/child.dart';
 import 'package:live2d_viewer/models/settings/destiny_child_settings.dart';
 import 'package:live2d_viewer/models/settings/webview_settings.dart';

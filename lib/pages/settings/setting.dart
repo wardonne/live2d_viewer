@@ -119,11 +119,8 @@ class SettingPage extends StatelessWidget {
   }
 
   _submitAction(BuildContext context) {
-    return ImageButton(
-      icon: const Icon(
-        Icons.save,
-        size: 20,
-      ),
+    return ImageButton.fromIcon(
+      icon: Icons.save,
       onPressed: () async {
         var formContext = formKey.currentState as FormState;
         if (formContext.validate()) {

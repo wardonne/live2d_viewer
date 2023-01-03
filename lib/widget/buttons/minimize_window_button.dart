@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/constants/settings.dart';
+import 'package:live2d_viewer/constants/application.dart';
 import 'package:window_manager/window_manager.dart';
 
 class MinimizeWindowButton extends StatelessWidget {

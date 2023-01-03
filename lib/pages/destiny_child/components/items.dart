@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/constants/destiny_child.dart';
-import 'package:live2d_viewer/constants/settings.dart';
-import 'package:live2d_viewer/pages/destiny_child/controllers/edit_mode_controller.dart';
+import 'package:live2d_viewer/constants/application.dart';
+import 'package:live2d_viewer/controllers/edit_mode_controller.dart';
 import 'package:live2d_viewer/widget/buttons/image_button.dart';
 import 'package:live2d_viewer/widget/toolbar.dart';
 import 'package:live2d_viewer/widget/wrappers/colored_tabbar_wrapper.dart';

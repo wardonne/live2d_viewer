@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:live2d_viewer/constants/destiny_child.dart';
 import 'package:live2d_viewer/constants/resources.dart';
-import 'package:live2d_viewer/constants/settings.dart';
+import 'package:live2d_viewer/constants/application.dart';
 import 'package:live2d_viewer/models/destiny_child/soul_carta.dart';
 import 'package:live2d_viewer/models/live2d_html_data.dart';
 import 'package:live2d_viewer/models/preview_data/image_preview_data.dart';

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:live2d_viewer/models/settings/destiny_child_settings.dart';
 import 'package:live2d_viewer/models/settings/webview_settings.dart';
+import 'package:path/path.dart' as p;
 
 class Settings extends Object {
   WebviewSettings? webviewSettings;
@@ -15,7 +16,7 @@ class Settings extends Object {
   });
 
   Settings.init()
-      : webviewSettings = WebviewSettings(),
+      : webviewSettings = WebviewSettings.init(),
         destinyChildSettings = DestinyChildSettings.init();
 
   Settings.fromJson(Map<String, dynamic>? json)
@@ -30,14 +31,28 @@ class Settings extends Object {
   @override
   String toString() => toJson().toString();
 
+  static final _devPath = p.join(
+    Directory.current.path,
+    'assets',
+    'application',
+  );
+
+  static final _releasePath = p.joinAll([
+    Directory.current.path,
+    'data',
+    'flutter_assets',
+    'assets',
+    'application',
+  ]);
+
   Future<void> updateSettings() async {
     var file = File(kDebugMode
-        ? '${Directory.current.path}/assets/application/settings.json'
-        : '${Directory.current.path}/data/flutter_assets/assets/application/settings.json');
+        ? p.join(_devPath, 'settings.json')
+        : p.join(_releasePath, 'settings.json'));
     if (await file.exists()) {
       await file.copy(kDebugMode
-          ? '${Directory.current.path}/assets/application/settings.backup.json'
-          : '${Directory.current.path}/data/flutter_assets/assets/application/settings.backup.json');
+          ? p.join(_devPath, 'settings.backup.json')
+          : p.join(_releasePath, 'settings.backup.json'));
     }
 
     var encoder = const JsonEncoder.withIndent('  ');

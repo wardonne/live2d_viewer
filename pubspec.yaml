@@ -48,6 +48,7 @@ dependencies:
   flutter_expandable_table: ^1.1.1
   path_provider: ^2.0.11
   url_launcher: ^6.1.7
+  spine_flutter: ^4.2.11
 
 dev_dependencies:
   flutter_test:

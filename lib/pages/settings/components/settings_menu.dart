@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/constants/settings.dart';
+import 'package:live2d_viewer/constants/application.dart';
 import 'package:live2d_viewer/widget/toolbar.dart';
 
 class SettingsMenu extends StatelessWidget {

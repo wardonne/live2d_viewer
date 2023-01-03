@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/constants/settings.dart';
+import 'package:live2d_viewer/constants/application.dart';
 import 'package:live2d_viewer/providers/settings_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
