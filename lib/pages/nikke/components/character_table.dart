@@ -175,7 +175,9 @@ class CharacterTableSource extends PaginatorController<Character> {
                                       ImageButton(
                                         icon: const Icon(Icons.search),
                                         onPressed: () {
-                                          CharacterService.initViewWindow(item);
+                                          CharacterService.initViewWindow(item,
+                                              skinIndex:
+                                                  item.skins.indexOf(skin));
                                           AppService.unextendSidebar();
                                           NikkeService.closeItemsWindow();
                                         },
