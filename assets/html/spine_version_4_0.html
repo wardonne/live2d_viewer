@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spine Version4.0</title>
+</head>
+<body>
+    <div id="spine-container"></div>
+</body>
+<script>
+    let data = {{data}};
+
+    function includeJS(path, onload = () => {}) {
+        let script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        script.setAttribute("src", path);
+        script.async = false;
+        script.onload = onload;
+        document.getElementsByTagName('head')[0].appendChild(script);        
+    }
+
+    function includeCSS(path) {
+        let css = document.createElement("link");
+        css.setAttribute("rel", "stylesheet");
+        css.setAttribute("href", path);
+        document.getElementsByTagName('head')[0].appendChild(css);
+    }
+
+    function init() {
+        window.player = new spine.SpinePlayer("spine-container", {
+            atlasUrl: `http://${data.atlas_url}`,
+            skelUrl: `http://${data.skel_url}`,
+            skin: data.skin,
+            animation: data.animation,
+            showControls: false,
+            success: (player) => {
+                let animations = player.skeleton.data.animations;
+                if(animations.length > 1) {
+                    let animationNames = [];
+                    for(let index in animations) {
+                        animationNames[index] = animations[index].name;
+                    }
+                    window.chrome.webview.postMessage({
+                        'event': 'animations',
+                        'data': {
+                            'items': animationNames,
+                            'current': player.config.animation,
+                        },
+                    });
+                }
+
+                let clothes = player.skeleton.data.skins;
+                if(clothes.length > 1) {
+                    let clothNames = [];
+                    for(let index in clothes) {
+                        clothNames[index] = clothes[index].name;
+                    }
+                    window.chrome.webview.postMessage({
+                        'event': 'clothes',
+                        'data': {
+                            'items': clothNames,
+                            'current': player.config.skin,
+                        },
+                    });
+                }
+
+                window.animeFrame = function() {
+                let animationFrame = window.requestAnimationFrame;
+                if (window.captureFrame) {
+                        window.captureFrame = false;
+                        let dataURL = window.player.canvas.toDataURL("image/jpeg", 1.0);
+                        let dataURLParts = dataURL.split(",");
+                        let base64Data = dataURLParts[1];
+                        let mime = dataURLParts[0].match(/:(.*?);/)[1];
+                        window.chrome.webview.postMessage({
+                            "event": "snapshot",
+                            "data": base64Data,
+                        });
+                    }
+                    animationFrame(window.animeFrame);
+                }
+
+                window.animeFrame();
+            }
+        });
+    }
+    
+    // don't change this function name or delete this function
+    // because this function will be called by the application through webview.executeScript
+    function setAnimation(animation, loop = false) {
+        if(window.player.skeleton.data.findAnimation(animation) !== null && window.player.config.animation != animation) {
+            window.player.setAnimation(animation, loop);
+        }
+    }
+
+    // don't change this function name or delete this function
+    // because this function will be called by the application through webview.executeScript
+    function setCloth(cloth) {
+        if(window.player.skeleton.data.findSkin(cloth) !== null && window.player.config.skin != cloth) {
+            window.player.skeleton.setSkinByName(cloth);
+        }
+    }
+
+    // don't change this function name or delete this function
+    // because this function will be called by the application through webview.executeScript
+    function play() {
+        if(window.player.paused) {
+            window.player.play();
+        }
+    }
+
+    // don't change this function name or delete this function
+    // because this function will be called by the application through webview.executeScript
+    function pause() {
+        if(!window.player.paused) {
+            window.player.pause();
+        }
+    }
+
+    // don't change this function name or delete this function
+    // because this function will be called by the application through webview.executeScript
+    function speedPlay(speed) {
+        window.player.speed = speed;
+    }
+
+    // don't change this function name or delete this function
+    // because this function will be called by the application through webview.executeScript
+    function snapshot() {
+        window.captureFrame = true;
+    }
+
+    window.onload = () => {
+        let csses = [
+            {'href': `http://${data.webview_host}/css/spine-v4.0/spine-player.css`},
+        ];
+
+        for(let index in csses) {
+            includeCSS(csses[index].href);
+        }
+
+        let libs = [
+            {'href': `http://${data.webview_host}/js/spine-v4.0/spine-player.js`, 'onload': init},
+        ];
+
+        for(let index in libs) {
+            includeJS(libs[index].href, libs[index].onload);
+        }
+    }    
+</script>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    html, body {
+        height: 100%;
+        width: 100%;
+    }
+
+    #spine-container {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+</html>

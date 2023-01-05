@@ -2,30 +2,45 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:live2d_viewer/models/settings/application_settings.dart';
 import 'package:live2d_viewer/models/settings/destiny_child_settings.dart';
+import 'package:live2d_viewer/models/settings/nikke_settings.dart';
 import 'package:live2d_viewer/models/settings/webview_settings.dart';
+// ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as p;
 
 class Settings extends Object {
+  ApplicationSettings? applicationSettings;
   WebviewSettings? webviewSettings;
   DestinyChildSettings? destinyChildSettings;
+  NikkeSettings? nikkeSettings;
 
   Settings({
+    this.applicationSettings,
     this.webviewSettings,
     this.destinyChildSettings,
+    this.nikkeSettings,
   });
 
   Settings.init()
-      : webviewSettings = WebviewSettings.init(),
-        destinyChildSettings = DestinyChildSettings.init();
+      : applicationSettings = ApplicationSettings.init(),
+        webviewSettings = WebviewSettings.init(),
+        destinyChildSettings = DestinyChildSettings.init(),
+        nikkeSettings = NikkeSettings.init();
 
   Settings.fromJson(Map<String, dynamic>? json)
-      : webviewSettings = WebviewSettings.fromJson(json?['webview']),
+      : applicationSettings =
+            ApplicationSettings.fromJson(json?['application']),
+        webviewSettings = WebviewSettings.fromJson(json?['webview']),
         destinyChildSettings =
-            DestinyChildSettings.fromJson(json?['destiny_child']);
+            DestinyChildSettings.fromJson(json?['destiny_child']),
+        nikkeSettings = NikkeSettings.fromJson(json?['nikke']);
 
   Map<String, dynamic> toJson() => <String, dynamic>{
+        'application': applicationSettings,
+        'webview': webviewSettings,
         'destiny_child': destinyChildSettings,
+        'nikke': nikkeSettings,
       };
 
   @override

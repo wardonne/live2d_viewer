@@ -1,17 +1,17 @@
-class Child extends Object {
+class Character extends Object {
   final String name;
   String avatar;
   final List<Skin> skins;
   bool enable;
 
-  Child({
+  Character({
     required this.name,
     required this.avatar,
     required this.skins,
     this.enable = true,
   });
 
-  Child.fromJson(Map<String, dynamic> json)
+  Character.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         avatar = json['avatar'],
         skins = (json['skins'] as List<dynamic>)

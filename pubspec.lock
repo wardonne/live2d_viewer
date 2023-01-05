@@ -216,13 +216,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_expandable_table:
-    dependency: "direct main"
-    description:
-      name: flutter_expandable_table
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.1"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -237,13 +230,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.7"
-  flutter_scroll_shadow:
-    dependency: transitive
-    description:
-      name: flutter_scroll_shadow
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.2"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -303,13 +289,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.2"
-  inject_js:
-    dependency: transitive
-    description:
-      name: inject_js
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   io:
     dependency: transitive
     description:
@@ -338,13 +317,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.5.4"
-  linked_scroll_controller:
-    dependency: transitive
-    description:
-      name: linked_scroll_controller
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.0"
   lints:
     dependency: transitive
     description:
@@ -506,13 +478,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.1"
-  raw_image_provider:
-    dependency: transitive
-    description:
-      name: raw_image_provider
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.0"
   screen_retriever:
     dependency: transitive
     description:
@@ -567,13 +532,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.9.0"
-  spine_flutter:
-    dependency: "direct main"
-    description:
-      name: spine_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.2.11"
   stack_trace:
     dependency: transitive
     description:
@@ -707,13 +665,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
-  web_ffi_fork:
-    dependency: transitive
-    description:
-      name: web_ffi_fork
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.7.4"
   web_socket_channel:
     dependency: transitive
     description:

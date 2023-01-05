@@ -1,26 +1,23 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/constants/destiny_child.dart';
-import 'package:live2d_viewer/models/destiny_child/character.dart';
+import 'package:live2d_viewer/constants/nikke.dart';
+import 'package:live2d_viewer/models/nikke/character.dart';
 import 'package:live2d_viewer/providers/settings_provider.dart';
 import 'package:live2d_viewer/utils/watch_provider.dart';
 
 class SkinList extends StatelessWidget {
   final List<Skin> skins;
-  const SkinList({
-    super.key,
-    required this.skins,
-  });
+
+  const SkinList({super.key, required this.skins});
 
   @override
   Widget build(BuildContext context) {
-    final characterViewController =
-        DestinyChildConstants.characterViewController;
-    final selectedIndex = characterViewController.selectedIndex;
+    final controller = NikkeConstants.characterViewController;
+    final selectedIndex = controller.selectedIndex;
     final avatarPath = watchProvider<SettingsProvider>(context)
         .settings!
-        .destinyChildSettings!
+        .nikkeSettings!
         .characterSettings!
         .avatarPath;
     return Visibility(
@@ -56,7 +53,7 @@ class SkinList extends StatelessWidget {
                       hoverColor: Colors.black38,
                       mouseCursor: SystemMouseCursors.click,
                       onTap: () {
-                        characterViewController.selectSkin(index);
+                        controller.selectSkin(index);
                       },
                     );
                   },

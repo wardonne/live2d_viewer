@@ -2,27 +2,29 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/pages/destiny_child/components/child_tabview.dart';
-import 'package:live2d_viewer/pages/destiny_child/components/child_view.dart';
-import 'package:live2d_viewer/pages/destiny_child/components/items.dart';
+import 'package:live2d_viewer/controllers/visible_controller.dart';
+import 'package:live2d_viewer/pages/destiny_child/components/character_tabview.dart';
+import 'package:live2d_viewer/pages/destiny_child/components/character_view.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/soul_carta_tabview.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/soul_carta_view.dart';
 import 'package:live2d_viewer/controllers/edit_mode_controller.dart';
+// ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as p;
 
 class DestinyChildConstants {
   static const menuName = 'Destiny Child';
 
-  static EditModeController childEditModeController =
+  static EditModeController characterEditModeController =
       EditModeController.disable();
   static EditModeController soulCartaEditModeController =
       EditModeController.disable();
 
-  static ChildViewController childViewController = ChildViewController();
+  static CharacterViewController characterViewController =
+      CharacterViewController();
   static SoulCartaViewController soulCartaViewController =
       SoulCartaViewController();
 
-  static ItemListController itemListController = ItemListController();
+  static VisibleController itemListController = VisibleController();
 
   static const String defaultLive2DVersion = '2';
   static const int defaultHome = 0;
@@ -38,11 +40,15 @@ class DestinyChildConstants {
   static String defaultSoulCartaBackups =
       p.join(defaultSoulCartaPath, 'backups.json');
 
-  static const String defaultChildVirtualHost = 'assets.child.dc';
-  static String defaultChildPath =
-      p.join(Directory.current.path, assetsPath, 'child');
-  static String defaultChildDataPath = p.join(defaultChildPath, 'data.json');
-  static String defaultChildBackups = p.join(defaultChildPath, 'backups.json');
+  static const String defaultCharacterVirtualHost = 'assets.character.dc';
+  static String defaultCharacterPath =
+      p.join(Directory.current.path, assetsPath, 'character');
+  static String defaultCharacterDataPath =
+      p.join(defaultCharacterPath, 'data.json');
+  static String defaultCharacterBackups =
+      p.join(defaultCharacterPath, 'backups.json');
+
+  static String snapshotPath = p.join('Live2DViewer', 'DestinyChild');
 
   static List<Widget> tabbars = [
     const Tab(text: 'Child'),
@@ -50,17 +56,17 @@ class DestinyChildConstants {
   ];
 
   static List<WidgetBuilder> tabviews = [
-    (context) => ChildTabView(),
+    (context) => CharacterTabView(),
     (context) => SoulCartaTabView(),
   ];
 
   static List<EditModeController> indexedEditModeController = [
-    childEditModeController,
+    characterEditModeController,
     soulCartaEditModeController,
   ];
 
   static List<Widget> detailWindows = [
-    ChildView(),
+    CharacterView(),
     SoulCartaView(),
   ];
 

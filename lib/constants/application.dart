@@ -25,3 +25,7 @@ const double headerBarHeight = 48;
 const double footerBarHeight = 49;
 
 const Color barColor = Colors.black26;
+
+class ApplicationConstants {
+  static const String defaultSidebar = '0';
+}

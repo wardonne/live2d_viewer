@@ -24,14 +24,14 @@ class DestinyChildSettingsPage extends StatelessWidget {
     return _buildDestinyChild();
   }
 
-  _buildDestinyChild() {
+  Widget _buildDestinyChild() {
     return Card(
       child: Container(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             _buildBasic(),
-            _buildChild(),
+            _buildCharacter(),
             _buildSoulCarta(),
           ],
         ),
@@ -39,7 +39,7 @@ class DestinyChildSettingsPage extends StatelessWidget {
     );
   }
 
-  _buildBasic() {
+  Widget _buildBasic() {
     return Column(
       children: [
         const Padding(
@@ -93,7 +93,7 @@ class DestinyChildSettingsPage extends StatelessWidget {
     );
   }
 
-  _buildSoulCarta() {
+  Widget _buildSoulCarta() {
     return Card(
       key: soulCartaKey,
       color: Colors.black12,
@@ -136,7 +136,8 @@ class DestinyChildSettingsPage extends StatelessWidget {
               label: 'Backups',
               field: FormTextInput(
                 readOnly: true,
-                value: _settings?.destinyChildSettings?.childSettings?.backups,
+                value:
+                    _settings?.destinyChildSettings?.characterSettings?.backups,
               ),
             ),
           ],
@@ -145,9 +146,9 @@ class DestinyChildSettingsPage extends StatelessWidget {
     );
   }
 
-  _buildChild() {
+  Widget _buildCharacter() {
     return Card(
-      key: childKey,
+      key: destinyChildCharacterKey,
       color: Colors.black12,
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -163,11 +164,11 @@ class DestinyChildSettingsPage extends StatelessWidget {
             FormFieldWithLabel(
               label: 'Virtual Host',
               field: FormTextInput(
-                value:
-                    _settings?.destinyChildSettings?.childSettings?.virtualHost,
+                value: _settings
+                    ?.destinyChildSettings?.characterSettings?.virtualHost,
                 onSaved: (value) {
-                  _settings?.destinyChildSettings?.childSettings?.virtualHost =
-                      value;
+                  _settings?.destinyChildSettings?.characterSettings
+                      ?.virtualHost = value;
                 },
                 validator: Validatorless.required('Virtual host is required'),
               ),
@@ -175,10 +176,11 @@ class DestinyChildSettingsPage extends StatelessWidget {
             FormFieldWithLabel(
               label: 'Folder',
               field: FormFilePicker(
-                value: _settings?.destinyChildSettings?.childSettings?.path,
+                value: _settings?.destinyChildSettings?.characterSettings?.path,
                 controller: childFolderController,
                 onSaved: (value) {
-                  _settings?.destinyChildSettings?.childSettings?.path = value;
+                  _settings?.destinyChildSettings?.characterSettings?.path =
+                      value;
                 },
                 validator: Validatorless.required('Folder is required'),
               ),
@@ -187,7 +189,8 @@ class DestinyChildSettingsPage extends StatelessWidget {
               label: 'Backups',
               field: FormTextInput(
                 readOnly: true,
-                value: _settings?.destinyChildSettings?.childSettings?.backups,
+                value:
+                    _settings?.destinyChildSettings?.characterSettings?.backups,
               ),
             ),
           ],

@@ -5,13 +5,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/constants/destiny_child.dart';
 import 'package:live2d_viewer/constants/application.dart';
-import 'package:live2d_viewer/models/destiny_child/child.dart';
+import 'package:live2d_viewer/models/destiny_child/character.dart';
 import 'package:live2d_viewer/models/settings/destiny_child_settings.dart';
 import 'package:live2d_viewer/models/settings/webview_settings.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/skin_list.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/skin_live2d.dart';
 import 'package:live2d_viewer/providers/settings_provider.dart';
-import 'package:live2d_viewer/services/destiny_child/child_service.dart';
+import 'package:live2d_viewer/services/destiny_child/character_service.dart';
 import 'package:live2d_viewer/services/destiny_child/destiny_child_service.dart';
 import 'package:live2d_viewer/utils/watch_provider.dart';
 import 'package:live2d_viewer/widget/buttons/image_button.dart';
@@ -19,26 +19,27 @@ import 'package:live2d_viewer/widget/preview_windows/snapshot_preview_window.dar
 import 'package:live2d_viewer/widget/toolbar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:webview_windows/webview_windows.dart';
+import 'package:path/path.dart' as p;
 
 // ignore: must_be_immutable
-class ChildView extends StatelessWidget {
-  final ChildViewController controller =
-      DestinyChildConstants.childViewController;
+class CharacterView extends StatelessWidget {
+  final CharacterViewController controller =
+      DestinyChildConstants.characterViewController;
   final SnapshotPreviewWindowController snapshotPreviewWindowController =
       SnapshotPreviewWindowController();
   late WebviewController webviewController;
   late DestinyChildSettings destinyChildSettings;
   late WebviewSettings webviewSettings;
 
-  ChildView({super.key});
+  CharacterView({super.key});
 
   @override
   Widget build(BuildContext context) {
     webviewController = WebviewController();
     webviewController.webMessage.listen((data) {
       getApplicationDocumentsDirectory().then((value) {
-        final path =
-            '${value.path}/Live2DViewer/DestinyChild/${DateTime.now().millisecondsSinceEpoch}.jpeg';
+        final path = p.join(value.path, DestinyChildConstants.snapshotPath,
+            '${DateTime.now().millisecondsSinceEpoch}.jpeg');
         final file = File(path);
         file.createSync(recursive: true);
         file.writeAsBytesSync(base64Decode(data));
@@ -55,8 +56,8 @@ class ChildView extends StatelessWidget {
       animation: controller,
       builder: (context, child) {
         final skin = controller.selectedSkin;
-        final live2dPath = destinyChildSettings.childSettings!.live2dPath;
-        ChildService.loadOptions(
+        final live2dPath = destinyChildSettings.characterSettings!.live2dPath;
+        CharacterService.loadOptions(
           skin,
           modelJson:
               '$live2dPath/${skin.live2d}/character.DRAGME.${skin.live2d}.json',
@@ -209,13 +210,13 @@ class ChildView extends StatelessWidget {
   }
 }
 
-class ChildViewController extends ChangeNotifier {
-  Child? data;
+class CharacterViewController extends ChangeNotifier {
+  Character? data;
   int selectedIndex;
 
-  ChildViewController({this.data, this.selectedIndex = 0});
+  CharacterViewController({this.data, this.selectedIndex = 0});
 
-  setData(Child data, {int? skinIndex}) {
+  setData(Character data, {int? skinIndex}) {
     if (this.data != data ||
         (this.data == data &&
             skinIndex != null &&

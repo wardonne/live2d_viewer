@@ -1,24 +1,24 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/models/destiny_child/child.dart';
+import 'package:live2d_viewer/controllers/paginator_controller.dart';
+import 'package:live2d_viewer/models/destiny_child/character.dart';
 import 'package:live2d_viewer/models/settings/destiny_child_settings.dart';
 import 'package:live2d_viewer/services/app_service.dart';
-import 'package:live2d_viewer/services/destiny_child/child_service.dart';
+import 'package:live2d_viewer/services/destiny_child/character_service.dart';
 import 'package:live2d_viewer/services/destiny_child/destiny_child_service.dart';
 import 'package:live2d_viewer/widget/buttons/image_button.dart';
+import 'package:live2d_viewer/widget/paginator.dart';
 
-class ChildTable extends StatelessWidget {
-  final ChildTableSource source;
-  const ChildTable({
+class CharacterTable extends StatelessWidget {
+  final PaginatorController source;
+  const CharacterTable({
     super.key,
     required this.source,
   });
 
   @override
   Widget build(BuildContext context) {
-    final MaterialLocalizations localizations =
-        MaterialLocalizations.of(context);
     return AnimatedBuilder(
       animation: source,
       builder: (context, child) {
@@ -41,64 +41,10 @@ class ChildTable extends StatelessWidget {
                 },
               ),
             ),
-            DefaultTextStyle(
-              style: Theme.of(context).textTheme.caption!,
-              child: IconTheme.merge(
-                data: const IconThemeData(
-                  opacity: 0.54,
-                ),
-                child: SizedBox(
-                  height: 56,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    reverse: true,
-                    child: Row(
-                      children: [
-                        Container(width: 32.0),
-                        Text(
-                          localizations.pageRowsInfoTitle(
-                            startIndex + 1,
-                            endIndex + 1,
-                            source.total,
-                            false,
-                          ),
-                        ),
-                        Container(width: 32.0),
-                        IconButton(
-                          onPressed: startIndex <= 0 ? null : source.firstPage,
-                          icon: const Icon(Icons.skip_previous),
-                          padding: EdgeInsets.zero,
-                          tooltip: localizations.firstPageTooltip,
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.chevron_left),
-                          padding: EdgeInsets.zero,
-                          tooltip: localizations.previousPageTooltip,
-                          onPressed: startIndex <= 0 ? null : source.prePage,
-                        ),
-                        Container(width: 24.0),
-                        IconButton(
-                          icon: const Icon(Icons.chevron_right),
-                          padding: EdgeInsets.zero,
-                          tooltip: localizations.nextPageTooltip,
-                          onPressed: !source.isNextPageAvailable()
-                              ? null
-                              : source.nextPage,
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.skip_next),
-                          padding: EdgeInsets.zero,
-                          tooltip: localizations.lastPageTooltip,
-                          onPressed: !source.isNextPageAvailable()
-                              ? null
-                              : source.lastPage,
-                        ),
-                        Container(width: 14.0),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+            Paginator(
+              controller: source,
+              startIndex: startIndex,
+              endIndex: endIndex,
             ),
           ],
         );
@@ -107,49 +53,21 @@ class ChildTable extends StatelessWidget {
   }
 }
 
-class ChildTableSource extends ChangeNotifier {
-  final List<Child> items;
-  int page;
-  final int pageSize;
+class CharacterTableSource extends PaginatorController<Character> {
   final DestinyChildSettings destinyChildSettings;
-  final ChildService childService;
+  final CharacterService characterService;
 
-  ChildTableSource({
-    required this.items,
-    this.page = 1,
-    this.pageSize = 8,
+  CharacterTableSource({
+    required super.items,
+    super.page = 1,
+    super.pageSize = 8,
     required this.destinyChildSettings,
-  }) : childService = ChildService(destinyChildSettings);
+  }) : characterService = CharacterService(destinyChildSettings);
 
+  @override
   int get total => items.length;
 
-  pageTo(int page) {
-    if (this.page != page && page > 0) {
-      this.page = page;
-      notifyListeners();
-    }
-  }
-
-  prePage() {
-    pageTo(page - 1);
-  }
-
-  nextPage() {
-    pageTo(page + 1);
-  }
-
-  firstPage() {
-    pageTo(1);
-  }
-
-  lastPage() {
-    pageTo(((total) / pageSize).floor() + 1);
-  }
-
-  bool isNextPageAvailable() {
-    return page * pageSize < total;
-  }
-
+  @override
   List<Widget> getRange(int startIndex, int endIndex) {
     final List<Widget> items = [];
     for (var index = startIndex; index <= endIndex; index++) {
@@ -161,9 +79,10 @@ class ChildTableSource extends ChangeNotifier {
     return items;
   }
 
+  @override
   Widget? getRow(int index) {
     final item = items[index];
-    final avatarPath = destinyChildSettings.childSettings!.avatarPath;
+    final avatarPath = destinyChildSettings.characterSettings!.avatarPath;
     return Theme(
       data: ThemeData.dark().copyWith(dividerColor: Colors.transparent),
       child: Container(
@@ -176,7 +95,7 @@ class ChildTableSource extends ChangeNotifier {
                   value: item.enable,
                   onChanged: (value) {
                     items[index].enable = value;
-                    childService.save(items, backupBeforeSave: false);
+                    characterService.save(items, backupBeforeSave: false);
                     notifyListeners();
                   }),
             ],
@@ -189,7 +108,7 @@ class ChildTableSource extends ChangeNotifier {
                 child: ImageButton(
                   icon: const Icon(Icons.search, size: 20),
                   onPressed: () {
-                    ChildService.initViewWindow(item);
+                    CharacterService.initViewWindow(item);
                     AppService.unextendSidebar();
                     DestinyChildService.closeItemsWindow();
                   },
@@ -206,8 +125,8 @@ class ChildTableSource extends ChangeNotifier {
     );
   }
 
-  Widget _buildSkinTable(Child item, int index) {
-    final avatarPath = destinyChildSettings.childSettings!.avatarPath;
+  Widget _buildSkinTable(Character item, int index) {
+    final avatarPath = destinyChildSettings.characterSettings!.avatarPath;
     return Row(
       children: [
         Expanded(
@@ -239,23 +158,32 @@ class ChildTableSource extends ChangeNotifier {
                     child: Switch(
                       value: skin.enable,
                       onChanged: (value) {
+                        bool allSkinDisabled = false;
                         final skinIndex = item.skins.indexOf(skin);
                         items[index].skins[skinIndex].enable = value;
-                        items[index].avatar = item.skins
-                            .firstWhere((element) => element.enable)
-                            .avatar;
-                        childService.save(items, backupBeforeSave: false);
+                        items[index].avatar = item.skins.firstWhere(
+                          (element) => element.enable,
+                          orElse: () {
+                            allSkinDisabled = true;
+                            return item.skins.first;
+                          },
+                        ).avatar;
+                        if (allSkinDisabled) {
+                          items[index].enable = true;
+                        }
+                        characterService.save(items, backupBeforeSave: false);
                         notifyListeners();
                       },
                     ),
                   )),
                   DataCell(Center(
                     child: ButtonBar(
+                      alignment: MainAxisAlignment.center,
                       children: [
                         ImageButton(
                           icon: const Icon(Icons.search),
                           onPressed: () {
-                            ChildService.initViewWindow(item,
+                            CharacterService.initViewWindow(item,
                                 skinIndex: item.skins.indexOf(skin));
                             AppService.unextendSidebar();
                             DestinyChildService.closeItemsWindow();

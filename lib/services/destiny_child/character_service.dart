@@ -2,35 +2,35 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:live2d_viewer/constants/destiny_child.dart';
-import 'package:live2d_viewer/models/destiny_child/child.dart';
+import 'package:live2d_viewer/models/destiny_child/character.dart';
 import 'package:live2d_viewer/services/backup_service.dart';
 import 'package:live2d_viewer/services/destiny_child/destiny_child_service.dart';
 
-class ChildService extends DestinyChildService {
+class CharacterService extends DestinyChildService {
   final BackupService backupService;
-  ChildService(super.destinyChildSettings)
+  CharacterService(super.destinyChildSettings)
       : backupService =
-            BackupService(destinyChildSettings.childSettings!.backups!);
+            BackupService(destinyChildSettings.characterSettings!.backups!);
 
-  List<Child> load() {
-    var items = <Child>[];
-    final file = File(destinyChildSettings.childSettings!.dataPath!);
+  List<Character> load() {
+    var items = <Character>[];
+    final file = File(destinyChildSettings.characterSettings!.dataPath!);
     if (file.existsSync()) {
       final content = file.readAsStringSync();
       final data = jsonDecode(content);
       for (final item in data) {
-        items.add(Child.fromJson(item));
+        items.add(Character.fromJson(item));
       }
     }
     return items;
   }
 
-  void save(List<Child> data, {bool backupBeforeSave = true}) {
-    final dateTime = DateTime.now();
-    final dataPath = destinyChildSettings.childSettings!.dataPath!;
+  void save(List<Character> data, {bool backupBeforeSave = true}) {
+    final dataPath = destinyChildSettings.characterSettings!.dataPath!;
     final file = File(dataPath);
     if (file.existsSync()) {
       if (backupBeforeSave) {
+        final dateTime = DateTime.now();
         final backupFile =
             '${file.parent.path}/data.backup.${dateTime.millisecondsSinceEpoch}.json';
         file.copySync(backupFile);
@@ -47,12 +47,12 @@ class ChildService extends DestinyChildService {
   void recover() {
     final file = backupService.latestExists;
     if (file != null) {
-      file.copySync(destinyChildSettings.childSettings!.dataPath!);
+      file.copySync(destinyChildSettings.characterSettings!.dataPath!);
     }
   }
 
-  static void initViewWindow(Child data, {int? skinIndex}) {
-    DestinyChildConstants.childViewController
+  static void initViewWindow(Character data, {int? skinIndex}) {
+    DestinyChildConstants.characterViewController
         .setData(data, skinIndex: skinIndex);
   }
 

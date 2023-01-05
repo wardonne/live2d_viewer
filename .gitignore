@@ -44,8 +44,8 @@ app.*.map.json
 /android/app/release
 
 GPUCache
-
 *.backup.*
+# destiny child
 assets/destiny_child/soul_carta/data.json
 assets/destiny_child/soul_carta/images/*
 !assets/destiny_child/soul_carta/images/.gitkeep
@@ -53,10 +53,17 @@ assets/destiny_child/soul_carta/avatars/*
 !assets/destiny_child/soul_carta/avatars/.gitkeep
 assets/destiny_child/soul_carta/live2d/*
 
-assets/destiny_child/child/data.json
-assets/destiny_child/child/avatars/*
-!assets/destiny_child/child/avatars/.gitkeep
-assets/destiny_child/child/live2d/*
+assets/destiny_child/character/data.json
+assets/destiny_child/character/avatars/*
+!assets/destiny_child/character/avatars/.gitkeep
+assets/destiny_child/character/live2d/*
+
+# nikke
+assets/nikke/character/data.json
+assets/nikke/character/avatars/*
+!assets/nikke/character/avatars/.gitkeep
+assets/nikke/character/spine/*
+!assets/nikke/character/spine/.gitkeep
 
 backups.json
 settings.json

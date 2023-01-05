@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:live2d_viewer/constants/application.dart';
 import 'package:live2d_viewer/constants/controllers.dart';
 import 'package:live2d_viewer/constants/resources.dart';
 import 'package:live2d_viewer/constants/sidebar.dart';
+import 'package:live2d_viewer/providers/settings_provider.dart';
+import 'package:live2d_viewer/utils/watch_provider.dart';
 import 'package:live2d_viewer/widget/sidebar.dart';
 import 'package:sidebarx/sidebarx.dart';
 
@@ -21,6 +24,11 @@ class IndexPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final settings = watchProvider<SettingsProvider>(context).settings!;
+    sideBarController.selectIndex(int.tryParse(
+            settings.applicationSettings?.defaultSidebar ??
+                ApplicationConstants.defaultSidebar) ??
+        0);
     var sidebar = _buildSideBar();
     var content = _buildContent(context);
     return Scaffold(

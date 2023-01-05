@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/constants/destiny_child.dart';
-import 'package:live2d_viewer/pages/destiny_child/components/child_view.dart';
-import 'package:live2d_viewer/pages/destiny_child/components/items.dart';
+import 'package:live2d_viewer/pages/destiny_child/components/character_view.dart';
+import 'package:live2d_viewer/pages/destiny_child/components/item_list.dart';
 import 'package:live2d_viewer/providers/settings_provider.dart';
 import 'package:live2d_viewer/services/destiny_child/soul_carta_service.dart';
 import 'package:live2d_viewer/utils/watch_provider.dart';
@@ -18,7 +18,7 @@ class DestinyChildPageState extends State<DestinyChildPage>
     with SingleTickerProviderStateMixin {
   final soulCartaEditModeController =
       DestinyChildConstants.soulCartaEditModeController;
-  final ChildViewController childViewController = ChildViewController();
+  final CharacterViewController childViewController = CharacterViewController();
   late TabController tabController;
   late SoulCartaService? soulCartaService;
   @override

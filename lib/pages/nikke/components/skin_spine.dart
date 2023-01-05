@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:live2d_viewer/constants/destiny_child.dart';
+import 'package:live2d_viewer/constants/nikke.dart';
 import 'package:live2d_viewer/constants/resources.dart';
-import 'package:live2d_viewer/models/destiny_child/character.dart';
-import 'package:live2d_viewer/models/live2d_html_data.dart';
+import 'package:live2d_viewer/models/nikke/character.dart';
+import 'package:live2d_viewer/models/spine_html_data.dart';
 import 'package:live2d_viewer/models/virtual_host.dart';
 import 'package:live2d_viewer/providers/settings_provider.dart';
 import 'package:live2d_viewer/services/webview_service.dart';
@@ -13,11 +13,11 @@ import 'package:live2d_viewer/widget/webview.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_windows/webview_windows.dart';
 
-class SkinLive2D extends StatefulWidget {
+class SkinSpine extends StatefulWidget {
   final Skin skin;
   final WebviewController controller;
   final SnapshotPreviewWindowController snapshotPreviewWindowController;
-  const SkinLive2D({
+  const SkinSpine({
     super.key,
     required this.skin,
     required this.controller,
@@ -25,22 +25,25 @@ class SkinLive2D extends StatefulWidget {
   });
 
   @override
-  createState() => SkinLive2DState();
+  State<StatefulWidget> createState() {
+    return SkinSpineState();
+  }
 }
 
-class SkinLive2DState extends State<SkinLive2D> {
+class SkinSpineState extends State<SkinSpine> {
   @override
   Widget build(BuildContext context) {
-    final characterViewController =
-        DestinyChildConstants.characterViewController;
+    final characterViewController = NikkeConstants.characterViewController;
     final skin = characterViewController.selectedSkin;
     final settings = watchProvider<SettingsProvider>(context).settings!;
-    final destinyChildSettings = settings.destinyChildSettings!;
+    final nikkeSettings = settings.nikkeSettings!;
     final webviewSettings = settings.webviewSettings!;
-    final live2dHost = destinyChildSettings.characterSettings!.live2dHost;
-    final live2dModel = 'character.DRAGME.${skin.live2d}.json';
-    final viewModel = Live2DHtmlData(
-      live2d: '$live2dHost/${skin.live2d}/$live2dModel',
+    final spineHost = nikkeSettings.characterSettings!.spineHost;
+    final action = characterViewController.action;
+    final viewModel = SpineHtmlData(
+      atlasUrl: '$spineHost/${skin.code}/${action.atlas}',
+      skelUrl: '$spineHost/${skin.code}/${action.skel}',
+      animation: action.animation,
       webviewHost: webviewSettings.virtualHost,
     );
     return Expanded(
@@ -49,29 +52,23 @@ class SkinLive2DState extends State<SkinLive2D> {
           Expanded(
             child: Stack(
               children: [
-                FutureProvider<String>(
-                  create: (context) {
-                    return rootBundle.loadString(live2dVersion2Html);
-                  },
+                FutureProvider(
+                  create: (context) =>
+                      rootBundle.loadString(spineVersion40Html),
                   initialData: '',
                   child: Consumer<String>(
                     builder: (context, data, child) {
                       final host =
-                          destinyChildSettings.characterSettings!.virtualHost!;
-                      final path =
-                          destinyChildSettings.characterSettings!.path!;
+                          nikkeSettings.characterSettings!.virtualHost!;
+                      final path = nikkeSettings.characterSettings!.path!;
                       return WebView(
-                        htmlStr: WebviewService.renderHtml(data, viewModel),
                         controller: widget.controller,
+                        htmlStr: WebviewService.renderHtml(data, viewModel),
                         virtualHosts: [
                           VirtualHost(
-                            virtualHost: webviewSettings.virtualHost!,
-                            folderPath: webviewSettings.path!,
-                          ),
-                          VirtualHost(
-                            virtualHost: host,
-                            folderPath: path,
-                          ),
+                              virtualHost: webviewSettings.virtualHost!,
+                              folderPath: webviewSettings.path!),
+                          VirtualHost(virtualHost: host, folderPath: path),
                         ],
                       );
                     },
@@ -81,7 +78,7 @@ class SkinLive2DState extends State<SkinLive2D> {
                     controller: widget.snapshotPreviewWindowController),
               ],
             ),
-          ),
+          )
         ],
       ),
     );

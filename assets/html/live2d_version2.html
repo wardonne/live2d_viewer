@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Destiny Child Live2D</title>
+    <title>Live2D Version2</title>
 </head>
 <body>
     <canvas class="live2d-canvas" id="canvas"></canvas>
@@ -47,7 +47,7 @@
                 let dataURLParts = dataURL.split(",");
                 let base64Data = dataURLParts[1];
                 let mime = dataURLParts[0].match(/:(.*?);/)[1];
-                window.chrome.webview.postMessage(base64Data);
+                window.chrome.webview.postMessage();
             }
             animationFrame(window.animeFrame);
         }
