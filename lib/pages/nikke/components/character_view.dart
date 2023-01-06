@@ -74,6 +74,15 @@ class CharacterView extends StatelessWidget {
             });
           });
           break;
+        case 'video':
+          getApplicationDocumentsDirectory().then((value) {
+            final path = p.join(value.path, NikkeConstants.snapshotPath,
+                '${DateTime.now().millisecondsSinceEpoch}.webm');
+            final file = File(path);
+            file.createSync(recursive: true);
+            file.writeAsBytesSync(base64Decode(data as String));
+          });
+          break;
         default:
       }
     });
@@ -160,6 +169,13 @@ class CharacterView extends StatelessWidget {
                 onPressed: () async =>
                     await webviewController.executeScript('snapshot();'),
               ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 7.5, right: 7.5),
+              child: ImageButton(
+                  icon: const Icon(Icons.video_call, size: 20),
+                  onPressed: () async =>
+                      await webviewController.executeScript('recordVideo();')),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 7.5, right: 7.5),

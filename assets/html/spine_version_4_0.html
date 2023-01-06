@@ -36,6 +36,7 @@
             animation: data.animation,
             showControls: false,
             success: (player) => {
+                player.config.animation_loop = true;
                 let animations = player.skeleton.data.animations;
                 if(animations.length > 1) {
                     let animationNames = [];
@@ -91,6 +92,8 @@
     // because this function will be called by the application through webview.executeScript
     function setAnimation(animation, loop = false) {
         if(window.player.skeleton.data.findAnimation(animation) !== null && window.player.config.animation != animation) {
+            window.player.config.animation = animation;
+            window.player.config.animation_loop = loop;
             window.player.setAnimation(animation, loop);
         }
     }
@@ -129,6 +132,47 @@
     // because this function will be called by the application through webview.executeScript
     function snapshot() {
         window.captureFrame = true;
+    }
+
+    // don't change this function name or delete this function
+    // because this function will be called by the application through webview.executeScript
+    function recordVideo() {
+        let canvas = window.player.canvas;
+        let stream = canvas.captureStream();
+        let recorder = new MediaRecorder(stream, {mimeType: 'video/webm'});
+        let data = [];
+        recorder.ondataavailable = (event) => {
+            if(event.data && event.data.size) {
+                data.push(event.data);
+            }
+        };
+
+        recorder.onstop = () => {
+            let reader = new FileReader();
+            reader.onload = () => {
+                let dataURL = reader.result;
+                let dataURLParts = dataURL.split(",");
+                let base64Data = dataURLParts[1];
+                window.chrome.webview.postMessage({
+                    "event": "video",
+                    "data": base64Data,
+                });
+            };
+            let blob = new Blob(data, {type: 'video/webm'});
+            reader.readAsDataURL(blob);
+        };
+
+        recorder.start();
+        let currentAnimationName = window.player.config.animation;
+        let currentAnimation = window.player.skeleton.data.findAnimation(currentAnimationName);
+        let duration = currentAnimation.duration;
+        window.player.setAnimation(current, false);
+        setTimeout(() => {
+            recorder.stop();
+            if(window.player.config.animation_loop) {
+                window.player.setAnimation(currentAnimation, true);
+            }
+        }, duration + 100);
     }
 
     window.onload = () => {

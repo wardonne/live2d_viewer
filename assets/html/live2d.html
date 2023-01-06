@@ -1,0 +1,147 @@
+ <!DOCTYPE html>
+ <html lang="en" style="height: 100%;">
+ <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/dylanNew/live2d/webgl/Live2D/lib/live2d.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.2/dist/browser/pixi.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/index.min.js"></script>
+    <title>Live2D Version3</title>
+ </head>
+ <body style="height: 100%; overflow: hidden;">
+    <canvas id="canvas"></canvas>
+ </body>
+ <script>
+    let data = {{data}};
+
+    function includeJS(path, onload = () => {}) {
+        let script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        script.setAttribute("src", path);
+        script.async = false;
+        script.onload = onload;
+        document.getElementsByTagName('head')[0].appendChild(script);        
+    } 
+
+    function draggable(model) {
+        model.buttonMode = true;
+        model.on("pointerdown", (e) => {
+            model.dragging = true;
+            model._pointerX = e.data.global.x - model.x;
+            model._pointerY = e.data.global.y - model.y;
+        });
+        model.on("pointermove", (e) => {
+            if (model.dragging) {
+            model.position.x = e.data.global.x - model._pointerX;
+            model.position.y = e.data.global.y - model._pointerY;
+            }
+        });
+        model.on("pointerupoutside", () => (model.dragging = false));
+        model.on("pointerup", () => (model.dragging = false));
+    }
+
+    window.onload = () => {
+        const libs = [
+            {href: `http://${data.webview_host}/js/live2d/live2dcubismcore.min.js`, onload: () => {}},
+            {href: `http://${data.webview_host}/js/live2d/live2d.min.js`, onload: () => {}},
+            {href: `http://${data.webview_host}/js/live2d/pixi.min.js`, onload: () => {}},
+            {href: `http://${data.webview_host}/js/live2d/pixi.live2d.min.js`, onload: init},
+        ];
+
+        for(const lib of libs) {
+            includeJS(lib.href, lib.onload);
+        }
+
+        window.captureFrame = false;
+        window.animeFrame = function() {
+            let animationFrame = window.requestAnimationFrame;
+            if (window.captureFrame) {
+                window.captureFrame = false;
+                const rectangle = {
+                    x: 0,
+                    y: 0,
+                    width: window.innerWidth,
+                    height: window.innerHeight,
+                };
+                const extract = window.app.renderer.plugins.extract;
+                const canvas = extract.canvas(window.model, rectangle);
+                const dataURL = canvas.toDataURL("image/jpeg", 1.0);
+                const dataURLParts = dataURL.split(",");
+                const base64Data = dataURLParts[1];
+                const mime = dataURLParts[0].match(/:(.*?);/)[1];
+                window.chrome.webview.postMessage(base64Data);
+            }
+            animationFrame(window.animeFrame);
+        }
+
+        window.animeFrame();
+    };
+
+    async function init() {
+        const settings = {
+            view: document.getElementById("canvas"),
+            resizeTo: window,
+            width: window.innerWidth,
+            height: window.innerHeight,
+            backgroundColor: 0x333333,
+        };
+
+        window.app = new PIXI.Application(settings);
+
+        window.model = await PIXI.live2d.Live2DModel.from(`http://${data.live2d}`);
+        window.app.stage.addChild(window.model);
+        let scale = Math.min(window.app.renderer.width/window.model.width, 
+            window.app.renderer.height/window.model.height);
+        scale = Math.round(scale * 10) / 10;
+        window.model.scale.set(scale, scale);
+        window.model.position.set(window.app.renderer.width/2, window.app.renderer.height/2);
+        window.model.anchor.set(0.5, 0.5);
+        window.model.filters = [];
+
+        draggable(model);
+    }
+
+    // don't change this function name or delete this function
+    // because this function will be called by the application through webview.executeScript
+    function setMotion(motion) {
+        if(!data.can_set_motion) {
+            return;
+        }
+        let model = window.model;
+        if(!model) {
+            return;
+        }
+        model.motion(motion, undefined, 3);
+    }
+
+    // don't change this function name or delete this function
+    // because this function will be called by the application through webview.executeScript
+    function setExpression(expression) {
+        if(!data.can_set_expression) {
+            return;
+        }
+        let model = window.model;
+        if(!model) {
+            return;
+        }
+        model.expression(expression);
+    }
+
+    // don't change this function name or delete this function
+    // because this function will be called by the application through webview.executeScript
+    function snapshot() {
+        window.captureFrame = true;
+    }
+    
+    function recordVideo(motion) {
+
+    }
+
+ </script>
+ <style>
+    * {padding: 0; margin: 0;}
+    /* html, body {height: 100%; width: 100%;} */
+ </style>
+ </html>

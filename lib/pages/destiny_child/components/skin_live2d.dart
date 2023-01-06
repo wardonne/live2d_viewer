@@ -51,7 +51,7 @@ class SkinLive2DState extends State<SkinLive2D> {
               children: [
                 FutureProvider<String>(
                   create: (context) {
-                    return rootBundle.loadString(live2dVersion2Html);
+                    return rootBundle.loadString(live2dHtml);
                   },
                   initialData: '',
                   child: Consumer<String>(

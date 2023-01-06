@@ -47,7 +47,7 @@
                 let dataURLParts = dataURL.split(",");
                 let base64Data = dataURLParts[1];
                 let mime = dataURLParts[0].match(/:(.*?);/)[1];
-                window.chrome.webview.postMessage();
+                window.chrome.webview.postMessage(base64Data);
             }
             animationFrame(window.animeFrame);
         }
