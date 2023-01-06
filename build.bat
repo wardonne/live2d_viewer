@@ -1,1 +1,1 @@
-flutter build windows
+flutter clean && flutter build windows

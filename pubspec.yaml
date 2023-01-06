@@ -85,8 +85,10 @@ flutter:
   assets:
     - assets/
     - assets/destiny_child/
-    - assets/application/
     - assets/html/
+    - assets/nikke/
+    - assets/webview/
+    - assets/application/app_icon.ico
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
