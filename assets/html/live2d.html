@@ -90,6 +90,10 @@
 
         window.app = new PIXI.Application(settings);
 
+        PIXI.live2d.config.motionFadingDuration = 0;
+        PIXI.live2d.config.idleMotionFadingDuration = 0;
+        PIXI.live2d.config.expressionFadingDuration = 0;
+
         window.model = await PIXI.live2d.Live2DModel.from(`http://${data.live2d}`);
         window.app.stage.addChild(window.model);
         let scale = Math.min(window.app.renderer.width/window.model.width, 

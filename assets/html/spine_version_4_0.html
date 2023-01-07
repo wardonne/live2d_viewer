@@ -37,6 +37,7 @@
             showControls: false,
             success: (player) => {
                 player.config.animation_loop = true;
+                player.config.idle_animation = player.config.animation;
                 let animations = player.skeleton.data.animations;
                 if(animations.length > 1) {
                     let animationNames = [];
@@ -91,10 +92,17 @@
     // don't change this function name or delete this function
     // because this function will be called by the application through webview.executeScript
     function setAnimation(animation, loop = false) {
-        if(window.player.skeleton.data.findAnimation(animation) !== null && window.player.config.animation != animation) {
+        let currentAnimation = window.player.skeleton.data.findAnimation(animation);
+        if(currentAnimation !== null) {
             window.player.config.animation = animation;
             window.player.config.animation_loop = loop;
             window.player.setAnimation(animation, loop);
+            if(!loop) {
+                let duration = currentAnimation.duration;
+                setTimeout(() => {
+                    window.player.setAnimation(window.player.config.idle_animation, true);
+                }, duration * 1000 + 100);
+            }
         }
     }
 
@@ -166,13 +174,15 @@
         let currentAnimationName = window.player.config.animation;
         let currentAnimation = window.player.skeleton.data.findAnimation(currentAnimationName);
         let duration = currentAnimation.duration;
-        window.player.setAnimation(current, false);
+        window.player.setAnimation(currentAnimationName, false);
         setTimeout(() => {
             recorder.stop();
             if(window.player.config.animation_loop) {
                 window.player.setAnimation(currentAnimation, true);
+            } else {
+                window.player.setAnimation(window.player.config.idle_animation, true);
             }
-        }, duration + 100);
+        }, duration * 1000 + 100);
     }
 
     window.onload = () => {
