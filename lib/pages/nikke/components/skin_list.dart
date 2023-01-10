@@ -42,8 +42,10 @@ class SkinList extends StatelessWidget {
                   itemBuilder: (context, index) {
                     var skin = skins[index];
                     return ListTile(
-                      leading: Image.file(
-                        File('$avatarPath/${skin.avatar}'),
+                      title: Center(
+                        child: Image.file(
+                          File('$avatarPath/${skin.avatar}'),
+                        ),
                       ),
                       textColor: Colors.white70,
                       contentPadding: const EdgeInsets.all(5),
@@ -52,9 +54,7 @@ class SkinList extends StatelessWidget {
                       selectedTileColor: Colors.black38,
                       hoverColor: Colors.black38,
                       mouseCursor: SystemMouseCursors.click,
-                      onTap: () {
-                        controller.selectSkin(index);
-                      },
+                      onTap: () => controller.selectSkin(index),
                     );
                   },
                   separatorBuilder: (context, index) {

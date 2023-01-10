@@ -9,6 +9,7 @@ import 'package:live2d_viewer/providers/settings_provider.dart';
 import 'package:live2d_viewer/services/webview_service.dart';
 import 'package:live2d_viewer/utils/watch_provider.dart';
 import 'package:live2d_viewer/widget/preview_windows/snapshot_preview_window.dart';
+import 'package:live2d_viewer/widget/preview_windows/video_thumbnail_preview_window.dart';
 import 'package:live2d_viewer/widget/webview.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_windows/webview_windows.dart';
@@ -17,11 +18,14 @@ class SkinSpine extends StatefulWidget {
   final Skin skin;
   final WebviewController controller;
   final SnapshotPreviewWindowController snapshotPreviewWindowController;
+  final VideoThumbnailPreviewWindowController
+      videoThumbnailPreviewWindowController;
   const SkinSpine({
     super.key,
     required this.skin,
     required this.controller,
     required this.snapshotPreviewWindowController,
+    required this.videoThumbnailPreviewWindowController,
   });
 
   @override
@@ -76,6 +80,8 @@ class SkinSpineState extends State<SkinSpine> {
                 ),
                 SnapshotPreviewWindow(
                     controller: widget.snapshotPreviewWindowController),
+                VideoThumbnailPreviewWindow(
+                    controller: widget.videoThumbnailPreviewWindowController),
               ],
             ),
           )

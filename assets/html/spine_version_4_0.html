@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spine Version4.0</title>
 </head>
-<body>
+<body style="background-color: #333;">
     <div id="spine-container"></div>
 </body>
 <script>
@@ -45,8 +45,8 @@
                         animationNames[index] = animations[index].name;
                     }
                     window.chrome.webview.postMessage({
-                        'event': 'animations',
-                        'data': {
+                        event: 'animations',
+                        data: {
                             'items': animationNames,
                             'current': player.config.animation,
                         },
@@ -60,8 +60,8 @@
                         clothNames[index] = clothes[index].name;
                     }
                     window.chrome.webview.postMessage({
-                        'event': 'clothes',
-                        'data': {
+                        event: 'clothes',
+                        data: {
                             'items': clothNames,
                             'current': player.config.skin,
                         },
@@ -77,16 +77,16 @@
                         let base64Data = dataURLParts[1];
                         let mime = dataURLParts[0].match(/:(.*?);/)[1];
                         window.chrome.webview.postMessage({
-                            "event": "snapshot",
-                            "data": base64Data,
+                            event: "snapshot",
+                            data: base64Data,
                         });
                     }
                     animationFrame(window.animeFrame);
                 }
-
                 window.animeFrame();
             }
         });
+
     }
     
     // don't change this function name or delete this function
@@ -145,8 +145,7 @@
     // don't change this function name or delete this function
     // because this function will be called by the application through webview.executeScript
     function recordVideo() {
-        let canvas = window.player.canvas;
-        let stream = canvas.captureStream();
+        let stream = window.player.canvas.captureStream();
         let recorder = new MediaRecorder(stream, {mimeType: 'video/webm'});
         let data = [];
         recorder.ondataavailable = (event) => {
@@ -171,18 +170,54 @@
         };
 
         recorder.start();
-        let currentAnimationName = window.player.config.animation;
-        let currentAnimation = window.player.skeleton.data.findAnimation(currentAnimationName);
-        let duration = currentAnimation.duration;
-        window.player.setAnimation(currentAnimationName, false);
         setTimeout(() => {
             recorder.stop();
-            if(window.player.config.animation_loop) {
-                window.player.setAnimation(currentAnimation, true);
-            } else {
-                window.player.setAnimation(window.player.config.idle_animation, true);
+        }, 5000);
+    }
+
+    // don't change this function name or delete this function
+    // because this function will be called by the application through webview.executeScript
+    function recordAnimation(animationName) {
+        let stream = window.player.canvas.captureStream();
+        let recorder = new MediaRecorder(stream, {mimeType: 'video/webm'});
+        let data = [];
+        let animation = window.player.skeleton.data.findAnimation(animationName);
+        if(!animation) return;
+        let duration = animation.duration;
+        recorder.ondataavailable = (event) => {
+            if(event.data && event.data.size) {
+                data.push(event.data);
             }
+        };
+        recorder.onstart = () => {
+            speedPlay(1);
+            setAnimation(animationName, false);
+        };
+        recorder.onstop = () => {
+            let reader = new FileReader();
+            reader.onload = () => {
+                let dataURL = reader.result;
+                let dataURLParts = dataURL.split(',');
+                let base64Data = dataURLParts[1];
+                window.chrome.webview.postMessage({
+                    event: "video",
+                    data: base64Data,
+                });
+            };
+            let blob = new Blob(data, {type: 'video/webm'});
+            reader.readAsDataURL(blob);
+        };
+        recorder.start();
+        setTimeout(() => {
+            recorder.stop();
         }, duration * 1000 + 100);
+    }
+
+    // don't change this function name or delete this function
+    // because this function will be called by the application through webview.executeScript
+    function zoom(value) {
+        window.player.skeleton.scaleX = value;
+        window.player.skeleton.scaleY = value;
     }
 
     window.onload = () => {

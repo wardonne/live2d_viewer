@@ -8,6 +8,7 @@ import 'package:live2d_viewer/services/app_service.dart';
 import 'package:live2d_viewer/services/nikke/character_service.dart';
 import 'package:live2d_viewer/services/nikke/nikke_service.dart';
 import 'package:live2d_viewer/widget/buttons/image_button.dart';
+import 'package:live2d_viewer/widget/editable_cell.dart';
 import 'package:live2d_viewer/widget/paginator.dart';
 
 class CharacterTable extends StatelessWidget {
@@ -76,6 +77,19 @@ class CharacterTableSource extends PaginatorController<Character> {
   Widget? getRow(int index) {
     final item = items[index];
     final avatarPath = nikkeSettings.characterSettings!.avatarPath;
+    final EditableCellInputController controller =
+        EditableCellInputController(readOnly: true);
+    final TextEditingController textEditingController =
+        TextEditingController.fromValue(TextEditingValue(text: item.name));
+    final focusNode = FocusNode();
+    focusNode.addListener(() {
+      if (!focusNode.hasFocus &&
+          textEditingController.value.text != item.name) {
+        items[index].name = textEditingController.value.text;
+        characterService.save(items, backupBeforeSave: false);
+        notifyListeners();
+      }
+    });
     return Theme(
       data: ThemeData.dark().copyWith(dividerColor: Colors.transparent),
       child: Container(
@@ -83,7 +97,27 @@ class CharacterTableSource extends PaginatorController<Character> {
         child: ExpansionTile(
           title: Row(
             children: [
-              SizedBox(width: 100, child: Text(item.name)),
+              SizedBox(
+                width: 100,
+                child: EditableCellInput(
+                  controller: controller,
+                  textEditingController: textEditingController,
+                  focusNode: focusNode,
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              ImageButton(
+                icon: const Icon(
+                  Icons.edit,
+                  size: 20,
+                ),
+                onPressed: () {
+                  controller.setReadOnly(!controller.readOnly);
+                  if (!controller.readOnly) {
+                    focusNode.requestFocus();
+                  }
+                },
+              ),
               Switch(
                 value: item.enable,
                 onChanged: (value) {
@@ -94,7 +128,10 @@ class CharacterTableSource extends PaginatorController<Character> {
               ),
             ],
           ),
-          leading: Image.file(File('$avatarPath/${item.avatar}')),
+          leading: SizedBox(
+              width: 80,
+              child: Center(
+                  child: Image.file(File('$avatarPath/${item.avatar}')))),
           trailing: Wrap(
             children: [
               Container(
@@ -130,62 +167,7 @@ class CharacterTableSource extends PaginatorController<Character> {
                         _buildHeaderCell("Operations"),
                       ],
                       rows: item.skins
-                          .map((skin) => DataRow(cells: [
-                                DataCell(Center(
-                                  child:
-                                      Text('${item.skins.indexOf(skin) + 1}'),
-                                )),
-                                DataCell(Padding(
-                                  padding: const EdgeInsets.all(2),
-                                  child: Center(
-                                      child: Image.file(
-                                          File('$avatarPath/${skin.avatar}'))),
-                                )),
-                                DataCell(Center(child: Text(skin.name))),
-                                DataCell(Center(
-                                  child: Switch(
-                                    value: skin.enable,
-                                    onChanged: (value) {
-                                      bool allSkinDisabled = false;
-                                      final skinIndex =
-                                          item.skins.indexOf(skin);
-                                      items[index].skins[skinIndex].enable =
-                                          value;
-                                      items[index].avatar =
-                                          item.skins.firstWhere(
-                                        (element) => element.enable,
-                                        orElse: () {
-                                          allSkinDisabled = true;
-                                          return item.skins.first;
-                                        },
-                                      ).avatar;
-                                      if (allSkinDisabled) {
-                                        items[index].enable = false;
-                                      }
-                                      characterService.save(items,
-                                          backupBeforeSave: false);
-                                      notifyListeners();
-                                    },
-                                  ),
-                                )),
-                                DataCell(Center(
-                                  child: ButtonBar(
-                                    alignment: MainAxisAlignment.center,
-                                    children: [
-                                      ImageButton(
-                                        icon: const Icon(Icons.search),
-                                        onPressed: () {
-                                          CharacterService.initViewWindow(item,
-                                              skinIndex:
-                                                  item.skins.indexOf(skin));
-                                          AppService.unextendSidebar();
-                                          NikkeService.closeItemsWindow();
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                )),
-                              ]))
+                          .map((skin) => _buildRow(item, skin))
                           .toList(),
                     ),
                   ),
@@ -204,5 +186,82 @@ class CharacterTableSource extends PaginatorController<Character> {
         child: Center(child: Text(label)),
       ),
     );
+  }
+
+  DataRow _buildRow(Character character, Skin skin) {
+    final avatarPath = nikkeSettings.characterSettings!.avatarPath;
+    final controller = EditableCellInputController(readOnly: true);
+    final TextEditingController textEditingController = TextEditingController();
+    final focusNode = FocusNode();
+    focusNode.addListener(() {
+      if (!focusNode.hasFocus &&
+          textEditingController.value.text != skin.name) {
+        skin.name = textEditingController.value.text;
+        characterService.save(items, backupBeforeSave: false);
+        notifyListeners();
+      }
+    });
+    return DataRow(cells: [
+      DataCell(Center(
+        child: Text('${character.skins.indexOf(skin) + 1}'),
+      )),
+      DataCell(Padding(
+        padding: const EdgeInsets.all(2),
+        child: Center(child: Image.file(File('$avatarPath/${skin.avatar}'))),
+      )),
+      DataCell(
+        EditableCellInput(
+          controller: controller,
+          textEditingController: textEditingController,
+          textAlign: TextAlign.center,
+          focusNode: focusNode,
+        ),
+        showEditIcon: true,
+        onTap: () {
+          controller.setReadOnly(!controller.readOnly);
+          if (!controller.readOnly) {
+            focusNode.requestFocus();
+          }
+        },
+      ),
+      DataCell(Center(
+        child: Switch(
+          value: skin.enable,
+          onChanged: (value) {
+            bool allSkinDisabled = false;
+            final skinIndex = character.skins.indexOf(skin);
+            character.skins[skinIndex].enable = value;
+            character.avatar = character.skins.firstWhere(
+              (element) => element.enable,
+              orElse: () {
+                allSkinDisabled = true;
+                return character.skins.first;
+              },
+            ).avatar;
+            if (allSkinDisabled) {
+              character.enable = false;
+            }
+            characterService.save(items, backupBeforeSave: false);
+            notifyListeners();
+          },
+        ),
+      )),
+      DataCell(Center(
+        child: ButtonBar(
+          alignment: MainAxisAlignment.center,
+          children: [
+            ImageButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {
+                CharacterService.initViewWindow(character,
+                    skinIndex: character.skins.indexOf(skin));
+                AppService.unextendSidebar();
+                NikkeService.closeItemsWindow();
+              },
+            ),
+          ],
+        ),
+      )),
+    ]);
   }
 }

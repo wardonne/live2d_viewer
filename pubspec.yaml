@@ -47,6 +47,9 @@ dependencies:
   file_picker: ^5.2.4
   path_provider: ^2.0.11
   url_launcher: ^6.1.7
+  dart_vlc: ^0.4.0
+  hotkey_manager: ^0.1.7
+  custom_pop_up_menu: ^1.2.4
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,6 @@
+import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
+import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:live2d_viewer/constants/application.dart';
 import 'package:live2d_viewer/providers/settings_provider.dart';
 import 'package:provider/provider.dart';
@@ -7,9 +9,19 @@ import 'package:window_manager/window_manager.dart';
 import 'app.dart';
 
 void main() async {
+  DartVLC.initialize();
+
   WidgetsFlutterBinding.ensureInitialized();
 
   await windowManager.ensureInitialized();
+
+  await hotKeyManager.unregisterAll();
+
+  hotKeyManager.register(
+    HotKey(KeyCode.f11, scope: HotKeyScope.inapp),
+    keyDownHandler: (hotKey) async =>
+        windowManager.setFullScreen(!await windowManager.isFullScreen()),
+  );
 
   windowManager.addListener(CustomerWindowListener());
 
@@ -18,7 +30,7 @@ void main() async {
     await windowManager.focus();
   });
 
-  var settings = await loadSettings();
+  final settings = await loadSettings();
 
   runApp(MultiProvider(
     providers: [

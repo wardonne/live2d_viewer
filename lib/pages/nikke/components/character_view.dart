@@ -14,7 +14,8 @@ import 'package:live2d_viewer/pages/nikke/components/animation_popup_menu.dart';
 import 'package:live2d_viewer/pages/nikke/components/cloth_popup_menu.dart';
 import 'package:live2d_viewer/pages/nikke/components/skin_list.dart';
 import 'package:live2d_viewer/pages/nikke/components/skin_spine.dart';
-import 'package:live2d_viewer/pages/nikke/components/speed_popup_menu.dart';
+import 'package:live2d_viewer/pages/nikke/components/speed_popup_control.dart';
+import 'package:live2d_viewer/pages/nikke/components/zoom_popup_control.dart';
 import 'package:live2d_viewer/providers/settings_provider.dart';
 import 'package:live2d_viewer/services/nikke/nikke_service.dart';
 import 'package:live2d_viewer/utils/watch_provider.dart';
@@ -23,6 +24,7 @@ import 'package:live2d_viewer/widget/buttons/play_button.dart';
 import 'package:live2d_viewer/widget/buttons/webview_console_button.dart';
 import 'package:live2d_viewer/widget/buttons/webview_refresh_button.dart';
 import 'package:live2d_viewer/widget/preview_windows/snapshot_preview_window.dart';
+import 'package:live2d_viewer/widget/preview_windows/video_thumbnail_preview_window.dart';
 import 'package:live2d_viewer/widget/toolbar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:webview_windows/webview_windows.dart';
@@ -36,6 +38,9 @@ class CharacterView extends StatelessWidget {
       NikkeConstants.characterViewController;
   final SnapshotPreviewWindowController snapshotPreviewWindowController =
       SnapshotPreviewWindowController();
+  final VideoThumbnailPreviewWindowController
+      videoThumbnailPreviewWindowController =
+      VideoThumbnailPreviewWindowController();
   late VisiblePopupMenuController<String> animationMenuController;
   late VisiblePopupMenuController<String> clothMenuController;
   late WebviewController webviewController;
@@ -81,6 +86,11 @@ class CharacterView extends StatelessWidget {
             final file = File(path);
             file.createSync(recursive: true);
             file.writeAsBytesSync(base64Decode(data as String));
+            videoThumbnailPreviewWindowController.setVideoURL(path);
+            Timer(
+              const Duration(seconds: 5),
+              () => videoThumbnailPreviewWindowController.hide(),
+            );
           });
           break;
         default:
@@ -143,6 +153,8 @@ class CharacterView extends StatelessWidget {
             skin: skin,
             controller: webviewController,
             snapshotPreviewWindowController: snapshotPreviewWindowController,
+            videoThumbnailPreviewWindowController:
+                videoThumbnailPreviewWindowController,
           ),
           SkinList(skins: controller.data?.skins ?? []),
         ],
@@ -179,7 +191,21 @@ class CharacterView extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 7.5, right: 7.5),
-              child: SpeedPopupMenu(controller: webviewController),
+              child: SpeedPopupControl(
+                value: 1.0,
+                max: 2.0,
+                min: 0.5,
+                webviewController: webviewController,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 7.5, right: 7.5),
+              child: ZoomPopupControl(
+                value: 1.0,
+                max: 3.0,
+                min: 0.5,
+                webviewController: webviewController,
+              ),
             ),
             AnimationPopupMenu(
               controller: animationMenuController,

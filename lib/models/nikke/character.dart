@@ -1,5 +1,5 @@
 class Character extends Object {
-  final String name;
+  String name;
   String avatar;
   final List<Skin> skins;
   bool enable;
@@ -32,7 +32,7 @@ class Character extends Object {
 
 class Skin extends Object {
   final String code;
-  final String name;
+  String name;
   final String avatar;
   final String spine;
   final List<Action> actions;

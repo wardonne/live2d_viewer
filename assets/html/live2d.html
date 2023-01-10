@@ -34,8 +34,8 @@
         });
         model.on("pointermove", (e) => {
             if (model.dragging) {
-            model.position.x = e.data.global.x - model._pointerX;
-            model.position.y = e.data.global.y - model._pointerY;
+                model.position.x = e.data.global.x - model._pointerX;
+                model.position.y = e.data.global.y - model._pointerY;
             }
         });
         model.on("pointerupoutside", () => (model.dragging = false));
@@ -71,7 +71,7 @@
                 const dataURLParts = dataURL.split(",");
                 const base64Data = dataURLParts[1];
                 const mime = dataURLParts[0].match(/:(.*?);/)[1];
-                window.chrome.webview.postMessage(base64Data);
+                window.chrome.webview.postMessage({event: 'snapshot', data: base64Data});
             }
             animationFrame(window.animeFrame);
         }
@@ -102,8 +102,8 @@
         window.model.scale.set(scale, scale);
         window.model.position.set(window.app.renderer.width/2, window.app.renderer.height/2);
         window.model.anchor.set(0.5, 0.5);
-        window.model.filters = [];
 
+        window.model.filters = [];
         draggable(model);
     }
 
@@ -138,14 +138,98 @@
     function snapshot() {
         window.captureFrame = true;
     }
-    
-    function recordVideo(motion) {
 
+    // don't change this function name or delete this function
+    // because this function will be called by the application through webview.executeScript
+    function snapshotExpression(expression) {
+        setExpression(expression);
+        snapshot();
+    }
+    
+    // don't change this function name or delete this function
+    // because this function will be called by the application through webview.executeScript
+    function recordVideo(motion) {
+        const rectangle = {
+            x: 0,
+            y: 0,
+            width: window.innerWidth,
+            height: window.innerHeight,
+        };
+        const convas = window.app.renderer.view;
+        const stream = canvas.captureStream();
+        const recorder = new MediaRecorder(stream, {mimeType: 'video/webm'});
+        const data = [];
+        recorder.ondataavailable = (event) => {
+            if(event.data && event.data.size) {
+                data.push(event.data);
+            }
+        };
+        recorder.onstop = () => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const dataURL = reader.result;
+                const dataURLParts = dataURL.split(',');
+                const base64Data = dataURLParts[1];
+                window.chrome.webview.postMessage({
+                    event: 'video',
+                    data: base64Data,
+                });
+            };
+            let blob = new Blob(data, {type: 'video/webm'});
+            reader.readAsDataURL(blob);
+        };
+        recorder.start();
     }
 
+    // don't change this function name or delete this function
+    // because this function will be called by the application through webview.executeScript
+    function recordAnimation(animationName) {
+        const rectangle = {
+            x: 0,
+            y: 0,
+            width: window.innerWidth,
+            height: window.innerHeight,
+        };
+        const canvas = window.app.renderer.view;
+        const stream = canvas.captureStream();
+        const recorder = new MediaRecorder(stream, {mimeType: 'video/webm'});
+        const data = [];
+        window.model.internalModel.motionManager.on('motionFinish', () => {
+            recorder.stop();
+            window.model.internalModel.motionManager.off('motionFinish');
+        });
+        recorder.ondataavailable = (event) => {
+            if(event.data && event.data.size) {
+                data.push(event.data);
+            }
+        };
+        recorder.onstart = () => {
+            window.model.motion(animationName, undefined, 3);
+        };
+        recorder.onstop = () => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const dataURL = reader.result;
+                const dataURLParts = dataURL.split(',');
+                const base64Data = dataURLParts[1];
+                window.chrome.webview.postMessage({
+                    event: 'video',
+                    data: base64Data,
+                });
+            };
+            let blob = new Blob(data, {type: 'video/webm'});
+            reader.readAsDataURL(blob);
+        };
+        recorder.start();
+    } 
+
+    // don't change this function name or delete this function
+    // because this function will be called by the application through webview.executeScript
+    function zoom(value) {
+        window.model.scale.set(value);
+    }
  </script>
  <style>
     * {padding: 0; margin: 0;}
-    /* html, body {height: 100%; width: 100%;} */
  </style>
  </html>

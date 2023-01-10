@@ -3,6 +3,8 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  dart_vlc
+  hotkey_manager
   screen_retriever
   url_launcher_windows
   webview_windows
