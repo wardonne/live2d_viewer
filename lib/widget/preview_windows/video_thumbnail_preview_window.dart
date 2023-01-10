@@ -31,6 +31,8 @@ class VideoThumbnailPreviewWindow extends StatelessWidget {
             Media.file(File(controller.videoURL!)),
             autoStart: true,
           );
+        } else {
+          player.dispose();
         }
         return Positioned(
           width: width,
