@@ -1,16 +1,8 @@
-# live2d_viewer
+# Live2D Viewer
 
-A new Flutter project.
+用于查看游戏内素材的windows桌面应用
+目前支持查看Nikke的角色Spine动画,天命之子角色Live2D动画与魂卡图片
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Nikke
+素材默认存放目录
+data/flutter_assets/assets/nikke

@@ -50,6 +50,7 @@ dependencies:
   dart_vlc: ^0.4.0
   hotkey_manager: ^0.1.7
   custom_pop_up_menu: ^1.2.4
+  auto_updater: ^0.1.6
 
 dev_dependencies:
   flutter_test:

@@ -17,6 +17,14 @@ void main() async {
 
   await hotKeyManager.unregisterAll();
 
+  // if (kReleaseMode) {
+  //   String feedURL =
+  //       'https://gitee.com/wardonet/releases/raw/master/live2d_viewer/appcast.xml';
+  //   await autoUpdater.setFeedURL(feedURL);
+  //   await autoUpdater.checkForUpdates(inBackground: false);
+  //   await autoUpdater.setScheduledCheckInterval(3600);
+  // }
+
   hotKeyManager.register(
     HotKey(KeyCode.f11, scope: HotKeyScope.inapp),
     keyDownHandler: (hotKey) async =>

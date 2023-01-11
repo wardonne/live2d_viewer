@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  auto_updater
   dart_vlc
   hotkey_manager
   screen_retriever

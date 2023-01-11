@@ -36,6 +36,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.11.0"
+  auto_updater:
+    dependency: "direct main"
+    description:
+      name: auto_updater
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.6"
   boolean_selector:
     dependency: transitive
     description:

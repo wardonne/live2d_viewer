@@ -1,0 +1,10 @@
+env:
+  GITHUB_TOKEN: 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
+output: dist/
+releases:
+  - name: dev
+    jobs: 
+      - name: release-windows
+        package:
+          platform: windows
+          target: exe
