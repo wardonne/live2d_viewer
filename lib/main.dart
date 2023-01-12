@@ -1,4 +1,6 @@
+import 'package:auto_updater/auto_updater.dart';
 import 'package:dart_vlc/dart_vlc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:live2d_viewer/constants/application.dart';
@@ -17,13 +19,11 @@ void main() async {
 
   await hotKeyManager.unregisterAll();
 
-  // if (kReleaseMode) {
-  //   String feedURL =
-  //       'https://gitee.com/wardonet/releases/raw/master/live2d_viewer/appcast.xml';
-  //   await autoUpdater.setFeedURL(feedURL);
-  //   await autoUpdater.checkForUpdates(inBackground: false);
-  //   await autoUpdater.setScheduledCheckInterval(3600);
-  // }
+  if (kReleaseMode) {
+    String feedURL = 'https://appcast.wardonet.cn/live2d-viewer/appcast.xml';
+    await autoUpdater.setFeedURL(feedURL);
+    await autoUpdater.checkForUpdates(inBackground: true);
+  }
 
   hotKeyManager.register(
     HotKey(KeyCode.f11, scope: HotKeyScope.inapp),
