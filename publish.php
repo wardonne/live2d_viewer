@@ -40,9 +40,12 @@ class Publisher
 
     private function validate() : void
     {
-        $required = ['name', 'job', 'host', 'port', 'username', 'pubkey', 'prikey', 'remote-path'];
+        $required = ['host', 'port', 'username', 'pubkey', 'prikey', 'remote-path'];
         if($this->skipBuild()) {
             $required[] = 'version';
+        } else {
+            $required[] = 'name';
+            $required[] = 'job';
         }
         foreach($required as $option) {
             if(empty($this->arguments[$option])) {
@@ -55,7 +58,7 @@ class Publisher
     {
         if(!$this->skipBuild()) {
             $this->build();
-            $this->output('Build completed');
+            $this->output('Build completed', true);
         }
         $this->publish();
         $this->output('Published!!');
@@ -76,23 +79,28 @@ class Publisher
 
     private function incrementVersion() : void
     {
+        $onlineVersion = $this->getOnlineVersion();
+        if(!preg_match('/(\d+).(\d+).(\d+)\+(\d+)/', $onlineVersion, $matches)) {
+            throw new Exception('invalid version: ' . $onlineVersion);
+        }
+        list($version, $mainver, $subver, $stagever, $buildnum) = $matches;
+        if($this->needIncrementMainVersion()) {
+            $mainver++;
+            $this->version = "$mainver.0.0+1";
+        } elseif($this->needIncrementSubVersion()) {
+            $subver++;
+            $this->version = "$mainver.$subver.0+1";
+        } elseif($this->needIncrementStageVersion()) {
+            $stagever++;
+            $this->version = "$mainver.$subver.$stagever+1";
+        } else {
+            $buildnum++;
+            $this->version = "$mainver.$subver.$stagever+$buildnum";
+        }
+
         $pattern = '/version:\s((\d+).(\d+).(\d+)\+(\d+))/';
         $pubspec = file_get_contents($this->pubspec);
         if(preg_match($pattern, $pubspec, $matches)) {
-            list($_, $__, $mainver, $subver, $stagever, $buildnum) = $matches;
-            if($this->needIncrementMainVersion()) {
-                $mainver++;
-                $this->version = "$mainver.0.0+1";
-            } elseif($this->needIncrementSubVersion()) {
-                $subver++;
-                $this->version = "$mainver.$subver.0+1";
-            } elseif($this->needIncrementStageVersion()) {
-                $stagever++;
-                $this->version = "$mainver.$subver.$stagever+1";
-            } else {
-                $buildnum++;
-                $this->version = "$mainver.$subver.$stagever+$buildnum";
-            }
             $pubspec = preg_replace($pattern, "version: {$this->version}", $pubspec, 1);
             if(!copy($this->pubspec, $this->pubspec.'.backup')) {
                 throw new Exception('can\'t backup pubspec.yaml');
@@ -123,9 +131,13 @@ class Publisher
         $this->output('Start build application', true);
         $this->output("\tRelease Name: " . $this->arguments['name'], true);
         $this->output("\tRelease Job: {$this->arguments['job']}", true);
-        $this->output("\tRelease Skip clean: " . isset($this->arguments['skip-clean']) ? 'True' : 'False', true);
-        // increment version number
-        $this->incrementVersion();
+        $this->output("\tRelease Skip clean: " . (isset($this->arguments['skip-clean']) ? 'True' : 'False'), true);
+
+        if(!$this->version) {
+             // increment version number
+            $this->incrementVersion();
+        }
+        
         try {
             // build
             $releaseCommand = 'flutter_distributor release ';
@@ -143,7 +155,10 @@ class Publisher
     {
         $handle = popen($command, 'r');
         while (!feof($handle)) {
-            $this->output(fgets($handle));
+            $line = fgets($handle);
+            if($line !== false) {
+                $this->output($line);
+            }
         }
         pclose($handle);
     }
@@ -226,7 +241,7 @@ class Publisher
     private function connect() : void
     {
         $this->output('Connecting: ' . $this->arguments['host'] . ':' . $this->arguments['port'], true);
-        $this->session = ssh2_connect($this->arguments['host'], $this->arguments['port']);
+        $this->session = ssh2_connect($this->arguments['host'], (int) $this->arguments['port']);
         if($this->session === false) {
             throw new Exception('can\'t connect to ' . $this->arguments['host'] . ':' . $this->arguments['port']);
         }
@@ -263,6 +278,36 @@ class Publisher
                 $this->uploadSftp($localPath . DIRECTORY_SEPARATOR . $dir, $remotePath . '/' . $dir);
             }
         }
+    }
+
+    private function getOnlineVersion() : string
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://appcast.wardonet.cn/live2d-viewer/appcast.xml');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        $response = curl_exec($ch);
+        if($response === false) {
+            throw new Exception('curl error: ' . curl_error($ch));
+        }
+        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if($statusCode !== 200) {
+            throw new Exception('http error with code: ' . $statusCode);
+        }
+        curl_close($ch);
+        $document = new DOMDocument();
+        $document->loadXML($response);
+        $element = $document->getElementsByTagName('enclosure')[0];
+        $attributes = $element->attributes;
+        $version = '';
+        foreach($attributes as $attribute) {
+            if($attribute->name === 'version') {
+                $version = $attribute->value;
+                break;
+            }
+        }
+        return $version;
     }
 }
 
