@@ -21,7 +21,7 @@ class SideBar extends StatelessWidget {
       controller: controller,
       theme: SidebarXTheme(
         decoration: const BoxDecoration(
-          color: barColor,
+          color: toolbarColor,
           border: Border(
             right: BorderSide(color: Colors.white70),
           ),
@@ -56,7 +56,7 @@ class SideBar extends StatelessWidget {
       extendedTheme: const SidebarXTheme(
         width: 200,
         decoration: BoxDecoration(
-          color: barColor,
+          color: toolbarColor,
           border: Border(
             right: BorderSide(color: Colors.white70),
           ),

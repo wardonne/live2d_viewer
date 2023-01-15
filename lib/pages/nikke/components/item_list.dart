@@ -28,7 +28,7 @@ class ItemList extends StatelessWidget {
         children: [
           Toolbar.header(
             height: headerBarHeight,
-            color: barColor,
+            color: toolbarColor,
             title: const Center(
               child: Text('Nikke'),
             ),
@@ -57,7 +57,7 @@ class ItemList extends StatelessWidget {
           ),
           Toolbar.footer(
             height: footerBarHeight,
-            color: barColor,
+            color: toolbarColor,
             endActions: [
               AnimatedBuilder(
                 animation: NikkeConstants.characterEditModeController,

@@ -7,7 +7,6 @@ import 'package:live2d_viewer/models/destiny_child/soul_carta.dart';
 import 'package:live2d_viewer/models/live2d_html_data.dart';
 import 'package:live2d_viewer/models/preview_data/image_preview_data.dart';
 import 'package:live2d_viewer/models/settings/destiny_child_settings.dart';
-import 'package:live2d_viewer/models/settings/webview_settings.dart';
 import 'package:live2d_viewer/models/virtual_host.dart';
 import 'package:live2d_viewer/providers/settings_provider.dart';
 import 'package:live2d_viewer/services/destiny_child/destiny_child_service.dart';
@@ -31,7 +30,6 @@ class SoulCartaView extends StatelessWidget {
       ImagePreviewWindowController(maxScale: maxScale, minScale: minScale);
   late WebviewController webviewController;
   late DestinyChildSettings destinyChildSettings;
-  late WebviewSettings webviewSettings;
 
   SoulCartaView({super.key});
 
@@ -40,7 +38,6 @@ class SoulCartaView extends StatelessWidget {
     webviewController = WebviewController();
     final settings = watchProvider<SettingsProvider>(context).settings!;
     destinyChildSettings = settings.destinyChildSettings!;
-    webviewSettings = settings.webviewSettings!;
     return AnimatedBuilder(
       animation: controller,
       builder: (context, child) {
@@ -60,7 +57,7 @@ class SoulCartaView extends StatelessWidget {
     final data = controller.data!;
     return Toolbar.header(
       height: headerBarHeight,
-      color: barColor,
+      color: toolbarColor,
       title: Center(
         child: Text(data.name ?? data.avatar),
       ),
@@ -89,14 +86,14 @@ class SoulCartaView extends StatelessWidget {
     if (data.useLive2d) {
       final viewModel = Live2DHtmlData(
         live2d: '$live2dHost/${data.live2d}/$live2dModel',
-        webviewHost: webviewSettings.virtualHost,
         backgroundImage: '$imageHost/${data.image}',
         canSetExpression: false,
         canSetMotion: false,
       );
       return Expanded(
         child: FutureProvider<String>(
-          create: (context) => rootBundle.loadString(live2dVersion2Html),
+          create: (context) =>
+              rootBundle.loadString(ResourceConstants.live2dVersion2Html),
           initialData: '',
           child: Consumer<String>(
             builder: (context, data, child) {
@@ -106,10 +103,6 @@ class SoulCartaView extends StatelessWidget {
                 htmlStr: WebviewService.renderHtml(data, viewModel),
                 controller: webviewController,
                 virtualHosts: [
-                  VirtualHost(
-                    virtualHost: webviewSettings.virtualHost!,
-                    folderPath: webviewSettings.path!,
-                  ),
                   VirtualHost(virtualHost: host, folderPath: path),
                 ],
               );
@@ -166,7 +159,7 @@ class SoulCartaView extends StatelessWidget {
     }
     return Toolbar.footer(
       height: footerBarHeight,
-      color: barColor,
+      color: toolbarColor,
       endActions: endActions,
     );
   }

@@ -1,66 +1,52 @@
-import 'dart:convert';
-import 'dart:developer';
-import 'dart:io';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/models/settings/settings.dart';
+import 'package:live2d_viewer/constants/routes.dart';
+import 'package:live2d_viewer/constants/styles.dart';
+import 'package:live2d_viewer/generated/l10n.dart';
+import 'package:live2d_viewer/providers/locale_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
-
-import 'constants/routes.dart';
 import 'router/router.dart';
-import 'package:path/path.dart' as p;
+// ignore: depend_on_referenced_packages
+import 'package:flutter_localizations/flutter_localizations.dart';
 
-class Live2DViewer extends StatelessWidget {
+class Live2DViewer extends StatefulWidget {
   const Live2DViewer({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<StatefulWidget> createState() => _Live2DViewerState();
+}
+
+class _Live2DViewerState extends State<Live2DViewer> with WindowListener {
+  @override
+  void initState() {
+    windowManager.addListener(this);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Live2D Viewer',
+      onGenerateTitle: (context) => S.of(context).title,
       theme: ThemeData(
         brightness: Brightness.dark,
+        hoverColor: Styles.hoverBackgroundColor,
+        scaffoldBackgroundColor: Styles.backgroundColor,
         iconTheme: const IconThemeData(
-          color: Colors.white70,
+          color: Styles.iconColor,
+          size: Styles.iconSize,
         ),
       ),
-      initialRoute: index,
-      routes: routes,
+      locale: Provider.of<LocaleProvider>(context).locale,
+      localizationsDelegates: const {
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        S.delegate,
+      },
+      supportedLocales: S.delegate.supportedLocales,
+      routes: router,
+      initialRoute: Routes.index,
     );
-  }
-}
-
-class CustomerWindowListener extends WindowListener {
-  @override
-  void onWindowMaximize() {
-    windowManager.getSize().then((value) {});
-  }
-
-  @override
-  void onWindowUnmaximize() {
-    windowManager.getSize().then((value) {});
-  }
-
-  @override
-  void onWindowResized() {
-    windowManager.getSize().then((value) {});
-  }
-}
-
-Future<Settings> loadSettings() async {
-  try {
-    final settingsPath = kDebugMode
-        ? p.join('assets', 'application', 'settings.json')
-        : p.join('data', 'flutter_assets', 'asssets', 'application',
-            'settings.json');
-    final settingsFile = File(p.join(Directory.current.path, settingsPath));
-    final content = await settingsFile.readAsString();
-    final json = jsonDecode(content);
-    return Settings.fromJson(json);
-  } catch (e) {
-    log(e.toString(), time: DateTime.now());
-    return Settings.init();
   }
 }

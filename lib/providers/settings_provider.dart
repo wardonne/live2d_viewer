@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:live2d_viewer/models/settings/settings.dart';
+import 'package:live2d_viewer/services/settings_service.dart';
 
 class SettingsProvider with ChangeNotifier, DiagnosticableTreeMixin {
   Settings? _settings;
@@ -24,7 +25,7 @@ class SettingsProvider with ChangeNotifier, DiagnosticableTreeMixin {
   }
 
   Future<void> updateSettings() async {
-    await _settings?.updateSettings();
+    await SettingsService.updateSettings(settings!);
     notifyListeners();
   }
 }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/controllers/visible_controller.dart';
+import 'package:live2d_viewer/generated/l10n.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/character_tabview.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/character_view.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/soul_carta_tabview.dart';
@@ -12,7 +13,7 @@ import 'package:live2d_viewer/controllers/edit_mode_controller.dart';
 import 'package:path/path.dart' as p;
 
 class DestinyChildConstants {
-  static const menuName = 'Destiny Child';
+  static String menuName = S.current.destinyChild;
 
   static EditModeController characterEditModeController =
       EditModeController.disable();

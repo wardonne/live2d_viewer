@@ -11,7 +11,7 @@ class Toolbar extends StatelessWidget {
   const Toolbar({
     super.key,
     this.height = 48,
-    this.color = Colors.transparent,
+    this.color,
     this.title,
     this.leadingActions,
     this.endActions,

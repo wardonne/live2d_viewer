@@ -6,8 +6,6 @@ import 'package:live2d_viewer/pages/destiny_child/index.dart';
 import 'package:live2d_viewer/pages/nikke/index.dart';
 import 'package:live2d_viewer/pages/settings/index.dart';
 
-import 'application.dart';
-
 final sidebarItems = <SidebarItem>[
   SidebarItem(
     title: DestinyChildConstants.menuName,
@@ -20,7 +18,7 @@ final sidebarItems = <SidebarItem>[
     builder: (context) => const NikkePage(),
   ),
   SidebarItem(
-    title: settingName,
+    title: 'Settings',
     iconData: Icons.settings,
     builder: (context) => SettingPage(),
   ),

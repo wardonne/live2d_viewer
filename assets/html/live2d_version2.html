@@ -4,7 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live2D Version2</title>
+    <script src="https://static.wardonet.cn/live2d-viewer/js/live2d-v2/lib/live2d.min.js" type="text/javascript"></script>
+    <script src="https://static.wardonet.cn/live2d-viewer/js/live2d-v2/framework/Live2DFramework.js" type="text/javascript"></script>
+    <script src="https://static.wardonet.cn/live2d-viewer/js/live2d-v2/src/utils/MatrixStack.js" type="text/javascript"></script>
+    <script src="https://static.wardonet.cn/live2d-viewer/js/live2d-v2/src/utils/ModelSettingJson.js" type="text/javascript"></script>
+    <script src="https://static.wardonet.cn/live2d-viewer/js/live2d-v2/src/PlatformManager.js" type="text/javascript"></script>
+    <script src="https://static.wardonet.cn/live2d-viewer/js/live2d-v2/src/LAppDefine.js" type="text/javascript"></script>
+    <script src="https://static.wardonet.cn/live2d-viewer/js/live2d-v2/src/LAppModel.js" type="text/javascript"></script>
+    <script src="https://static.wardonet.cn/live2d-viewer/js/live2d-v2/src/LAppLive2DManager.js" type="text/javascript"></script>
+    <script src="https://static.wardonet.cn/live2d-viewer/js/live2d-v2/src/LAppModelLoader.js" type="text/javascript"></script>
+    <title>Live2D Version 2</title>
 </head>
 <body>
     <canvas class="live2d-canvas" id="canvas"></canvas>
@@ -13,16 +22,7 @@
 <script>
     let data = {{data}};
 
-    function includeJS(path, onload = () => {}) {
-        let script = document.createElement("script");
-        script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", path);
-        script.async = false;
-        script.onload = onload;
-        document.getElementsByTagName('head')[0].appendChild(script);        
-    } 
-
-    function init() {
+    function initLive2D() {
         let canvas = window.document.getElementById('canvas');
         canvas.style.backgroundColor = '#333';
         canvas.width = window.innerWidth * 2;
@@ -85,28 +85,7 @@
         window.Live2D.captureFrame = true;
     }
 
-    window.onload = () => {
-        
-        let libs = [
-            {'href': `http://${data.webview_host}/js/live2d-v2/lib/live2d.min.js`, 'onload': () => {}},
-            {'href': `http://${data.webview_host}/js/live2d-v2/framework/Live2DFramework.js`, 'onload': () => {}},
-            {'href': `http://${data.webview_host}/js/live2d-v2/src/utils/MatrixStack.js`, 'onload': () => {}},  
-            {'href': `http://${data.webview_host}/js/live2d-v2/src/utils/ModelSettingJson.js`, 'onload': () => {}},
-            {'href': `http://${data.webview_host}/js/live2d-v2/src/PlatformManager.js`, 'onload': () => {}},
-            {'href': `http://${data.webview_host}/js/live2d-v2/src/LAppDefine.js`, 'onload': () => {}},
-            {'href': `http://${data.webview_host}/js/live2d-v2/src/LAppModel.js`, 'onload': () => {}},
-            {'href': `http://${data.webview_host}/js/live2d-v2/src/LAppLive2DManager.js`, 'onload': () => {}},
-            {'href': `http://${data.webview_host}/js/live2d-v2/src/LAppModelLoader.js`, 'onload': init},
-        ];
-        
-        for(let index in libs) {
-            let script = libs[index];
-            includeJS(script.href, script.onload);
-        }
-
-        
-    };
-    
+    window.onload = initLive2D;
 </script>
 <style>
     * {

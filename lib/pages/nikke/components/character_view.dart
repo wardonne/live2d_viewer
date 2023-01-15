@@ -8,7 +8,6 @@ import 'package:live2d_viewer/constants/nikke.dart';
 import 'package:live2d_viewer/controllers/visible_popup_menu_controller.dart';
 import 'package:live2d_viewer/models/nikke/character.dart';
 import 'package:live2d_viewer/models/settings/nikke_settings.dart';
-import 'package:live2d_viewer/models/settings/webview_settings.dart';
 import 'package:live2d_viewer/pages/nikke/components/action_popup_menu.dart';
 import 'package:live2d_viewer/pages/nikke/components/animation_popup_menu.dart';
 import 'package:live2d_viewer/pages/nikke/components/cloth_popup_menu.dart';
@@ -21,8 +20,8 @@ import 'package:live2d_viewer/services/nikke/nikke_service.dart';
 import 'package:live2d_viewer/utils/watch_provider.dart';
 import 'package:live2d_viewer/widget/buttons/image_button.dart';
 import 'package:live2d_viewer/widget/buttons/play_button.dart';
-import 'package:live2d_viewer/widget/buttons/webview_console_button.dart';
-import 'package:live2d_viewer/widget/buttons/webview_refresh_button.dart';
+import 'package:live2d_viewer/components/webview_console_button.dart';
+import 'package:live2d_viewer/components/webview_refresh_button.dart';
 import 'package:live2d_viewer/widget/preview_windows/snapshot_preview_window.dart';
 import 'package:live2d_viewer/widget/preview_windows/video_thumbnail_preview_window.dart';
 import 'package:live2d_viewer/widget/toolbar.dart';
@@ -45,7 +44,6 @@ class CharacterView extends StatelessWidget {
   late VisiblePopupMenuController<String> clothMenuController;
   late WebviewController webviewController;
   late NikkeSettings nikkeSettings;
-  late WebviewSettings webviewSettings;
 
   CharacterView({super.key});
 
@@ -103,7 +101,6 @@ class CharacterView extends StatelessWidget {
 
     final settings = watchProvider<SettingsProvider>(context).settings!;
     nikkeSettings = settings.nikkeSettings!;
-    webviewSettings = settings.webviewSettings!;
     return AnimatedBuilder(
       animation: controller,
       builder: (context, child) {

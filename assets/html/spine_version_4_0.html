@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spine Version4.0</title>
+    <link rel="stylesheet" href="https://static.wardonet.cn/live2d-viewer/css/spine-v4.0/spine-player.css">
+    <script type="text/javascript" src="https://static.wardonet.cn/live2d-viewer/js/spine-v4.0/spine-player.js"></script>
+    <title>Spine Version 4.0</title>
 </head>
 <body style="background-color: #333;">
     <div id="spine-container"></div>
@@ -12,26 +14,10 @@
 <script>
     let data = {{data}};
 
-    function includeJS(path, onload = () => {}) {
-        let script = document.createElement("script");
-        script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", path);
-        script.async = false;
-        script.onload = onload;
-        document.getElementsByTagName('head')[0].appendChild(script);        
-    }
-
-    function includeCSS(path) {
-        let css = document.createElement("link");
-        css.setAttribute("rel", "stylesheet");
-        css.setAttribute("href", path);
-        document.getElementsByTagName('head')[0].appendChild(css);
-    }
-
     function init() {
         window.player = new spine.SpinePlayer("spine-container", {
-            atlasUrl: `http://${data.atlas_url}`,
-            skelUrl: `http://${data.skel_url}`,
+            atlasUrl: data.atlas_url,
+            skelUrl: data.skel_url,
             skin: data.skin,
             animation: data.animation,
             showControls: false,
@@ -220,23 +206,7 @@
         window.player.skeleton.scaleY = value;
     }
 
-    window.onload = () => {
-        let csses = [
-            {'href': `http://${data.webview_host}/css/spine-v4.0/spine-player.css`},
-        ];
-
-        for(let index in csses) {
-            includeCSS(csses[index].href);
-        }
-
-        let libs = [
-            {'href': `http://${data.webview_host}/js/spine-v4.0/spine-player.js`, 'onload': init},
-        ];
-
-        for(let index in libs) {
-            includeJS(libs[index].href, libs[index].onload);
-        }
-    }    
+    window.onload = init;
 </script>
 <style>
     * {

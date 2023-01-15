@@ -7,7 +7,6 @@ import 'package:live2d_viewer/constants/destiny_child.dart';
 import 'package:live2d_viewer/constants/application.dart';
 import 'package:live2d_viewer/models/destiny_child/character.dart';
 import 'package:live2d_viewer/models/settings/destiny_child_settings.dart';
-import 'package:live2d_viewer/models/settings/webview_settings.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/expression_popup_menu.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/motion_popup_menu.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/skin_list.dart';
@@ -36,7 +35,6 @@ class CharacterView extends StatelessWidget {
       VideoThumbnailPreviewWindowController();
   late WebviewController webviewController;
   late DestinyChildSettings destinyChildSettings;
-  late WebviewSettings webviewSettings;
 
   CharacterView({super.key});
 
@@ -79,7 +77,6 @@ class CharacterView extends StatelessWidget {
     });
     final settings = watchProvider<SettingsProvider>(context).settings!;
     destinyChildSettings = settings.destinyChildSettings!;
-    webviewSettings = settings.webviewSettings!;
     return AnimatedBuilder(
       animation: controller,
       builder: (context, child) {

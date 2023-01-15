@@ -15,8 +15,6 @@ import 'package:live2d_viewer/widget/dialog/success_dialog.dart';
 import 'package:live2d_viewer/widget/toolbar.dart';
 import 'package:provider/provider.dart';
 
-import 'components/webview_settings.dart';
-
 final applicationKey = GlobalKey();
 final webviewKey = GlobalKey();
 
@@ -102,7 +100,6 @@ class SettingPage extends StatelessWidget {
       child: Column(
         children: [
           ApplicationSettingsPage(key: applicationKey, settings: _settings),
-          WebviewSettingsPage(key: webviewKey, settings: _settings),
           DestinyChildSettingsPage(key: destinyChildKey, settings: _settings),
           NikkeSettingsPage(key: nikkeKey, settings: _settings),
         ],
@@ -114,7 +111,7 @@ class SettingPage extends StatelessWidget {
     return Container(
       height: 48,
       decoration: const BoxDecoration(
-        color: barColor,
+        color: toolbarColor,
         border: Border(
           bottom: BorderSide(color: Colors.white70),
         ),

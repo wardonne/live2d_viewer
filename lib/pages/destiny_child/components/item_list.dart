@@ -29,7 +29,7 @@ class ItemList extends StatelessWidget {
               controller: tabController,
               tabs: DestinyChildConstants.tabbars,
             ),
-            color: barColor,
+            color: toolbarColor,
           ),
           Expanded(
             child: TabBarView(
@@ -41,7 +41,7 @@ class ItemList extends StatelessWidget {
           ),
           Toolbar.footer(
             height: footerBarHeight,
-            color: barColor,
+            color: toolbarColor,
             endActions: [
               _editModeSwitch(),
             ],

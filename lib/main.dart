@@ -1,12 +1,20 @@
+import 'dart:io';
+
 import 'package:auto_updater/auto_updater.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:live2d_viewer/constants/application.dart';
+import 'package:live2d_viewer/providers/locale_provider.dart';
 import 'package:live2d_viewer/providers/settings_provider.dart';
+import 'package:live2d_viewer/services/settings_service.dart';
+import 'package:live2d_viewer/utils/registry.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
+// ignore: depend_on_referenced_packages
+import 'package:path/path.dart' as p;
 
 import 'app.dart';
 
@@ -31,19 +39,33 @@ void main() async {
         windowManager.setFullScreen(!await windowManager.isFullScreen()),
   );
 
-  windowManager.addListener(CustomerWindowListener());
+  windowManager.waitUntilReadyToShow(
+    ApplicationConstants.defaultWindowOptions,
+    () async {
+      await windowManager.show();
+      await windowManager.focus();
+    },
+  );
 
-  windowManager.waitUntilReadyToShow(defaultWindowOptions, () async {
-    await windowManager.show();
-    await windowManager.focus();
-  });
+  final documentDirectory = await getApplicationDocumentsDirectory();
+  final storageDirectory =
+      Directory(p.join(documentDirectory.path, ApplicationConstants.appName));
+  if (!storageDirectory.existsSync()) {
+    storageDirectory.createSync(recursive: true);
+  }
 
-  final settings = await loadSettings();
+  final settings = await SettingsService.loadSettings();
+
+  RegistryUtil.init();
 
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(
-          create: (_) => SettingsProvider(settings: settings)),
+        create: (_) => SettingsProvider(settings: settings),
+      ),
+      ChangeNotifierProvider(create: (_) {
+        return LocaleProvider(const Locale('zh', 'CN'));
+      }),
     ],
     child: const Live2DViewer(),
   ));

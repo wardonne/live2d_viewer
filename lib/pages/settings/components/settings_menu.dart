@@ -20,7 +20,7 @@ class SettingsMenu extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              color: barColor,
+              color: toolbarColor,
               child: ListView.builder(
                 itemCount: items.length,
                 itemBuilder: (context, index) {

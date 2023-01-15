@@ -41,14 +41,12 @@ class SkinSpineState extends State<SkinSpine> {
     final skin = characterViewController.selectedSkin;
     final settings = watchProvider<SettingsProvider>(context).settings!;
     final nikkeSettings = settings.nikkeSettings!;
-    final webviewSettings = settings.webviewSettings!;
     final spineHost = nikkeSettings.characterSettings!.spineHost;
     final action = characterViewController.action;
     final viewModel = SpineHtmlData(
       atlasUrl: '$spineHost/${skin.code}/${action.atlas}',
       skelUrl: '$spineHost/${skin.code}/${action.skel}',
       animation: action.animation,
-      webviewHost: webviewSettings.virtualHost,
     );
     return Expanded(
       child: Column(
@@ -57,8 +55,8 @@ class SkinSpineState extends State<SkinSpine> {
             child: Stack(
               children: [
                 FutureProvider(
-                  create: (context) =>
-                      rootBundle.loadString(spineVersion40Html),
+                  create: (context) => rootBundle
+                      .loadString(ResourceConstants.spineVersion40Html),
                   initialData: '',
                   child: Consumer<String>(
                     builder: (context, data, child) {
@@ -69,9 +67,6 @@ class SkinSpineState extends State<SkinSpine> {
                         controller: widget.controller,
                         htmlStr: WebviewService.renderHtml(data, viewModel),
                         virtualHosts: [
-                          VirtualHost(
-                              virtualHost: webviewSettings.virtualHost!,
-                              folderPath: webviewSettings.path!),
                           VirtualHost(virtualHost: host, folderPath: path),
                         ],
                       );

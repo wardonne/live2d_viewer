@@ -1,0 +1,14 @@
+{
+    "title": "Live2D Viewer",
+    "indexTitle": "Games",
+    "gameTitles": "{section, select, destinyChild {Destiny Child} nikke {GODDESS OF VICTORY: NIKKE}}",
+    "@gameTitles": {
+        "placeholders": {
+            "section": {}
+        }
+    },
+    "destinyChild": "Destiny Child",
+    "nikke": "GODDESS OF VICTORY: NIKKE",
+    "reload": "reload",
+    "confirm": "confirm"
+}

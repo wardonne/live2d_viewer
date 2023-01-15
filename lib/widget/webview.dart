@@ -1,6 +1,7 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:live2d_viewer/constants/keys.dart';
 import 'package:live2d_viewer/models/virtual_host.dart';
 import 'package:webview_windows/webview_windows.dart' as webview;
 import 'package:webview_windows/webview_windows.dart';
@@ -25,6 +26,7 @@ class WebView extends StatefulWidget {
 
 class WebViewState extends State<WebView> {
   late WebviewController _controller;
+  final navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   void initState() {

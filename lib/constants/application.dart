@@ -1,31 +1,30 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
-
-const appName = 'Live2D Viewer';
-const initSize = Size(1440, 768);
-const minSize = initSize;
-
-const defaultWindowOptions = WindowOptions(
-    title: appName,
-    size: initSize,
-    center: true,
-    minimumSize: minSize,
-    titleBarStyle: TitleBarStyle.normal);
-
-const defaultActionIconButtonSplashRadius = 20.0;
-
-const defaultAppBarShape =
-    Border(bottom: BorderSide(color: Colors.black, width: 1));
-
-const dcName = 'Destiny Child';
-const nikkiName = 'Nikki';
-const settingName = 'Settings';
+import 'package:path/path.dart' as p;
 
 const double headerBarHeight = 48;
 const double footerBarHeight = 49;
-
-const Color barColor = Colors.black26;
+const Color toolbarColor = Colors.black26;
 
 class ApplicationConstants {
   static const String defaultSidebar = '0';
+
+  static const String appName = 'Live2D Viewer';
+
+  static const String settingsFilename = 'settings.json';
+
+  static const WindowOptions defaultWindowOptions = WindowOptions(
+    title: appName,
+    size: Size(1440, 768),
+    center: true,
+    minimumSize: Size(1440, 768),
+  );
+
+  static String cachePath =
+      p.join(File(Platform.resolvedExecutable).parent.path, 'data', 'cached');
+
+  static const String assetsURL =
+      'https://static.wardonet.cn/live2d-viewer/assets';
 }

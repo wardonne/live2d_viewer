@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:live2d_viewer/constants/application.dart';
 import 'package:live2d_viewer/controllers/edit_mode_controller.dart';
 import 'package:live2d_viewer/controllers/visible_controller.dart';
 import 'package:live2d_viewer/pages/nikke/components/character_view.dart';
@@ -31,4 +32,6 @@ class NikkeConstants {
       p.join(defaultCharacterPath, 'backups.json');
 
   static String snapshotPath = p.join('Live2DViewer', 'Nikke');
+
+  static const String assetsURL = "${ApplicationConstants.assetsURL}/nikke";
 }

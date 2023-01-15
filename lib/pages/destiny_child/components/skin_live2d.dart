@@ -40,12 +40,10 @@ class SkinLive2DState extends State<SkinLive2D> {
     final skin = characterViewController.selectedSkin;
     final settings = watchProvider<SettingsProvider>(context).settings!;
     final destinyChildSettings = settings.destinyChildSettings!;
-    final webviewSettings = settings.webviewSettings!;
     final live2dHost = destinyChildSettings.characterSettings!.live2dHost;
     final live2dModel = 'character.DRAGME.${skin.live2d}.json';
     final viewModel = Live2DHtmlData(
       live2d: '$live2dHost/${skin.live2d}/$live2dModel',
-      webviewHost: webviewSettings.virtualHost,
     );
     return Expanded(
       child: Column(
@@ -55,7 +53,7 @@ class SkinLive2DState extends State<SkinLive2D> {
               children: [
                 FutureProvider<String>(
                   create: (context) {
-                    return rootBundle.loadString(live2dHtml);
+                    return rootBundle.loadString(ResourceConstants.live2dHtml);
                   },
                   initialData: '',
                   child: Consumer<String>(
@@ -68,10 +66,6 @@ class SkinLive2DState extends State<SkinLive2D> {
                         htmlStr: WebviewService.renderHtml(data, viewModel),
                         controller: widget.controller,
                         virtualHosts: [
-                          VirtualHost(
-                            virtualHost: webviewSettings.virtualHost!,
-                            folderPath: webviewSettings.path!,
-                          ),
                           VirtualHost(
                             virtualHost: host,
                             folderPath: path,
