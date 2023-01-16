@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/constants/application.dart';
+import 'package:live2d_viewer/generated/l10n.dart';
 import 'package:live2d_viewer/widget/buttons/slider_popup_button.dart';
 import 'package:webview_windows/webview_windows.dart';
 
@@ -28,9 +29,9 @@ class SpeedPopupControl extends StatelessWidget {
         trackHeight: 3,
         thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 5),
       ),
-      child: const Tooltip(
-        message: 'speed play',
-        child: Icon(Icons.double_arrow_rounded, size: 20),
+      child: Tooltip(
+        message: S.of(context).tooltipSpeedPlay,
+        child: const Icon(Icons.double_arrow_rounded, size: 20),
       ),
       onChangeEnd: (value) =>
           webviewController.executeScript('speedPlay($value)'),

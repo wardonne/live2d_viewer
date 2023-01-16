@@ -5,7 +5,7 @@ import 'package:live2d_viewer/pages/destiny_child/components/soul_carta_table.da
 import 'package:live2d_viewer/controllers/edit_mode_controller.dart';
 import 'package:live2d_viewer/providers/settings_provider.dart';
 import 'package:live2d_viewer/services/destiny_child/soul_carta_service.dart';
-import 'package:live2d_viewer/utils/watch_provider.dart';
+import 'package:provider/provider.dart';
 
 class SoulCartaTabView extends StatelessWidget {
   final EditModeController editModeController =
@@ -15,9 +15,8 @@ class SoulCartaTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final destinyChildSettings = watchProvider<SettingsProvider>(context)
-        .settings!
-        .destinyChildSettings!;
+    final destinyChildSettings =
+        Provider.of<SettingsProvider>(context).settings!.destinyChildSettings!;
     final soulCartas = SoulCartaService(destinyChildSettings).load();
     return AnimatedBuilder(
       animation: editModeController,

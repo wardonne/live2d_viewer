@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:live2d_viewer/constants/destiny_child.dart';
 import 'package:live2d_viewer/models/destiny_child/character.dart';
 import 'package:live2d_viewer/providers/settings_provider.dart';
-import 'package:live2d_viewer/utils/watch_provider.dart';
+import 'package:provider/provider.dart';
 
 class SkinList extends StatelessWidget {
   final List<Skin> skins;
@@ -18,7 +18,7 @@ class SkinList extends StatelessWidget {
     final characterViewController =
         DestinyChildConstants.characterViewController;
     final selectedIndex = characterViewController.selectedIndex;
-    final avatarPath = watchProvider<SettingsProvider>(context)
+    final avatarPath = Provider.of<SettingsProvider>(context)
         .settings!
         .destinyChildSettings!
         .characterSettings!

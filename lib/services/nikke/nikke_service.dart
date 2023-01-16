@@ -11,8 +11,8 @@ import 'package:live2d_viewer/models/nikke/character.dart';
 import 'package:live2d_viewer/models/spine_html_data.dart';
 import 'package:live2d_viewer/services/cache_service.dart';
 import 'package:live2d_viewer/services/webview_service.dart';
-import 'package:live2d_viewer/utils/hash.dart';
-import 'package:live2d_viewer/utils/spine_util.dart';
+import 'package:live2d_viewer/utils/utils.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class NikkeService {
   NikkeService();
@@ -93,5 +93,25 @@ class NikkeService {
       ),
     );
     return html;
+  }
+
+  saveScreenshot(String data) {
+    final path = PathUtil().join([
+      NikkeConstants.screenshotPath,
+      'images',
+      '${DateTime.now().millisecondsSinceEpoch}.jpeg',
+    ]);
+    FileUtil().write(path, base64Decode(data));
+    launchUrlString(path);
+  }
+
+  saveVideo(String data) {
+    final path = PathUtil().join([
+      NikkeConstants.screenshotPath,
+      'videos',
+      '${DateTime.now().millisecondsSinceEpoch}.webm',
+    ]);
+    FileUtil().write(path, base64Decode(data));
+    launchUrlString(path);
   }
 }

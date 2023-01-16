@@ -25,34 +25,30 @@
                 player.config.animation_loop = true;
                 player.config.idle_animation = player.config.animation;
                 let animations = player.skeleton.data.animations;
-                if(animations.length > 1) {
-                    let animationNames = [];
-                    for(let index in animations) {
-                        animationNames[index] = animations[index].name;
-                    }
-                    window.chrome.webview.postMessage({
-                        event: 'animations',
-                        data: {
-                            'items': animationNames,
-                            'current': player.config.animation,
-                        },
-                    });
+                let animationNames = [];
+                for(let index in animations) {
+                    animationNames[index] = animations[index].name;
                 }
+                window.chrome.webview.postMessage({
+                    event: 'animations',
+                    data: {
+                        'items': animationNames,
+                        'current': player.config.animation,
+                    },
+                });
 
                 let clothes = player.skeleton.data.skins;
-                if(clothes.length > 1) {
-                    let clothNames = [];
-                    for(let index in clothes) {
-                        clothNames[index] = clothes[index].name;
-                    }
-                    window.chrome.webview.postMessage({
-                        event: 'clothes',
-                        data: {
-                            'items': clothNames,
-                            'current': player.config.skin,
-                        },
-                    });
+                let clothNames = [];
+                for(let index in clothes) {
+                    clothNames[index] = clothes[index].name;
                 }
+                window.chrome.webview.postMessage({
+                    event: 'clothes',
+                    data: {
+                        'items': clothNames,
+                        'current': player.config.skin,
+                    },
+                });
 
                 window.animeFrame = function() {
                 let animationFrame = window.requestAnimationFrame;

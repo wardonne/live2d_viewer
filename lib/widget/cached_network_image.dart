@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/constants/styles.dart';
 import 'package:live2d_viewer/services/cache_service.dart';
-import 'package:live2d_viewer/utils/hash.dart';
+import 'package:live2d_viewer/utils/hash_util.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 // ignore: depend_on_referenced_packages
 

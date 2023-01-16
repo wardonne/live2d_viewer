@@ -3,11 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/constants/application.dart';
 import 'package:live2d_viewer/models/settings/settings.dart';
-import 'package:live2d_viewer/pages/settings/components/application_settings.dart';
 import 'package:live2d_viewer/pages/settings/components/destiny_child_settings.dart';
 import 'package:live2d_viewer/pages/settings/components/settings_menu.dart';
 import 'package:live2d_viewer/providers/settings_provider.dart';
-import 'package:live2d_viewer/utils/watch_provider.dart';
 import 'package:live2d_viewer/widget/buttons/image_button.dart';
 import 'package:live2d_viewer/widget/dialog/error_dialog.dart';
 import 'package:live2d_viewer/widget/dialog/success_dialog.dart';
@@ -61,7 +59,7 @@ class SettingPage extends StatelessWidget {
   SettingPage({super.key});
   @override
   Widget build(BuildContext context) {
-    _settings = watchProvider<SettingsProvider>(context).settings;
+    _settings = Provider.of<SettingsProvider>(context).settings;
     return SizedBox(
       child: Row(
         children: [
@@ -98,7 +96,6 @@ class SettingPage extends StatelessWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         children: [
-          ApplicationSettingsPage(key: applicationKey, settings: _settings),
           DestinyChildSettingsPage(key: destinyChildKey, settings: _settings),
         ],
       ),

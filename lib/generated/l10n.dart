@@ -143,6 +143,86 @@ class S {
       args: [],
     );
   }
+
+  /// `Animations`
+  String get tooltipShowAnimation {
+    return Intl.message(
+      'Animations',
+      name: 'tooltipShowAnimation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Clothes`
+  String get tooltipShowClothes {
+    return Intl.message(
+      'Clothes',
+      name: 'tooltipShowClothes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Actions`
+  String get tooltipShowActions {
+    return Intl.message(
+      'Actions',
+      name: 'tooltipShowActions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Zoom`
+  String get tooltipZoom {
+    return Intl.message(
+      'Zoom',
+      name: 'tooltipZoom',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Speed`
+  String get tooltipSpeedPlay {
+    return Intl.message(
+      'Speed',
+      name: 'tooltipSpeedPlay',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Devtool`
+  String get tooltipDevtool {
+    return Intl.message(
+      'Devtool',
+      name: 'tooltipDevtool',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loop Playback`
+  String get tooltipLoopPlay {
+    return Intl.message(
+      'Loop Playback',
+      name: 'tooltipLoopPlay',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Play & Record`
+  String get tooltipPlayAndRecord {
+    return Intl.message(
+      'Play & Record',
+      name: 'tooltipPlayAndRecord',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

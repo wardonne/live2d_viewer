@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/constants/application.dart';
+import 'package:live2d_viewer/generated/l10n.dart';
 import 'package:live2d_viewer/widget/buttons/slider_popup_button.dart';
 import 'package:webview_windows/webview_windows.dart';
 
@@ -27,9 +28,9 @@ class ZoomPopupControl extends StatelessWidget {
         trackHeight: 3,
         thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 5),
       ),
-      child: const Tooltip(
-        message: 'zoom in & zoom out',
-        child: Icon(Icons.zoom_in, size: 20),
+      child: Tooltip(
+        message: S.of(context).tooltipZoom,
+        child: const Icon(Icons.zoom_in, size: 20),
       ),
       onChange: (value) => webviewController.executeScript('zoom($value)'),
     );

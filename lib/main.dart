@@ -9,7 +9,7 @@ import 'package:live2d_viewer/constants/application.dart';
 import 'package:live2d_viewer/providers/locale_provider.dart';
 import 'package:live2d_viewer/providers/settings_provider.dart';
 import 'package:live2d_viewer/services/settings_service.dart';
-import 'package:live2d_viewer/utils/registry.dart';
+import 'package:live2d_viewer/utils/registry_util.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';

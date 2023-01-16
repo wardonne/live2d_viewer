@@ -12,7 +12,6 @@ import 'package:live2d_viewer/providers/settings_provider.dart';
 import 'package:live2d_viewer/services/destiny_child/destiny_child_service.dart';
 import 'package:live2d_viewer/services/destiny_child/soul_carta_service.dart';
 import 'package:live2d_viewer/services/webview_service.dart';
-import 'package:live2d_viewer/utils/watch_provider.dart';
 import 'package:live2d_viewer/widget/buttons/image_button.dart';
 import 'package:live2d_viewer/widget/preview_windows/image_preview_window.dart';
 import 'package:live2d_viewer/widget/toolbar.dart';
@@ -36,7 +35,7 @@ class SoulCartaView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     webviewController = WebviewController();
-    final settings = watchProvider<SettingsProvider>(context).settings!;
+    final settings = Provider.of<SettingsProvider>(context).settings!;
     destinyChildSettings = settings.destinyChildSettings!;
     return AnimatedBuilder(
       animation: controller,

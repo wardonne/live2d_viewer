@@ -35,6 +35,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "nikke": MessageLookupByLibrary.simpleMessage("NIKKE：胜利女神"),
         "reload": MessageLookupByLibrary.simpleMessage("重新加载"),
         "requestError": MessageLookupByLibrary.simpleMessage("请求错误"),
-        "title": MessageLookupByLibrary.simpleMessage("Live2D Viewer")
+        "title": MessageLookupByLibrary.simpleMessage("Live2D Viewer"),
+        "tooltipDevtool": MessageLookupByLibrary.simpleMessage("开发者面板"),
+        "tooltipLoopPlay": MessageLookupByLibrary.simpleMessage("循环播放"),
+        "tooltipPlayAndRecord": MessageLookupByLibrary.simpleMessage("播放并录制"),
+        "tooltipShowActions": MessageLookupByLibrary.simpleMessage("行动列表"),
+        "tooltipShowAnimation": MessageLookupByLibrary.simpleMessage("动画列表"),
+        "tooltipShowClothes": MessageLookupByLibrary.simpleMessage("皮肤列表"),
+        "tooltipSpeedPlay": MessageLookupByLibrary.simpleMessage("倍速播放"),
+        "tooltipZoom": MessageLookupByLibrary.simpleMessage("缩放")
       };
 }

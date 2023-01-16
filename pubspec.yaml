@@ -37,8 +37,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   window_manager: ^0.2.8
   webview_windows: 0.2.1
-  json_serializable: ^6.5.4
-  sidebarx: ^0.14.0
   extended_image: ^6.3.4
   provider: ^6.0.5
   validatorless: ^1.2.3

@@ -7,7 +7,6 @@ import 'package:live2d_viewer/models/live2d_html_data.dart';
 import 'package:live2d_viewer/models/virtual_host.dart';
 import 'package:live2d_viewer/providers/settings_provider.dart';
 import 'package:live2d_viewer/services/webview_service.dart';
-import 'package:live2d_viewer/utils/watch_provider.dart';
 import 'package:live2d_viewer/widget/preview_windows/snapshot_preview_window.dart';
 import 'package:live2d_viewer/widget/preview_windows/video_thumbnail_preview_window.dart';
 import 'package:live2d_viewer/widget/webview.dart';
@@ -38,7 +37,7 @@ class SkinLive2DState extends State<SkinLive2D> {
     final characterViewController =
         DestinyChildConstants.characterViewController;
     final skin = characterViewController.selectedSkin;
-    final settings = watchProvider<SettingsProvider>(context).settings!;
+    final settings = Provider.of<SettingsProvider>(context).settings!;
     final destinyChildSettings = settings.destinyChildSettings!;
     final live2dHost = destinyChildSettings.characterSettings!.live2dHost;
     final live2dModel = 'character.DRAGME.${skin.live2d}.json';

@@ -12,5 +12,13 @@
     "reload": "重新加载",
     "confirm": "确认",
     "requestError": "请求错误",
-    "dialogTitleError": "错误"
+    "dialogTitleError": "错误",
+    "tooltipShowAnimation": "动画列表",
+    "tooltipShowClothes": "皮肤列表",
+    "tooltipShowActions": "行动列表",
+    "tooltipZoom": "缩放",
+    "tooltipSpeedPlay": "倍速播放",
+    "tooltipDevtool": "开发者面板",
+    "tooltipLoopPlay": "循环播放",
+    "tooltipPlayAndRecord": "播放并录制"
 }

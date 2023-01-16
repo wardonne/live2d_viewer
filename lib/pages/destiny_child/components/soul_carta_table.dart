@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/models/settings/destiny_child_settings.dart';
 import 'package:live2d_viewer/models/destiny_child/soul_carta.dart';
-import 'package:live2d_viewer/services/app_service.dart';
 import 'package:live2d_viewer/services/destiny_child/destiny_child_service.dart';
 import 'package:live2d_viewer/services/destiny_child/soul_carta_service.dart';
 import 'package:live2d_viewer/widget/buttons/image_button.dart';
@@ -135,7 +134,6 @@ class SoulCartaTableSource extends DataTableSource {
               icon: const Icon(Icons.search, color: Colors.white70, size: 20),
               onPressed: () {
                 SoulCartaService.initViewWindow(item);
-                AppService.unextendSidebar();
                 DestinyChildService.closeItemsWindow();
               },
             ),

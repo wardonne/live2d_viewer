@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:live2d_viewer/models/destiny_child/character.dart';
 import 'package:live2d_viewer/models/settings/destiny_child_settings.dart';
-import 'package:live2d_viewer/services/app_service.dart';
 import 'package:live2d_viewer/services/destiny_child/character_service.dart';
 import 'package:live2d_viewer/services/destiny_child/destiny_child_service.dart';
 import 'package:live2d_viewer/widget/buttons/image_button.dart';
@@ -30,7 +29,6 @@ class CharacterGrid extends StatelessWidget {
             filepath: '$avatarPath/${item.avatar}',
             onPressed: () {
               CharacterService.initViewWindow(item);
-              AppService.unextendSidebar();
               DestinyChildService.closeItemsWindow();
             },
           ),

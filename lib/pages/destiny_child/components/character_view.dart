@@ -15,12 +15,12 @@ import 'package:live2d_viewer/pages/destiny_child/components/zoom_popup_control.
 import 'package:live2d_viewer/providers/settings_provider.dart';
 import 'package:live2d_viewer/services/destiny_child/character_service.dart';
 import 'package:live2d_viewer/services/destiny_child/destiny_child_service.dart';
-import 'package:live2d_viewer/utils/watch_provider.dart';
 import 'package:live2d_viewer/widget/buttons/image_button.dart';
 import 'package:live2d_viewer/widget/preview_windows/snapshot_preview_window.dart';
 import 'package:live2d_viewer/widget/preview_windows/video_thumbnail_preview_window.dart';
 import 'package:live2d_viewer/widget/toolbar.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:webview_windows/webview_windows.dart';
 import 'package:path/path.dart' as p;
 
@@ -75,7 +75,7 @@ class CharacterView extends StatelessWidget {
         default:
       }
     });
-    final settings = watchProvider<SettingsProvider>(context).settings!;
+    final settings = Provider.of<SettingsProvider>(context).settings!;
     destinyChildSettings = settings.destinyChildSettings!;
     return AnimatedBuilder(
       animation: controller,

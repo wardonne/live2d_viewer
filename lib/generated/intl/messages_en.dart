@@ -36,6 +36,17 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("GODDESS OF VICTORY: NIKKE"),
         "reload": MessageLookupByLibrary.simpleMessage("reload"),
         "requestError": MessageLookupByLibrary.simpleMessage("Request Error"),
-        "title": MessageLookupByLibrary.simpleMessage("Live2D Viewer")
+        "title": MessageLookupByLibrary.simpleMessage("Live2D Viewer"),
+        "tooltipDevtool": MessageLookupByLibrary.simpleMessage("Devtool"),
+        "tooltipLoopPlay":
+            MessageLookupByLibrary.simpleMessage("Loop Playback"),
+        "tooltipPlayAndRecord":
+            MessageLookupByLibrary.simpleMessage("Play & Record"),
+        "tooltipShowActions": MessageLookupByLibrary.simpleMessage("Actions"),
+        "tooltipShowAnimation":
+            MessageLookupByLibrary.simpleMessage("Animations"),
+        "tooltipShowClothes": MessageLookupByLibrary.simpleMessage("Clothes"),
+        "tooltipSpeedPlay": MessageLookupByLibrary.simpleMessage("Speed"),
+        "tooltipZoom": MessageLookupByLibrary.simpleMessage("Zoom")
       };
 }

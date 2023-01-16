@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:live2d_viewer/controllers/paginator_controller.dart';
 import 'package:live2d_viewer/models/destiny_child/character.dart';
 import 'package:live2d_viewer/models/settings/destiny_child_settings.dart';
-import 'package:live2d_viewer/services/app_service.dart';
 import 'package:live2d_viewer/services/destiny_child/character_service.dart';
 import 'package:live2d_viewer/services/destiny_child/destiny_child_service.dart';
 import 'package:live2d_viewer/widget/buttons/image_button.dart';
@@ -109,7 +108,6 @@ class CharacterTableSource extends PaginatorController<Character> {
                   icon: const Icon(Icons.search, size: 20),
                   onPressed: () {
                     CharacterService.initViewWindow(item);
-                    AppService.unextendSidebar();
                     DestinyChildService.closeItemsWindow();
                   },
                 ),
@@ -185,7 +183,6 @@ class CharacterTableSource extends PaginatorController<Character> {
                           onPressed: () {
                             CharacterService.initViewWindow(item,
                                 skinIndex: item.skins.indexOf(skin));
-                            AppService.unextendSidebar();
                             DestinyChildService.closeItemsWindow();
                           },
                         )

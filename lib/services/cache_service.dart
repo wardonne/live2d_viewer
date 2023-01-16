@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:live2d_viewer/constants/application.dart';
 import 'package:live2d_viewer/errors/invalid_params_error.dart';
-import 'package:live2d_viewer/utils/hash.dart';
+import 'package:live2d_viewer/utils/hash_util.dart';
 import 'package:path/path.dart' as p;
 
 class CacheService {

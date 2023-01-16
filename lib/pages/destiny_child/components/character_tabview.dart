@@ -5,7 +5,7 @@ import 'package:live2d_viewer/pages/destiny_child/components/character_table.dar
 import 'package:live2d_viewer/controllers/edit_mode_controller.dart';
 import 'package:live2d_viewer/providers/settings_provider.dart';
 import 'package:live2d_viewer/services/destiny_child/character_service.dart';
-import 'package:live2d_viewer/utils/watch_provider.dart';
+import 'package:provider/provider.dart';
 
 class CharacterTabView extends StatelessWidget {
   final EditModeController editModeController =
@@ -15,9 +15,8 @@ class CharacterTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final destinyChildSettings = watchProvider<SettingsProvider>(context)
-        .settings!
-        .destinyChildSettings!;
+    final destinyChildSettings =
+        Provider.of<SettingsProvider>(context).settings!.destinyChildSettings!;
     final items = CharacterService(destinyChildSettings).load();
     return AnimatedBuilder(
       animation: editModeController,

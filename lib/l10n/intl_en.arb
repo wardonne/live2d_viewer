@@ -12,5 +12,13 @@
     "reload": "reload",
     "confirm": "confirm",
     "requestError": "Request Error",
-    "dialogTitleError": "Error"
+    "dialogTitleError": "Error",
+    "tooltipShowAnimation": "Animations",
+    "tooltipShowClothes": "Clothes",
+    "tooltipShowActions": "Actions",
+    "tooltipZoom": "Zoom",
+    "tooltipSpeedPlay": "Speed",
+    "tooltipDevtool": "Devtool",
+    "tooltipLoopPlay": "Loop Playback",
+    "tooltipPlayAndRecord": "Play & Record"
 }
