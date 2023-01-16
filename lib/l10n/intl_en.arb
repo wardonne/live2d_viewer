@@ -10,5 +10,7 @@
     "destinyChild": "Destiny Child",
     "nikke": "GODDESS OF VICTORY: NIKKE",
     "reload": "reload",
-    "confirm": "confirm"
+    "confirm": "confirm",
+    "requestError": "Request Error",
+    "dialogTitleError": "Error"
 }

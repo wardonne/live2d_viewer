@@ -24,7 +24,11 @@ class ApplicationConstants {
 
   static String cachePath =
       p.join(File(Platform.resolvedExecutable).parent.path, 'data', 'cached');
+  static String imageCachePath = p.join(cachePath, 'images');
+  static String httpCachePath = p.join(cachePath, 'http');
+  static String resourceCachePath = p.join(cachePath, 'resources');
 
   static const String assetsURL =
       'https://static.wardonet.cn/live2d-viewer/assets';
+  static const String localAssetsURL = 'static.live2d-viewer.local';
 }

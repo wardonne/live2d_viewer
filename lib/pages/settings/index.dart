@@ -5,7 +5,6 @@ import 'package:live2d_viewer/constants/application.dart';
 import 'package:live2d_viewer/models/settings/settings.dart';
 import 'package:live2d_viewer/pages/settings/components/application_settings.dart';
 import 'package:live2d_viewer/pages/settings/components/destiny_child_settings.dart';
-import 'package:live2d_viewer/pages/settings/components/nikke_settings.dart';
 import 'package:live2d_viewer/pages/settings/components/settings_menu.dart';
 import 'package:live2d_viewer/providers/settings_provider.dart';
 import 'package:live2d_viewer/utils/watch_provider.dart';
@@ -101,7 +100,6 @@ class SettingPage extends StatelessWidget {
         children: [
           ApplicationSettingsPage(key: applicationKey, settings: _settings),
           DestinyChildSettingsPage(key: destinyChildKey, settings: _settings),
-          NikkeSettingsPage(key: nikkeKey, settings: _settings),
         ],
       ),
     );

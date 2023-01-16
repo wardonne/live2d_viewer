@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/components/language_selection.dart';
+import 'package:live2d_viewer/constants/nikke.dart';
 import 'package:live2d_viewer/constants/resources.dart';
 import 'package:live2d_viewer/constants/routes.dart';
+import 'package:live2d_viewer/constants/styles.dart';
 import 'package:live2d_viewer/generated/l10n.dart';
 import 'package:live2d_viewer/models/nikke/character.dart';
 import 'package:live2d_viewer/services/nikke/nikke_service.dart';
 import 'package:live2d_viewer/widget/buttons/container_button.dart';
 import 'package:live2d_viewer/widget/cached_network_image.dart';
+import 'package:live2d_viewer/widget/dialog/error_dialog.dart';
 import 'package:live2d_viewer/widget/wrappers/context_menu_wrapper.dart';
-import 'package:provider/provider.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class CharacterList extends StatefulWidget {
   const CharacterList({super.key});
@@ -20,25 +23,31 @@ class CharacterList extends StatefulWidget {
 }
 
 class CharacterListState extends State<CharacterList> {
+  final service = NikkeService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).nikke),
         actions: [
+          ContainerButton(
+            margin: const EdgeInsets.only(right: 20),
+            child: const Icon(Icons.refresh),
+            onClick: () {
+              setState(() {});
+            },
+          ),
           Container(
             margin: const EdgeInsets.only(right: 20),
             child: const LanguageSelection(),
           )
         ],
       ),
-      body: FutureProvider<List<Character>>(
-        create: (BuildContext context) {
-          return NikkeService.characters();
-        },
-        initialData: const [],
-        child: Consumer<List<Character>>(
-          builder: (BuildContext context, items, Widget? child) {
+      body: FutureBuilder(
+        future: service.characters(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final items = snapshot.data!;
             return Container(
               width: double.infinity,
               padding: const EdgeInsets.all(10),
@@ -71,8 +80,23 @@ class CharacterListState extends State<CharacterList> {
                 ),
               ),
             );
-          },
-        ),
+          } else if (snapshot.hasError) {
+            final error = snapshot.error;
+            debugPrint('$error');
+            return ErrorDialog(
+                message: '${S.of(context).requestError}: $error');
+          } else {
+            final size = MediaQuery.of(context).size;
+            return SizedBox(
+              width: size.width,
+              height: size.height,
+              child: LoadingAnimationWidget.threeArchedCircle(
+                color: Styles.iconColor,
+                size: 30,
+              ),
+            );
+          }
+        },
       ),
     );
   }
@@ -85,21 +109,36 @@ class CharacterListState extends State<CharacterList> {
         height: 200,
         child: ContextMenuWrapper(
           itemBuilder: (context) => [
-            ListTile(
-              leading: const Icon(Icons.refresh),
-              title: Text(S.of(context).reload),
-              onTap: () {
+            ContainerButton(
+              height: 30,
+              color: Styles.textColor,
+              hoverColor: Styles.hoverTextColor,
+              backgroundColor: Styles.popupBackgrounColor,
+              hoverBackgroundColor: Styles.hoverBackgroundColor,
+              child: Row(
+                children: [
+                  Container(
+                    width: 30,
+                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                    child: const Icon(Icons.refresh),
+                  ),
+                  Expanded(
+                    child: Text(S.of(context).reload),
+                  ),
+                ],
+              ),
+              onClick: () {
                 Navigator.of(context).pop();
                 cachedNetworkImageKey.currentState?.reload();
               },
-            )
+            ),
           ],
           child: CachedNetworkImage(
             key: cachedNetworkImageKey,
             width: 100,
             height: 200,
             path:
-                'https://static.wardonet.cn/live2d-viewer/assets/nikke/character/avatars/${item.avatar}',
+                '${NikkeConstants.assetsURL}/character/avatars/${item.avatar}',
             placeholder: ResourceConstants.nikkeCharacterDefaultAvatar,
           ),
         ),

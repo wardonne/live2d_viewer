@@ -10,5 +10,7 @@
     "destinyChild": "天命之子",
     "nikke": "NIKKE：胜利女神",
     "reload": "重新加载",
-    "confirm": "确认"
+    "confirm": "确认",
+    "requestError": "请求错误",
+    "dialogTitleError": "错误"
 }

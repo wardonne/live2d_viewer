@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/constants/application.dart';
+import 'package:live2d_viewer/constants/styles.dart';
+import 'package:live2d_viewer/services/cache_service.dart';
 import 'package:live2d_viewer/utils/hash.dart';
-import 'package:path/path.dart' as p;
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+// ignore: depend_on_referenced_packages
 
 class CachedNetworkImage extends StatefulWidget {
   final String path;
@@ -30,20 +32,8 @@ class CachedNetworkImage extends StatefulWidget {
     }
   }
 
-  File get _cachedImage {
-    return File(p.join(ApplicationConstants.cachePath, 'images', cacheKey));
-  }
-
-  bool get _overtime {
-    if (cacheTime == null) {
-      return false;
-    } else {
-      return _cachedImage
-          .lastModifiedSync()
-          .add(cacheTime!)
-          .isAfter(DateTime.now());
-    }
-  }
+  File get _cachedImage =>
+      CacheService().getCachedImage(path: path, cacheKey: cacheKey);
 
   @override
   State<StatefulWidget> createState() {
@@ -66,7 +56,8 @@ class CachedNetworkImageState extends State<CachedNetworkImage> {
   }
 
   Future<Image> fetchImage() async {
-    if (!_cachedImage.existsSync() || widget._overtime) {
+    if (!CacheService()
+        .isUsable(widget._cachedImage, duration: widget.cacheTime)) {
       await Dio().download(widget.path, _cachedImage.path).catchError((error) {
         if (widget._cachedImage.existsSync()) {
           widget._cachedImage.deleteSync();
@@ -87,17 +78,27 @@ class CachedNetworkImageState extends State<CachedNetworkImage> {
       builder: (BuildContext context, snapshot) {
         if (snapshot.hasData) {
           return snapshot.data!;
-        } else {
+        } else if (snapshot.hasError) {
           return widget.placeholder == null
               ? SizedBox(
                   width: widget.width,
                   height: widget.height,
+                  child: const Icon(Icons.broken_image),
                 )
               : Image.asset(
                   widget.placeholder!,
                   width: widget.width,
                   height: widget.height,
                 );
+        } else {
+          return SizedBox(
+            width: widget.width,
+            height: widget.height,
+            child: LoadingAnimationWidget.threeArchedCircle(
+              color: Styles.iconColor,
+              size: Styles.iconSize,
+            ),
+          );
         }
       },
     );

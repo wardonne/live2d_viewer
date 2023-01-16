@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:live2d_viewer/generated/l10n.dart';
 import 'package:live2d_viewer/widget/dialog/base_dialog.dart';
 
 class ErrorDialog extends StatelessWidget {
@@ -10,7 +11,7 @@ class ErrorDialog extends StatelessWidget {
     return BaseDialog(
       icon: const Icon(Icons.error),
       iconColor: Colors.red,
-      title: 'error',
+      title: S.of(context).dialogTitleError,
       message: message,
     );
   }

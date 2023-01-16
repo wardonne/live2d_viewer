@@ -29,10 +29,12 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "confirm": MessageLookupByLibrary.simpleMessage("确认"),
         "destinyChild": MessageLookupByLibrary.simpleMessage("天命之子"),
+        "dialogTitleError": MessageLookupByLibrary.simpleMessage("错误"),
         "gameTitles": m0,
         "indexTitle": MessageLookupByLibrary.simpleMessage("游戏库"),
         "nikke": MessageLookupByLibrary.simpleMessage("NIKKE：胜利女神"),
         "reload": MessageLookupByLibrary.simpleMessage("重新加载"),
+        "requestError": MessageLookupByLibrary.simpleMessage("请求错误"),
         "title": MessageLookupByLibrary.simpleMessage("Live2D Viewer")
       };
 }

@@ -17,7 +17,7 @@ class ContextMenuWrapper extends StatelessWidget {
     return ContextMenuArea(
       builder: itemBuilder,
       width: width ?? 200,
-      verticalPadding: 5.0,
+      verticalPadding: 0.0,
       child: child,
     );
   }

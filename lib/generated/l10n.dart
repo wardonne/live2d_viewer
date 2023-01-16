@@ -123,6 +123,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Request Error`
+  String get requestError {
+    return Intl.message(
+      'Request Error',
+      name: 'requestError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error`
+  String get dialogTitleError {
+    return Intl.message(
+      'Error',
+      name: 'dialogTitleError',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

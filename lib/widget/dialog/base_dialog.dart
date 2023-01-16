@@ -25,7 +25,7 @@ class BaseDialog extends StatelessWidget {
           ? SizedBox(
               height: 150,
               width: 400,
-              child: Center(child: Text(message!)),
+              child: SingleChildScrollView(child: Text(message!)),
             )
           : null,
       actions: actions == null || actions!.isEmpty

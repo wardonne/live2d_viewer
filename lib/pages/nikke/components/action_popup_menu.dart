@@ -1,14 +1,19 @@
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/pages/nikke/components/character_view.dart';
+import 'package:live2d_viewer/constants/routes.dart';
 import 'package:live2d_viewer/widget/buttons/container_button.dart';
+import 'package:live2d_viewer/models/nikke/character.dart' as nikke;
 
 class ActionPopupMenu extends StatefulWidget {
-  final CharacterViewController controller;
+  final nikke.Character character;
   const ActionPopupMenu({
     super.key,
-    required this.controller,
+    required this.character,
   });
+
+  nikke.Skin get skin => character.activeSkin;
+
+  List<nikke.Action> get actions => skin.actions;
 
   @override
   State<StatefulWidget> createState() => _ActionPopupMenuState();
@@ -32,15 +37,20 @@ class _ActionPopupMenuState extends State<ActionPopupMenu> {
         ),
         child: Column(
           mainAxisSize: MainAxisSize.max,
-          children: widget.controller.selectedSkin.actions
+          children: widget.actions
               .map((action) => ContainerButton(
                     padding: const EdgeInsets.all(5.0),
                     backgroundColor: Colors.transparent,
                     hoverBackgroundColor: Colors.white24,
                     color: Colors.white,
                     onClick: () {
-                      menuController.hideMenu();
-                      widget.controller.setAction(action.name);
+                      widget.character.activeSkin.activeActionIndex =
+                          widget.actions.indexOf(action);
+                      Navigator.pushReplacementNamed(
+                        context,
+                        Routes.nikkeCharacterDetail,
+                        arguments: widget.character,
+                      );
                     },
                     child: Row(
                       children: [
