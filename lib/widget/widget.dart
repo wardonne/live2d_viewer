@@ -8,3 +8,4 @@ export './dialog/dialog.dart';
 export './form/form.dart';
 export './wrappers/wrapper.dart';
 export './preview_windows/preview_windows.dart';
+export './custom_bottom_navigation_bar.dart';

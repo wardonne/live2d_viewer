@@ -36,6 +36,16 @@ class _Live2DViewerState extends State<Live2DViewer> with WindowListener {
           color: Styles.iconColor,
           size: Styles.iconSize,
         ),
+        appBarTheme: const AppBarTheme(
+          actionsIconTheme: IconThemeData(
+            size: Styles.iconSize,
+            color: Styles.iconColor,
+          ),
+          iconTheme: IconThemeData(
+            size: Styles.iconSize,
+            color: Styles.iconColor,
+          ),
+        ),
       ),
       locale: Provider.of<LocaleProvider>(context).locale,
       localizationsDelegates: const {

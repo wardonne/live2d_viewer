@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:live2d_viewer/generated/l10n.dart';
 import 'package:live2d_viewer/widget/buttons/image_button.dart';
 import 'package:webview_windows/webview_windows.dart';
 
@@ -10,6 +11,7 @@ class WebviewConsoleButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ImageButton(
       icon: const Icon(Icons.developer_board),
+      tooltip: S.of(context).tooltipDevtool,
       onPressed: () async => await controller.openDevTools(),
     );
   }

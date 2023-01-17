@@ -25,7 +25,7 @@ class CharacterDetailState extends State<CharacterDetail> {
   final service = NikkeService();
   final WebviewController _controller = WebviewController();
   final BottomToolbarController _bottomToolbarController =
-      BottomToolbarController(animations: [], clothes: []);
+      BottomToolbarController(animations: []);
   @override
   void initState() {
     super.initState();
@@ -37,11 +37,6 @@ class CharacterDetailState extends State<CharacterDetail> {
         case 'animations':
           final items = data['items'];
           _bottomToolbarController.setAnimations(
-              (items as List<dynamic>).map((item) => item as String).toList());
-          break;
-        case 'clothes':
-          final items = data['items'];
-          _bottomToolbarController.setClothes(
               (items as List<dynamic>).map((item) => item as String).toList());
           break;
         case 'snapshot':

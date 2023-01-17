@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/components/global_components.dart';
+import 'package:live2d_viewer/components/iconfont.dart';
 import 'package:live2d_viewer/constants/styles.dart';
 import 'package:live2d_viewer/models/nikke/character.dart';
+import 'package:live2d_viewer/pages/nikke/components/skin_popup_menu.dart';
 import 'package:live2d_viewer/widget/buttons/buttons.dart';
 import 'package:live2d_viewer/widget/toolbar.dart';
 import 'package:webview_windows/webview_windows.dart';
@@ -51,7 +53,7 @@ class _BottomToolbarState extends State<BottomToolbar> {
               ],
               endActions: [
                 ImageButton.fromIcon(
-                  icon: Icons.screenshot_monitor,
+                  icon: IconFont.iconCamera,
                   onPressed: () {
                     widget._webviewController.executeScript('snapshot()');
                   },
@@ -62,14 +64,12 @@ class _BottomToolbarState extends State<BottomToolbar> {
                     animations: widget._controller.animations,
                     webviewController: widget._webviewController,
                   ),
-                if (widget._controller.visible &&
-                    widget._controller.clothes.length > 1)
-                  ClothPopupMenu(
-                    clothes: widget._controller.clothes,
-                    webviewController: widget._webviewController,
-                  ),
                 if (skin.actions.length > 1)
                   ActionPopupMenu(character: widget.character),
+                if (widget.character.skins.length > 1)
+                  SkinPopupMenu(
+                      skins: widget.character.skins,
+                      character: widget.character),
                 ZoomPopupControl(
                   value: 1.0,
                   max: 3.0,
@@ -93,26 +93,15 @@ class _BottomToolbarState extends State<BottomToolbar> {
 
 class BottomToolbarController extends ChangeNotifier {
   List<String> animations;
-  List<String> clothes;
   bool _visible = false;
 
   bool get visible => _visible;
 
-  BottomToolbarController({required this.animations, required this.clothes});
+  BottomToolbarController({required this.animations});
 
   setAnimations(List<String> animations) {
     this.animations = animations;
-    if (clothes.isNotEmpty) {
-      _visible = true;
-      notifyListeners();
-    }
-  }
-
-  setClothes(List<String> clothes) {
-    this.clothes = clothes;
-    if (animations.isNotEmpty) {
-      _visible = true;
-      notifyListeners();
-    }
+    _visible = true;
+    notifyListeners();
   }
 }

@@ -155,10 +155,10 @@ class S {
   }
 
   /// `Clothes`
-  String get tooltipShowClothes {
+  String get tooltipShowSkins {
     return Intl.message(
       'Clothes',
-      name: 'tooltipShowClothes',
+      name: 'tooltipShowSkins',
       desc: '',
       args: [],
     );
@@ -219,6 +219,16 @@ class S {
     return Intl.message(
       'Play & Record',
       name: 'tooltipPlayAndRecord',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Soul Carta`
+  String get soulCarta {
+    return Intl.message(
+      'Soul Carta',
+      name: 'soulCarta',
       desc: '',
       args: [],
     );

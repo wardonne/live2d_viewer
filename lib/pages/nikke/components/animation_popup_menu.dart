@@ -90,9 +90,9 @@ class _AnimationPopupMenu extends State<AnimationPopupMenu> {
         );
       },
       pressType: PressType.singleClick,
-      child: const Tooltip(
-        message: 'show animations',
-        child: Icon(Icons.animation, size: 20),
+      child: Tooltip(
+        message: S.of(context).tooltipShowAnimation,
+        child: const Icon(Icons.animation, size: 20),
       ),
     );
   }

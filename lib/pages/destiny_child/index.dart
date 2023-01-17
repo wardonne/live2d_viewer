@@ -1,79 +1,66 @@
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/constants/destiny_child.dart';
-import 'package:live2d_viewer/pages/destiny_child/components/character_view.dart';
-import 'package:live2d_viewer/pages/destiny_child/components/item_list.dart';
-import 'package:live2d_viewer/providers/settings_provider.dart';
-import 'package:live2d_viewer/services/destiny_child/soul_carta_service.dart';
-import 'package:provider/provider.dart';
+import 'package:live2d_viewer/components/global_components.dart';
+import 'package:live2d_viewer/constants/constants.dart';
+import 'package:live2d_viewer/generated/l10n.dart';
+import 'package:live2d_viewer/widget/widget.dart';
 
 class DestinyChildPage extends StatefulWidget {
   const DestinyChildPage({super.key});
   @override
-  State<StatefulWidget> createState() {
-    return DestinyChildPageState();
-  }
+  State<StatefulWidget> createState() => DestinyChildPageState();
 }
 
-class DestinyChildPageState extends State<DestinyChildPage>
-    with SingleTickerProviderStateMixin {
-  final soulCartaEditModeController =
-      DestinyChildConstants.soulCartaEditModeController;
-  final CharacterViewController childViewController = CharacterViewController();
-  late TabController tabController;
-  late SoulCartaService? soulCartaService;
-  @override
-  void initState() {
-    super.initState();
-    tabController =
-        TabController(length: DestinyChildConstants.tabbars.length, vsync: this)
-          ..addListener(() {
-            if (tabController.indexIsChanging) {
-              DestinyChildConstants.activeTabIndex = tabController.index;
-            }
-          });
+class DestinyChildPageState extends State<DestinyChildPage> {
+  int _activeTabIndex = 0;
+
+  final List<Widget> _pages = [
+    const Center(
+      child: Text('0'),
+    ),
+    const Center(
+      child: Text('1'),
+    )
+  ];
+
+  _switchTab(int index) {
+    _activeTabIndex = index;
+    debugPrint(_activeTabIndex.toString());
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    var destinyChildSettings =
-        Provider.of<SettingsProvider>(context).settings!.destinyChildSettings!;
-    soulCartaService = SoulCartaService(destinyChildSettings);
-    tabController.animateTo(DestinyChildConstants.activeTabIndex ??
-        destinyChildSettings.defaultHome ??
-        DestinyChildConstants.defaultHome);
-    return AnimatedBuilder(
-      animation: tabController,
-      builder: (context, child) {
-        return AnimatedBuilder(
-          animation: DestinyChildConstants.itemListController,
-          builder: (context, child) {
-            return Row(
-              children: [
-                if (DestinyChildConstants.itemListController.visible)
-                  Expanded(
-                    child: ItemList(
-                      tabController: tabController,
-                    ),
-                  ),
-                if (!DestinyChildConstants.itemListController.visible)
-                  Expanded(
-                    child: _getDetailWidgetByIndex(tabController.index),
-                  ),
-              ],
-            );
-          },
-        );
-      },
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(S.of(context).destinyChild),
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 20),
+            child: const LanguageSelection(),
+          ),
+        ],
+      ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        height: Styles.bottomAppBarHeight,
+        color: Styles.appBarColor,
+        items: [
+          ContainerButton(
+            hoverBackgroundColor: Styles.hoverBackgroundColor,
+            onClick: () {
+              _switchTab(0);
+            },
+            child: Center(child: Text(S.of(context).soulCarta)),
+          ),
+          ContainerButton(
+            hoverBackgroundColor: Styles.hoverBackgroundColor,
+            child: Center(child: Text(S.of(context).soulCarta)),
+            onClick: () {
+              _switchTab(1);
+            },
+          ),
+        ],
+      ),
+      body: _pages[_activeTabIndex],
     );
-  }
-
-  Widget _getDetailWidgetByIndex(int index) {
-    return DestinyChildConstants.detailWindows[index];
-  }
-
-  @override
-  void dispose() {
-    tabController.dispose();
-    super.dispose();
   }
 }

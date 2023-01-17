@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:live2d_viewer/constants/application.dart';
 import 'package:live2d_viewer/controllers/visible_controller.dart';
 import 'package:live2d_viewer/generated/l10n.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/character_tabview.dart';
@@ -9,6 +10,7 @@ import 'package:live2d_viewer/pages/destiny_child/components/character_view.dart
 import 'package:live2d_viewer/pages/destiny_child/components/soul_carta_tabview.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/soul_carta_view.dart';
 import 'package:live2d_viewer/controllers/edit_mode_controller.dart';
+import 'package:live2d_viewer/utils/path_util.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as p;
 
@@ -72,4 +74,20 @@ class DestinyChildConstants {
   ];
 
   static int? activeTabIndex;
+
+  static const String assetsURL =
+      '${ApplicationConstants.assetsURL}/destiny-child';
+  static const String characterDataURL = '$assetsURL/character/data.json';
+  static const String characterAvatarURL = '$assetsURL/character/avatars';
+  static const String characterLive2DURL = '$assetsURL/character/live2d';
+
+  static const String soulCartaDataURL = '$assetsURL/soul_carta/data.json';
+  static const String soulCartaAvatarURL = '$assetsURL/soul_carta/avatars';
+  static const String soulCartaImageURL = '$assetsURL/soul_carta/images';
+  static const String soulCartaLive2DURL = '$assetsURL/soul_carta/live2d';
+
+  static String resourceCachePath = PathUtil()
+      .join([ApplicationConstants.resourceCachePath, 'destiny_child']);
+  static String screenshotPath =
+      PathUtil().join([ApplicationConstants.screenshotPath, 'destiny_child']);
 }

@@ -14,11 +14,12 @@
     "requestError": "Request Error",
     "dialogTitleError": "Error",
     "tooltipShowAnimation": "Animations",
-    "tooltipShowClothes": "Clothes",
+    "tooltipShowSkins": "Clothes",
     "tooltipShowActions": "Actions",
     "tooltipZoom": "Zoom",
     "tooltipSpeedPlay": "Speed",
     "tooltipDevtool": "Devtool",
     "tooltipLoopPlay": "Loop Playback",
-    "tooltipPlayAndRecord": "Play & Record"
+    "tooltipPlayAndRecord": "Play & Record",
+    "soulCarta": "Soul Carta"
 }

@@ -18,19 +18,24 @@ class LanguageSelection extends StatelessWidget {
       barrierColor: Colors.transparent,
       menuBuilder: () => Container(
         width: 100,
-        color: Styles.popupBackgrounColor,
+        decoration: const BoxDecoration(
+          color: Styles.popupBackgrounColor,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: S.delegate.supportedLocales
               .map((locale) => ContainerButton(
-                    height: 30,
+                    height: 40,
                     width: double.infinity,
                     padding: const EdgeInsets.all(5.0),
                     backgroundColor: Colors.transparent,
                     hoverBackgroundColor: Styles.hoverBackgroundColor,
-                    child: Text(
-                      LocaleConstants.locales[locale.toLanguageTag()] ??
-                          locale.toLanguageTag(),
+                    child: Center(
+                      child: Text(
+                        LocaleConstants.locales[locale.toLanguageTag()] ??
+                            locale.toLanguageTag(),
+                      ),
                     ),
                     onClick: () {
                       Provider.of<LocaleProvider>(context, listen: false)

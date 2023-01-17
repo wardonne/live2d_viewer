@@ -38,10 +38,6 @@ class _ContainerButtonState extends State<ContainerButton> {
     return DefaultTextStyle(
       style: TextStyle(color: isHover ? widget.hoverColor : widget.color),
       child: Container(
-        width: widget.width,
-        height: widget.height,
-        color: isHover ? widget.hoverBackgroundColor : widget.backgroundColor,
-        padding: widget.padding,
         margin: widget.margin,
         child: MouseRegion(
           cursor: SystemMouseCursors.click,
@@ -57,7 +53,15 @@ class _ContainerButtonState extends State<ContainerButton> {
           },
           child: GestureDetector(
             onTap: widget.onClick,
-            child: widget.child,
+            child: Container(
+              width: widget.width,
+              height: widget.height,
+              color: isHover
+                  ? widget.hoverBackgroundColor
+                  : widget.backgroundColor,
+              padding: widget.padding,
+              child: widget.child,
+            ),
           ),
         ),
       ),

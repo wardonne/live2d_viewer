@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/components/language_selection.dart';
-import 'package:live2d_viewer/constants/nikke.dart';
-import 'package:live2d_viewer/constants/resources.dart';
-import 'package:live2d_viewer/constants/routes.dart';
-import 'package:live2d_viewer/constants/styles.dart';
+import 'package:live2d_viewer/components/global_components.dart';
+import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/generated/l10n.dart';
 import 'package:live2d_viewer/models/nikke/character.dart';
+import 'package:live2d_viewer/pages/nikke/components/character_card.dart';
 import 'package:live2d_viewer/services/nikke/nikke_service.dart';
-import 'package:live2d_viewer/widget/buttons/container_button.dart';
-import 'package:live2d_viewer/widget/cached_network_image.dart';
-import 'package:live2d_viewer/widget/dialog/error_dialog.dart';
-import 'package:live2d_viewer/widget/wrappers/context_menu_wrapper.dart';
+import 'package:live2d_viewer/widget/widget.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class CharacterList extends StatefulWidget {
@@ -56,26 +51,7 @@ class CharacterListState extends State<CharacterList> {
                   alignment: WrapAlignment.start,
                   crossAxisAlignment: WrapCrossAlignment.start,
                   children: items.where((item) => item.enable).map((item) {
-                    return ContainerButton(
-                      width: 100,
-                      padding: const EdgeInsets.all(10),
-                      backgroundColor: Colors.transparent,
-                      hoverBackgroundColor: Colors.white12,
-                      onClick: () {
-                        Navigator.pushNamed(
-                          context,
-                          Routes.nikkeCharacterDetail,
-                          arguments: item,
-                        );
-                      },
-                      child: Column(
-                        children: [
-                          characterAvatar(item),
-                          const Divider(height: 2, color: Colors.transparent),
-                          Center(child: Text(item.name))
-                        ],
-                      ),
-                    );
+                    return CharacterCard(character: item);
                   }).toList(),
                 ),
               ),
@@ -109,26 +85,21 @@ class CharacterListState extends State<CharacterList> {
         height: 200,
         child: ContextMenuWrapper(
           itemBuilder: (context) => [
-            ContainerButton(
-              height: 30,
+            RefreshWidgetButton(
+              widgetKey: cachedNetworkImageKey,
+              title: S.of(context).reload,
+              height: 40,
               color: Styles.textColor,
               hoverColor: Styles.hoverTextColor,
               backgroundColor: Styles.popupBackgrounColor,
               hoverBackgroundColor: Styles.hoverBackgroundColor,
-              child: Row(
-                children: [
-                  Container(
-                    width: 30,
-                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                    child: const Icon(Icons.refresh),
-                  ),
-                  Expanded(
-                    child: Text(S.of(context).reload),
-                  ),
-                ],
+              child: Container(
+                width: 30,
+                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                child: const Icon(Icons.refresh),
               ),
-              onClick: () {
-                Navigator.of(context).pop();
+              refreshFunction: () {
+                Navigator.of(context).pop(context);
                 cachedNetworkImageKey.currentState?.reload();
               },
             ),

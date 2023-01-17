@@ -4,8 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:live2d_viewer/constants/application.dart';
-import 'package:live2d_viewer/constants/nikke.dart';
+import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/constants/resources.dart';
 import 'package:live2d_viewer/models/nikke/character.dart';
 import 'package:live2d_viewer/models/spine_html_data.dart';
@@ -15,23 +14,21 @@ import 'package:live2d_viewer/utils/utils.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class NikkeService {
+  final cache = CacheService();
+
   NikkeService();
 
   Future<List<Character>> characters() async {
-    final cachedHttpResponse = CacheService()
-        .getCachedHttpResponse(path: NikkeConstants.characterDataURL);
+    final cachedHttpResponse =
+        cache.getCachedHttpResponse(path: NikkeConstants.characterDataURL);
     List<dynamic> list = [];
-    if (CacheService()
-        .isUsable(cachedHttpResponse, duration: const Duration(days: 1))) {
+    if (cache.isUsable(cachedHttpResponse, duration: const Duration(days: 1))) {
       list = jsonDecode(cachedHttpResponse.readAsStringSync());
     } else {
       final response = await Dio().get<List>(NikkeConstants.characterDataURL);
-      if ((response.statusCode ?? 0) != 200) {
-        throw ErrorDescription(response.statusMessage ?? '');
-      }
       list = response.data ?? [];
       final bytes = Int32List.fromList(utf8.encode(jsonEncode(list)));
-      CacheService().cacheHttpResponse(
+      cache.cacheHttpResponse(
           path: NikkeConstants.characterDataURL, bytes: bytes);
     }
     return list.map((item) => Character.fromJson(item)).toList();
@@ -45,7 +42,7 @@ class NikkeService {
 
   Future<String> loadHtml(Skin skin, Action action) async {
     final skinCode = skin.code;
-    final skinURL = '${NikkeConstants.assetsURL}/character/spine/${skin.code}';
+    final skinURL = '${NikkeConstants.characterSpineURL}/${skin.code}';
     debugPrint('skin url: $skinURL');
     final cachePath = getCachePath(skinCode, action.name);
     debugPrint('cache path: $cachePath');
