@@ -4,6 +4,8 @@ import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/generated/l10n.dart';
 import 'package:live2d_viewer/widget/widget.dart';
 
+import 'character_list.dart';
+
 class DestinyChildPage extends StatefulWidget {
   const DestinyChildPage({super.key});
   @override
@@ -14,9 +16,7 @@ class DestinyChildPageState extends State<DestinyChildPage> {
   int _activeTabIndex = 0;
 
   final List<Widget> _pages = [
-    const Center(
-      child: Text('0'),
-    ),
+    const CharacterList(),
     const Center(
       child: Text('1'),
     )
@@ -49,7 +49,7 @@ class DestinyChildPageState extends State<DestinyChildPage> {
             onClick: () {
               _switchTab(0);
             },
-            child: Center(child: Text(S.of(context).soulCarta)),
+            child: Center(child: Text(S.of(context).child)),
           ),
           ContainerButton(
             hoverBackgroundColor: Styles.hoverBackgroundColor,

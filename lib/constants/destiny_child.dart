@@ -5,10 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:live2d_viewer/constants/application.dart';
 import 'package:live2d_viewer/controllers/visible_controller.dart';
 import 'package:live2d_viewer/generated/l10n.dart';
-import 'package:live2d_viewer/pages/destiny_child/components/character_tabview.dart';
-import 'package:live2d_viewer/pages/destiny_child/components/character_view.dart';
-import 'package:live2d_viewer/pages/destiny_child/components/soul_carta_tabview.dart';
-import 'package:live2d_viewer/pages/destiny_child/components/soul_carta_view.dart';
 import 'package:live2d_viewer/controllers/edit_mode_controller.dart';
 import 'package:live2d_viewer/utils/path_util.dart';
 // ignore: depend_on_referenced_packages
@@ -21,11 +17,6 @@ class DestinyChildConstants {
       EditModeController.disable();
   static EditModeController soulCartaEditModeController =
       EditModeController.disable();
-
-  static CharacterViewController characterViewController =
-      CharacterViewController();
-  static SoulCartaViewController soulCartaViewController =
-      SoulCartaViewController();
 
   static VisibleController itemListController = VisibleController();
 
@@ -58,20 +49,14 @@ class DestinyChildConstants {
     const Tab(text: 'Soul Carta'),
   ];
 
-  static List<WidgetBuilder> tabviews = [
-    (context) => CharacterTabView(),
-    (context) => SoulCartaTabView(),
-  ];
+  static List<WidgetBuilder> tabviews = [];
 
   static List<EditModeController> indexedEditModeController = [
     characterEditModeController,
     soulCartaEditModeController,
   ];
 
-  static List<Widget> detailWindows = [
-    CharacterView(),
-    SoulCartaView(),
-  ];
+  static List<Widget> detailWindows = [];
 
   static int? activeTabIndex;
 

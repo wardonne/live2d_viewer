@@ -27,6 +27,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "child": MessageLookupByLibrary.simpleMessage("天子"),
         "confirm": MessageLookupByLibrary.simpleMessage("确认"),
         "destinyChild": MessageLookupByLibrary.simpleMessage("天命之子"),
         "dialogTitleError": MessageLookupByLibrary.simpleMessage("错误"),

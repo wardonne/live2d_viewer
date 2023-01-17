@@ -28,6 +28,10 @@ class Character extends Object {
 
   @override
   String toString() => toJson().toString();
+
+  int activeSkinIndex = 0;
+
+  Skin get activeSkin => skins[activeSkinIndex];
 }
 
 class Skin extends Object {

@@ -56,6 +56,7 @@ class CachedNetworkImageState extends State<CachedNetworkImage> {
   }
 
   Future<Image> fetchImage() async {
+    debugPrint('fetch image');
     if (!CacheService()
         .isUsable(widget._cachedImage, duration: widget.cacheTime)) {
       await Dio().download(widget.path, _cachedImage.path).catchError((error) {
