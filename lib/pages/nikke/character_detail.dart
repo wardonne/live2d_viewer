@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/components/global_components.dart';
-import 'package:live2d_viewer/constants/application.dart';
-import 'package:live2d_viewer/constants/styles.dart';
+import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/models/nikke/character.dart';
 import 'package:live2d_viewer/models/virtual_host.dart';
-import 'package:live2d_viewer/services/nikke/nikke_service.dart';
+import 'package:live2d_viewer/services/nikke_service.dart';
 import 'package:live2d_viewer/widget/dialog/error_dialog.dart';
 import 'package:live2d_viewer/widget/webview.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -40,10 +39,10 @@ class CharacterDetailState extends State<CharacterDetail> {
               (items as List<dynamic>).map((item) => item as String).toList());
           break;
         case 'snapshot':
-          NikkeService().saveScreenshot(data);
+          NikkeService().saveScreenshot(data as String);
           break;
         case 'video':
-          NikkeService().saveVideo(data);
+          NikkeService().saveVideo(data as String);
           break;
         default:
           break;
@@ -79,7 +78,8 @@ class CharacterDetailState extends State<CharacterDetail> {
             final html = snapshot.data!;
             final virtualHost = VirtualHost(
               virtualHost: ApplicationConstants.localAssetsURL,
-              folderPath: service.getCachePath(skin.code, action.name),
+              folderPath:
+                  '${NikkeConstants.resourceCachePath}/${skin.hash}/${action.hash}',
             );
             debugPrint(virtualHost.toString());
             return WebView(

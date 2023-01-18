@@ -29,7 +29,7 @@
         canvas.height = window.innerHeight * 2;
 
         if(data.has_background_image) {
-            canvas.style.backgroundImage = `url('http://${data.background_image}')`;
+            canvas.style.backgroundImage = `url(${data.background_image})`;
             canvas.style.backgroundRepeat = 'no-repeat';
             canvas.style.backgroundPosition = 'center';
             canvas.style.backgroundSize = 'contain';

@@ -12,12 +12,12 @@ class Character extends Object {
   });
 
   Character.fromJson(Map<String, dynamic> json)
-      : name = json['name'],
-        avatar = json['avatar'],
+      : name = json['name'] as String,
+        avatar = json['avatar'] as String,
         skins = (json['skins'] as List<dynamic>)
             .map((e) => Skin.fromJson(e as Map<String, dynamic>))
             .toList(),
-        enable = json['enable'] ?? true;
+        enable = json['enable'] == null ? true : json['enable'] as bool;
 
   Map<String, dynamic> toJson() => {
         'name': name,
@@ -60,7 +60,7 @@ class Skin extends Object {
         description = json['description'] as String,
         avatar = json['avatar'] as String,
         live2d = json['live2d'] as String,
-        enable = json['enable'] ?? true;
+        enable = json['enable'] as bool? ?? true;
 
   Map<String, dynamic> toJson() => {
         'code': code,

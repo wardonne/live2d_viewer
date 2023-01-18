@@ -10,8 +10,8 @@ class Settings extends Object {
   Settings.init() : destinyChildSettings = DestinyChildSettings.init();
 
   Settings.fromJson(Map<String, dynamic>? json)
-      : destinyChildSettings =
-            DestinyChildSettings.fromJson(json?['destiny_child']);
+      : destinyChildSettings = DestinyChildSettings.fromJson(
+            json?['destiny_child'] as Map<String, dynamic>?);
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'destiny_child': destinyChildSettings,

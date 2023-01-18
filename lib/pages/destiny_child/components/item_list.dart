@@ -51,7 +51,7 @@ class ItemList extends StatelessWidget {
     );
   }
 
-  _editModeSwitch() {
+  Widget _editModeSwitch() {
     var controller = _getEditModeControllerByIndex(tabController.index);
     return AnimatedBuilder(
       animation: controller!,

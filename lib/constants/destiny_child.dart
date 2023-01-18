@@ -75,4 +75,6 @@ class DestinyChildConstants {
       .join([ApplicationConstants.resourceCachePath, 'destiny_child']);
   static String screenshotPath =
       PathUtil().join([ApplicationConstants.screenshotPath, 'destiny_child']);
+
+  static const String modelJSONFormat = 'character.DRAGME.%s.json';
 }

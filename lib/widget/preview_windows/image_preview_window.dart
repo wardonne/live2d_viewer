@@ -98,7 +98,7 @@ class ImagePreviewWindowController extends ChangeNotifier {
     setScale(_scale - 0.1);
   }
 
-  _getValidScale(double scale) {
+  double _getValidScale(double scale) {
     if (scale >= maxScale) {
       scale = maxScale;
     } else if (scale <= minScale) {

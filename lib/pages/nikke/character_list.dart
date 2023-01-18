@@ -4,7 +4,7 @@ import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/generated/l10n.dart';
 import 'package:live2d_viewer/models/nikke/character.dart';
 import 'package:live2d_viewer/pages/nikke/components/character_card.dart';
-import 'package:live2d_viewer/services/nikke/nikke_service.dart';
+import 'package:live2d_viewer/services/nikke_service.dart';
 import 'package:live2d_viewer/widget/widget.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 

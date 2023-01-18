@@ -9,7 +9,7 @@ class BackupService extends Object {
     final file = File(path);
     if (file.existsSync()) {
       final content = file.readAsStringSync();
-      final items = jsonDecode(content);
+      final items = jsonDecode(content) as List;
       for (final item in items) {
         _backups.add(item as String);
       }

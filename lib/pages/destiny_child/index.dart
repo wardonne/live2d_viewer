@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:live2d_viewer/components/global_components.dart';
 import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/generated/l10n.dart';
+import 'package:live2d_viewer/pages/destiny_child/soul_carta_list.dart';
 import 'package:live2d_viewer/widget/widget.dart';
 
 import 'character_list.dart';
@@ -17,14 +18,11 @@ class DestinyChildPageState extends State<DestinyChildPage> {
 
   final List<Widget> _pages = [
     const CharacterList(),
-    const Center(
-      child: Text('1'),
-    )
+    const SoulCartaList(),
   ];
 
   _switchTab(int index) {
     _activeTabIndex = index;
-    debugPrint(_activeTabIndex.toString());
     setState(() {});
   }
 

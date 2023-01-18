@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -20,6 +22,20 @@ class CacheService {
     if (file.existsSync()) {
       if (duration != null) {
         return file.lastModifiedSync().add(duration).isAfter(DateTime.now());
+      }
+      return true;
+    }
+    return false;
+  }
+
+  bool isDirectoryUsable(Directory directory, {Duration? duration}) {
+    if (directory.existsSync()) {
+      if (duration != null) {
+        return directory
+            .statSync()
+            .modified
+            .add(duration)
+            .isAfter(DateTime.now());
       }
       return true;
     }

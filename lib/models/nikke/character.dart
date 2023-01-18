@@ -1,3 +1,6 @@
+import 'package:live2d_viewer/constants/constants.dart';
+import 'package:live2d_viewer/utils/hash_util.dart';
+
 class Character extends Object {
   String name;
   String avatar;
@@ -12,12 +15,12 @@ class Character extends Object {
   });
 
   Character.fromJson(Map<String, dynamic> json)
-      : name = json['name'],
-        avatar = json['avatar'],
+      : name = json['name'] as String,
+        avatar = json['avatar'] as String,
         skins = (json['skins'] as List<dynamic>)
             .map((e) => Skin.fromJson(e as Map<String, dynamic>))
             .toList(),
-        enable = json['enable'] ?? true;
+        enable = json['enable'] as bool? ?? true;
 
   Map<String, dynamic> toJson() => {
         'name': name,
@@ -32,6 +35,10 @@ class Character extends Object {
   int activeSkinIndex = 0;
 
   Skin get activeSkin => skins[activeSkinIndex];
+
+  String get hash => HashUtil().hashMd5(name);
+
+  String get avatarURL => '${NikkeConstants.characterAvatarURL}/$avatar';
 }
 
 class Skin extends Object {
@@ -59,7 +66,7 @@ class Skin extends Object {
         actions = (json['actions'] as List<dynamic>)
             .map((e) => Action.fromJson(e as Map<String, dynamic>))
             .toList(),
-        enable = json['enable'] ?? true;
+        enable = json['enable'] as bool? ?? true;
 
   Map<String, dynamic> toJson() => {
         'code': code,
@@ -76,6 +83,10 @@ class Skin extends Object {
   int activeActionIndex = 0;
 
   Action get activeAction => actions[activeActionIndex];
+
+  String get hash => HashUtil().hashMd5(name);
+
+  String get avatarURL => '${NikkeConstants.characterAvatarURL}/$avatar';
 }
 
 class Action extends Object {
@@ -104,11 +115,11 @@ class Action extends Object {
                 .toList();
 
   Map<String, dynamic> toJson() => {
-        "name": name,
-        "skel": skel,
-        "atlas": atlas,
-        "animation": animation,
-        "not_loop_animations": notLoopAnimations,
+        'name': name,
+        'skel': skel,
+        'atlas': atlas,
+        'animation': animation,
+        'not_loop_animations': notLoopAnimations,
       };
 
   bool shouldLoop(String animation) {
@@ -123,4 +134,6 @@ class Action extends Object {
 
   @override
   String toString() => toJson().toString();
+
+  String get hash => HashUtil().hashMd5(name);
 }

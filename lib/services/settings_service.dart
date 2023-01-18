@@ -31,7 +31,7 @@ class SettingsService {
     try {
       final settingsFile = await getSettingsFile();
       final content = await settingsFile.readAsString();
-      final json = jsonDecode(content);
+      final json = jsonDecode(content) as Map<String, dynamic>;
       return Settings.fromJson(json);
     } catch (e) {
       log(e.toString(), time: DateTime.now());

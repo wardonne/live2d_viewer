@@ -21,12 +21,14 @@ class DestinyChildSettings extends Object {
         characterSettings = CharacterSettings.init();
 
   DestinyChildSettings.fromJson(Map<String, dynamic>? json)
-      : live2dVersion = json?['live2d_version'] ??
+      : live2dVersion = json?['live2d_version'] as String? ??
             DestinyChildConstants.defaultLive2DVersion,
         defaultHome =
-            json?['default_home'] ?? DestinyChildConstants.defaultHome,
-        soulCartaSettings = SoulCartaSettings.fromJson(json?['soul_carta']),
-        characterSettings = CharacterSettings.fromJson(json?['character']);
+            json?['default_home'] as int? ?? DestinyChildConstants.defaultHome,
+        soulCartaSettings = SoulCartaSettings.fromJson(
+            json?['soul_carta'] as Map<String, dynamic>?),
+        characterSettings = CharacterSettings.fromJson(
+            json?['character'] as Map<String, dynamic>?);
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'live2d_version': live2dVersion,
@@ -59,12 +61,13 @@ class CharacterSettings extends Object {
         backups = DestinyChildConstants.defaultCharacterBackups;
 
   CharacterSettings.fromJson(Map<String, dynamic>? json)
-      : virtualHost = json?['virtual_host'] ??
+      : virtualHost = json?['virtual_host'] as String? ??
             DestinyChildConstants.defaultCharacterVirtualHost,
-        path = json?['path'] ?? DestinyChildConstants.defaultCharacterPath,
-        dataPath = json?['data_path'] ??
+        path = json?['path'] as String? ??
+            DestinyChildConstants.defaultCharacterPath,
+        dataPath = json?['data_path'] as String? ??
             DestinyChildConstants.defaultCharacterDataPath,
-        backups = json?['backup_list'] ??
+        backups = json?['backup_list'] as String? ??
             DestinyChildConstants.defaultCharacterBackups;
 
   Map<String, String?> toJson() => <String, String?>{
@@ -104,13 +107,14 @@ class SoulCartaSettings extends Object {
         backups = DestinyChildConstants.defaultSoulCartaBackups;
 
   SoulCartaSettings.fromJson(Map<String, dynamic>? json)
-      : virtualHost = json?['virtual_host'] ??
+      : virtualHost = json?['virtual_host'] as String? ??
             DestinyChildConstants.defaultSoulCartaVirtualHost,
-        path = json?['path'] ?? DestinyChildConstants.defaultSoulCartaPath,
-        dataPath = json?['data_path'] ??
+        path = json?['path'] as String? ??
+            DestinyChildConstants.defaultSoulCartaPath,
+        dataPath = json?['data_path'] as String? ??
             DestinyChildConstants.defaultSoulCartaDataPath,
-        backups =
-            json?['backups'] ?? DestinyChildConstants.defaultSoulCartaBackups;
+        backups = json?['backups'] as String? ??
+            DestinyChildConstants.defaultSoulCartaBackups;
 
   Map<String, String?> toJson() => <String, String?>{
         'virtual_host': virtualHost,

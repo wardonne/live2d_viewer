@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/constants/nikke.dart';
 import 'package:live2d_viewer/constants/routes.dart';
 import 'package:live2d_viewer/constants/styles.dart';
 import 'package:live2d_viewer/models/nikke/character.dart';
@@ -45,8 +44,7 @@ class CharacterCard extends StatelessWidget {
       child: Column(
         children: [
           CharacterAvatar(
-            avatar:
-                '${NikkeConstants.characterAvatarURL}/${_isSkin ? skin!.avatar : character.avatar}',
+            avatar: _isSkin ? skin!.avatarURL : character.avatarURL,
           ),
           const Divider(
             height: 2,

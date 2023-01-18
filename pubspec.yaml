@@ -93,7 +93,6 @@ flutter:
     - assets/
     - assets/destiny_child/
     - assets/html/
-    - assets/nikke/character/data.json
     - assets/application/app_icon.ico
     - assets/images/
   # To add custom fonts to your application, add a fonts section here,

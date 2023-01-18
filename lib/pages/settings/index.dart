@@ -78,7 +78,7 @@ class SettingPage extends StatelessWidget {
     );
   }
 
-  _buildBody() {
+  Widget _buildBody() {
     return Expanded(
       child: SingleChildScrollView(
         child: Container(
@@ -90,7 +90,7 @@ class SettingPage extends StatelessWidget {
     );
   }
 
-  _buildForm() {
+  Widget _buildForm() {
     return Form(
       key: formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -102,7 +102,7 @@ class SettingPage extends StatelessWidget {
     );
   }
 
-  _buildHeader() {
+  Widget _buildHeader() {
     return Container(
       height: 48,
       decoration: const BoxDecoration(
@@ -119,7 +119,7 @@ class SettingPage extends StatelessWidget {
     );
   }
 
-  _buildFooter(BuildContext context) {
+  Widget _buildFooter(BuildContext context) {
     return Toolbar.footer(
       height: footerBarHeight,
       borderColor: Colors.white70,
@@ -127,7 +127,7 @@ class SettingPage extends StatelessWidget {
     );
   }
 
-  _submitAction(BuildContext context) {
+  Widget _submitAction(BuildContext context) {
     return ImageButton(
       icon: const Icon(
         Icons.save,

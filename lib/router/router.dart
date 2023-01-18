@@ -10,10 +10,12 @@ var router = <String, WidgetBuilder>{
   // destiny-child
   routes.Routes.destinyChild: (context) =>
       const destiny_child.DestinyChildPage(),
-  routes.Routes.destinyChildCharacters: (context) =>
-      const destiny_child.CharacterList(),
+  // routes.Routes.destinyChildCharacters: (context) =>
+  //     const destiny_child.CharacterList(),
   routes.Routes.destinyChildCharacterDetail: (context) =>
       const destiny_child.CharacterDetail(),
+  routes.Routes.destinyChildSoulCartaDetail: (context) =>
+      const destiny_child.SoulCartaDetail(),
   // nikke
   routes.Routes.nikke: (context) => const nikke.NikkePage(),
   routes.Routes.nikkeCharacters: (context) => const nikke.CharacterList(),
