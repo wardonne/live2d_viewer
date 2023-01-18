@@ -43,14 +43,14 @@ class CharacterCard extends StatelessWidget {
       child: Column(
         children: [
           CharacterAvatar(
-              avatar:
-                  '${DestinyChildConstants.characterAvatarURL}/${_isSkin ? skin!.avatar : character.avatar}'),
+            avatar: _isSkin ? skin!.avatarURL : character.avatarURL,
+          ),
           const Divider(
             height: 2,
             color: Colors.transparent,
           ),
           Center(
-            child: Text(character.name),
+            child: Text(_isSkin ? skin!.name.split('_')[0] : character.name),
           ),
         ],
       ),

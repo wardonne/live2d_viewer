@@ -43,7 +43,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "tooltipPlayAndRecord": MessageLookupByLibrary.simpleMessage("播放并录制"),
         "tooltipShowActions": MessageLookupByLibrary.simpleMessage("行动列表"),
         "tooltipShowAnimation": MessageLookupByLibrary.simpleMessage("动画列表"),
+        "tooltipShowExpressions": MessageLookupByLibrary.simpleMessage("表情列表"),
+        "tooltipShowMotions": MessageLookupByLibrary.simpleMessage("动作列表"),
         "tooltipShowSkins": MessageLookupByLibrary.simpleMessage("皮肤列表"),
+        "tooltipSnapshot": MessageLookupByLibrary.simpleMessage("快照"),
+        "tooltipSnapshotWithExpession":
+            MessageLookupByLibrary.simpleMessage("设置表情并快照"),
         "tooltipSpeedPlay": MessageLookupByLibrary.simpleMessage("倍速播放"),
         "tooltipZoom": MessageLookupByLibrary.simpleMessage("缩放")
       };

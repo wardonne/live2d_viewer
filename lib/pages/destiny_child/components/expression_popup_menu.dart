@@ -1,5 +1,7 @@
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:live2d_viewer/constants/constants.dart';
+import 'package:live2d_viewer/generated/l10n.dart';
 import 'package:live2d_viewer/models/destiny_child/character.dart';
 import 'package:live2d_viewer/widget/buttons/container_button.dart';
 import 'package:live2d_viewer/widget/buttons/image_button.dart';
@@ -41,9 +43,10 @@ class _ExpressionPopupMenuState extends State<ExpressionPopupMenu> {
                 .map(
                   (item) => ContainerButton(
                     padding: const EdgeInsets.all(5.0),
-                    backgroundColor: Colors.transparent,
-                    hoverBackgroundColor: Colors.white24,
-                    color: Colors.white,
+                    backgroundColor: Styles.popupBackgrounColor,
+                    hoverBackgroundColor: Styles.hoverBackgroundColor,
+                    color: Styles.textColor,
+                    hoverColor: Styles.hoverTextColor,
                     onClick: () async {
                       menuController.hideMenu();
                       await widget.webviewController
@@ -51,7 +54,7 @@ class _ExpressionPopupMenuState extends State<ExpressionPopupMenu> {
                     },
                     child: Row(
                       children: [
-                        const Icon(Icons.play_arrow_rounded, size: 20),
+                        const Icon(Icons.play_arrow_rounded),
                         Expanded(
                           child: Padding(
                             padding:
@@ -64,7 +67,7 @@ class _ExpressionPopupMenuState extends State<ExpressionPopupMenu> {
                         ),
                         ImageButton(
                           icon: const Icon(Icons.videocam, size: 20),
-                          tooltip: 'record expression',
+                          tooltip: S.of(context).tooltipSnapshotWithExpession,
                           onPressed: () async {
                             menuController.hideMenu();
                             await widget.webviewController.executeScript(
@@ -81,9 +84,9 @@ class _ExpressionPopupMenuState extends State<ExpressionPopupMenu> {
         ),
       ),
       pressType: PressType.singleClick,
-      child: const Tooltip(
-        message: 'show expressions',
-        child: Icon(Icons.face_retouching_natural, size: 20),
+      child: Tooltip(
+        message: S.of(context).tooltipShowExpressions,
+        child: const Icon(Icons.face_retouching_natural, size: 20),
       ),
     );
   }

@@ -224,6 +224,46 @@ class S {
     );
   }
 
+  /// `Expressions`
+  String get tooltipShowExpressions {
+    return Intl.message(
+      'Expressions',
+      name: 'tooltipShowExpressions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Motions`
+  String get tooltipShowMotions {
+    return Intl.message(
+      'Motions',
+      name: 'tooltipShowMotions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `snapshot`
+  String get tooltipSnapshot {
+    return Intl.message(
+      'snapshot',
+      name: 'tooltipSnapshot',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `set expression & snapshot`
+  String get tooltipSnapshotWithExpession {
+    return Intl.message(
+      'set expression & snapshot',
+      name: 'tooltipSnapshotWithExpession',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Soul Carta`
   String get soulCarta {
     return Intl.message(

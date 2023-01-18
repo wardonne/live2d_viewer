@@ -8,10 +8,8 @@ import 'package:live2d_viewer/pages/nikke/components/components.dart';
 
 class SkinPopupMenu extends StatefulWidget {
   final Character character;
-  final List<Skin> skins;
   const SkinPopupMenu({
     super.key,
-    required this.skins,
     required this.character,
   });
 
@@ -34,7 +32,7 @@ class _SkinPopupMenuState extends State<SkinPopupMenu> {
               borderRadius: BorderRadius.all(Radius.circular(10))),
           child: Row(
             mainAxisSize: MainAxisSize.min,
-            children: widget.skins
+            children: widget.character.skins
                 .map((skin) => CharacterCard(
                       character: widget.character,
                       skin: skin,

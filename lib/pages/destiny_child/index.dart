@@ -14,16 +14,17 @@ class DestinyChildPage extends StatefulWidget {
 }
 
 class DestinyChildPageState extends State<DestinyChildPage> {
-  int _activeTabIndex = 0;
+  int _activeIndex = 0;
 
   final List<Widget> _pages = [
     const CharacterList(),
     const SoulCartaList(),
   ];
 
-  _switchTab(int index) {
-    _activeTabIndex = index;
-    setState(() {});
+  _changeTo(int index) {
+    setState(() {
+      _activeIndex = index;
+    });
   }
 
   @override
@@ -43,22 +44,22 @@ class DestinyChildPageState extends State<DestinyChildPage> {
         color: Styles.appBarColor,
         items: [
           ContainerButton(
+            backgroundColor:
+                _activeIndex == 0 ? Styles.hoverBackgroundColor : null,
             hoverBackgroundColor: Styles.hoverBackgroundColor,
-            onClick: () {
-              _switchTab(0);
-            },
+            onClick: () => _changeTo(0),
             child: Center(child: Text(S.of(context).child)),
           ),
           ContainerButton(
+            backgroundColor:
+                _activeIndex == 1 ? Styles.hoverBackgroundColor : null,
             hoverBackgroundColor: Styles.hoverBackgroundColor,
             child: Center(child: Text(S.of(context).soulCarta)),
-            onClick: () {
-              _switchTab(1);
-            },
+            onClick: () => _changeTo(1),
           ),
         ],
       ),
-      body: _pages[_activeTabIndex],
+      body: _pages[_activeIndex],
     );
   }
 }

@@ -21,6 +21,10 @@
     "tooltipDevtool": "Devtool",
     "tooltipLoopPlay": "Loop Playback",
     "tooltipPlayAndRecord": "Play & Record",
+    "tooltipShowExpressions": "Expressions",
+    "tooltipShowMotions": "Motions",
+    "tooltipSnapshot": "snapshot",
+    "tooltipSnapshotWithExpession": "set expression & snapshot",
     "soulCarta": "Soul Carta",
     "child": "Child"
 }

@@ -47,7 +47,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "tooltipShowActions": MessageLookupByLibrary.simpleMessage("Actions"),
         "tooltipShowAnimation":
             MessageLookupByLibrary.simpleMessage("Animations"),
+        "tooltipShowExpressions":
+            MessageLookupByLibrary.simpleMessage("Expressions"),
+        "tooltipShowMotions": MessageLookupByLibrary.simpleMessage("Motions"),
         "tooltipShowSkins": MessageLookupByLibrary.simpleMessage("Clothes"),
+        "tooltipSnapshot": MessageLookupByLibrary.simpleMessage("snapshot"),
+        "tooltipSnapshotWithExpession":
+            MessageLookupByLibrary.simpleMessage("set expression & snapshot"),
         "tooltipSpeedPlay": MessageLookupByLibrary.simpleMessage("Speed"),
         "tooltipZoom": MessageLookupByLibrary.simpleMessage("Zoom")
       };

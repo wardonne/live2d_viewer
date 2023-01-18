@@ -78,8 +78,22 @@ class DestinyChildService {
       baseURL: baseURL,
       modelJSON: model,
     );
+    final modelJSONFile = File(modelJSON);
+    final modelContent =
+        jsonDecode(modelJSONFile.readAsStringSync()) as Map<String, dynamic>? ??
+            {};
+    final expressions = modelContent['expressions'] as List<dynamic>? ?? [];
+    skin.expressions = expressions
+        .map((expression) => Expression(
+              name: expression['name'] as String? ?? '',
+              file: expression['file'] as String? ?? '',
+            ))
+        .toList();
+    final motionGroups = modelContent['motions'] as Map<String, dynamic>? ?? {};
+    skin.motions = motionGroups.keys.map((name) => Motion(name: name)).toList();
     final data = Live2DHtmlData(
-        live2d: '${ApplicationConstants.localAssetsURL}/$modelJSON');
+        live2d:
+            '${ApplicationConstants.localAssetsURL}/${File(modelJSON).uri.pathSegments.last}');
     final html = await rootBundle.loadString(ResourceConstants.live2dHtml);
     return WebviewService.renderHtml(html, data);
   }

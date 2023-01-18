@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:live2d_viewer/components/global_components.dart';
 import 'package:live2d_viewer/components/iconfont.dart';
 import 'package:live2d_viewer/constants/styles.dart';
+import 'package:live2d_viewer/generated/l10n.dart';
 import 'package:live2d_viewer/models/nikke/character.dart';
 import 'package:live2d_viewer/pages/nikke/components/skin_popup_menu.dart';
 import 'package:live2d_viewer/widget/buttons/buttons.dart';
@@ -54,6 +55,7 @@ class _BottomToolbarState extends State<BottomToolbar> {
               endActions: [
                 ImageButton.fromIcon(
                   icon: IconFont.iconCamera,
+                  tooltip: S.of(context).tooltipSnapshot,
                   onPressed: () {
                     widget._webviewController.executeScript('snapshot()');
                   },
@@ -67,9 +69,7 @@ class _BottomToolbarState extends State<BottomToolbar> {
                 if (skin.actions.length > 1)
                   ActionPopupMenu(character: widget.character),
                 if (widget.character.skins.length > 1)
-                  SkinPopupMenu(
-                      skins: widget.character.skins,
-                      character: widget.character),
+                  SkinPopupMenu(character: widget.character),
                 ZoomPopupControl(
                   value: 1.0,
                   max: 3.0,

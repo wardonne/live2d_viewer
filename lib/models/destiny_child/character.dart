@@ -1,3 +1,6 @@
+import 'package:live2d_viewer/constants/constants.dart';
+import 'package:live2d_viewer/utils/hash_util.dart';
+
 class Character extends Object {
   final String name;
   String avatar;
@@ -32,6 +35,8 @@ class Character extends Object {
   int activeSkinIndex = 0;
 
   Skin get activeSkin => skins[activeSkinIndex];
+
+  String get avatarURL => '${DestinyChildConstants.characterAvatarURL}/$avatar';
 }
 
 class Skin extends Object {
@@ -41,6 +46,8 @@ class Skin extends Object {
   final String avatar;
   final String live2d;
   bool enable;
+
+  late String cachePath;
 
   List<Expression>? expressions;
   List<Motion>? motions;
@@ -52,7 +59,8 @@ class Skin extends Object {
     required this.avatar,
     required this.live2d,
     this.enable = true,
-  });
+  }) : cachePath =
+            '${DestinyChildConstants.resourceCachePath}/${HashUtil().hashMd5(code)}';
 
   Skin.fromJson(Map<String, dynamic> json)
       : code = json['code'] as String,
@@ -60,7 +68,10 @@ class Skin extends Object {
         description = json['description'] as String,
         avatar = json['avatar'] as String,
         live2d = json['live2d'] as String,
-        enable = json['enable'] as bool? ?? true;
+        enable = json['enable'] as bool? ?? true {
+    cachePath =
+        '${DestinyChildConstants.resourceCachePath}/${HashUtil().hashMd5(code)}';
+  }
 
   Map<String, dynamic> toJson() => {
         'code': code,
@@ -73,6 +84,8 @@ class Skin extends Object {
 
   @override
   String toString() => toJson().toString();
+
+  String get avatarURL => '${DestinyChildConstants.characterAvatarURL}/$avatar';
 }
 
 class Expression extends Object {

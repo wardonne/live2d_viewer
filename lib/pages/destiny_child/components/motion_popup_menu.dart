@@ -1,5 +1,7 @@
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:live2d_viewer/constants/constants.dart';
+import 'package:live2d_viewer/generated/l10n.dart';
 import 'package:live2d_viewer/models/destiny_child/character.dart';
 import 'package:live2d_viewer/widget/buttons/container_button.dart';
 import 'package:live2d_viewer/widget/buttons/image_button.dart';
@@ -30,7 +32,7 @@ class _MotionPopupMenuState extends State<MotionPopupMenu> {
         width: 220,
         padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
         decoration: const BoxDecoration(
-          color: Color(0xFF4C4C4C),
+          color: Styles.popupBackgrounColor,
           borderRadius: BorderRadius.all(Radius.circular(3)),
         ),
         child: Column(
@@ -61,7 +63,7 @@ class _MotionPopupMenuState extends State<MotionPopupMenu> {
                       ),
                       ImageButton(
                         icon: const Icon(Icons.videocam, size: 20),
-                        tooltip: 'play and record',
+                        tooltip: S.of(context).tooltipPlayAndRecord,
                         onPressed: () async {
                           menuController.hideMenu();
                           await widget.webviewController

@@ -21,6 +21,10 @@
     "tooltipDevtool": "开发者面板",
     "tooltipLoopPlay": "循环播放",
     "tooltipPlayAndRecord": "播放并录制",
+    "tooltipShowExpressions": "表情列表",
+    "tooltipShowMotions": "动作列表",
+    "tooltipSnapshot": "快照",
+    "tooltipSnapshotWithExpession": "设置表情并快照",
     "soulCarta": "魂卡",
     "child": "天子"
 }
