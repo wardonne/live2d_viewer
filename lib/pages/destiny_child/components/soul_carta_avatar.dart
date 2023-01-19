@@ -3,7 +3,6 @@ import 'package:live2d_viewer/components/refreshable_avatar.dart';
 
 class SoulCartaAvatar extends StatelessWidget {
   final String avatar;
-
   const SoulCartaAvatar({super.key, required this.avatar});
 
   @override

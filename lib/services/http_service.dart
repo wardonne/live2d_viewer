@@ -2,20 +2,42 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:live2d_viewer/constants/application.dart';
 import 'package:live2d_viewer/services/cache_service.dart';
+import 'package:live2d_viewer/utils/path_util.dart';
+import 'package:retry/retry.dart';
 
 class HTTPService {
   final CacheService cache = CacheService();
 
   final Dio http = Dio(BaseOptions(receiveTimeout: 0));
 
-  Future<void> download(String urlPath, String savePath) {
-    return http.download(urlPath, savePath);
+  String getSavePath(String url) {
+    return PathUtil().join([
+      ApplicationConstants.rootPath,
+      ...Uri.parse(url).pathSegments,
+    ]);
   }
 
-  Future<File> downloadImage(String path, {bool forceRefresh = false}) async {
-    final image = cache.getCachedImage(path: path);
-    if (cache.isUsable(image) && !forceRefresh) {
+  Future<File> download(String urlPath,
+      {String? savePath, bool reload = false}) async {
+    final localFile = File(savePath ?? getSavePath(urlPath));
+    if (!localFile.existsSync() || reload) {
+      await retry(
+        () async {
+          await http.download(urlPath, savePath);
+        },
+        retryIf: (e) => e is Error,
+        maxAttempts: 3,
+        maxDelay: const Duration(seconds: 1),
+      );
+    }
+    return localFile;
+  }
+
+  Future<File> downloadImage(String path, {bool reload = false}) async {
+    final image = File(getSavePath(path));
+    if (image.existsSync() && !reload) {
       return image;
     }
     try {

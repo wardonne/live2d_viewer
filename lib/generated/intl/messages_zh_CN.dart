@@ -31,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "confirm": MessageLookupByLibrary.simpleMessage("确认"),
         "destinyChild": MessageLookupByLibrary.simpleMessage("天命之子"),
         "dialogTitleError": MessageLookupByLibrary.simpleMessage("错误"),
+        "forceReload": MessageLookupByLibrary.simpleMessage("强制刷新"),
         "gameTitles": m0,
         "indexTitle": MessageLookupByLibrary.simpleMessage("游戏库"),
         "nikke": MessageLookupByLibrary.simpleMessage("NIKKE：胜利女神"),

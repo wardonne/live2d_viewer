@@ -264,6 +264,16 @@ class S {
     );
   }
 
+  /// `Force reload`
+  String get forceReload {
+    return Intl.message(
+      'Force reload',
+      name: 'forceReload',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Soul Carta`
   String get soulCarta {
     return Intl.message(

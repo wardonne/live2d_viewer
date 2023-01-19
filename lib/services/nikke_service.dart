@@ -28,8 +28,11 @@ class NikkeService {
 
   Future<String> loadHtml(Skin skin, Action action) async {
     final skinURL = '${NikkeConstants.characterSpineURL}/${skin.code}';
-    final cachePath =
-        '${NikkeConstants.resourceCachePath}/${skin.hash}/${action.hash}';
+    // final cachePath =
+    //     '${NikkeConstants.resourceCachePath}/${skin.hash}/${action.hash}';
+
+    final cachePath = PathUtil()
+        .join([ApplicationConstants.rootPath, Uri.parse(skinURL).path]);
     final resource = await SpineUtil().downloadResource(
       cacheDirectory: Directory(cachePath),
       baseURL: skinURL,

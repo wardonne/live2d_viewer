@@ -25,6 +25,7 @@
     "tooltipShowMotions": "Motions",
     "tooltipSnapshot": "snapshot",
     "tooltipSnapshotWithExpession": "set expression & snapshot",
+    "forceReload": "Force reload",
     "soulCarta": "Soul Carta",
     "child": "Child"
 }

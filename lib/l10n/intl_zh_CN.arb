@@ -25,6 +25,7 @@
     "tooltipShowMotions": "动作列表",
     "tooltipSnapshot": "快照",
     "tooltipSnapshotWithExpession": "设置表情并快照",
+    "forceReload": "强制刷新",
     "soulCarta": "魂卡",
     "child": "天子"
 }

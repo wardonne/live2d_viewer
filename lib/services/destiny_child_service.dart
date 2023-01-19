@@ -15,16 +15,6 @@ import 'package:live2d_viewer/utils/hash_util.dart';
 import 'package:live2d_viewer/utils/live2d_util.dart';
 
 class DestinyChildService {
-  DestinyChildService();
-
-  static void openItemsWindow() {
-    DestinyChildConstants.itemListController.show();
-  }
-
-  static void closeItemsWindow() {
-    DestinyChildConstants.itemListController.hidden();
-  }
-
   final CacheService cache = CacheService();
   final HTTPService http = HTTPService();
 
@@ -39,7 +29,7 @@ class DestinyChildService {
     if (cache.isUsable(cachedHttpResponse, duration: const Duration(days: 1))) {
       list = jsonDecode(cachedHttpResponse.readAsStringSync()) as List;
     } else {
-      final response = await Dio().get<List>(url);
+      final response = await Dio().get<List<dynamic>>(url);
       list = response.data ?? [];
       final bytes = Int32List.fromList(utf8.encode(jsonEncode(list)));
       cache.cacheHttpResponse(bytes: bytes, path: url);
@@ -49,11 +39,12 @@ class DestinyChildService {
         .toList();
   }
 
-  Future<List<SoulCarta>> soulCartas() async {
+  Future<List<SoulCarta>> soulCartas({bool reload = false}) async {
     const url = DestinyChildConstants.soulCartaDataURL;
     final cachedHttpResponse = cache.getCachedHttpResponse(path: url);
     List<dynamic> list = [];
-    if (cache.isUsable(cachedHttpResponse, duration: const Duration(days: 1))) {
+    if (cache.isUsable(cachedHttpResponse, duration: const Duration(days: 1)) &&
+        !reload) {
       list = jsonDecode(cachedHttpResponse.readAsStringSync()) as List;
     } else {
       final response = await Dio().get<List<dynamic>>(url);

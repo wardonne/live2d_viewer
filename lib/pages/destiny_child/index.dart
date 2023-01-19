@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/components/global_components.dart';
+import 'package:live2d_viewer/components/toolbar_refresh_button.dart';
 import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/generated/l10n.dart';
 import 'package:live2d_viewer/pages/destiny_child/soul_carta_list.dart';
+import 'package:live2d_viewer/states/refreshable_state.dart';
 import 'package:live2d_viewer/widget/widget.dart';
 
 import 'character_list.dart';
@@ -14,12 +16,28 @@ class DestinyChildPage extends StatefulWidget {
 }
 
 class DestinyChildPageState extends State<DestinyChildPage> {
-  int _activeIndex = 0;
+  int _activeIndex = 1;
 
-  final List<Widget> _pages = [
-    const CharacterList(),
-    const SoulCartaList(),
-  ];
+  final _characterListStateKey = GlobalKey<CharacterListState>();
+
+  final _soulCartaListStateKey = GlobalKey<SoulCartaListState>();
+
+  late final List<Widget> _pages;
+
+  late final List<GlobalKey<RefreshableState<StatefulWidget>>> _keys;
+
+  @override
+  initState() {
+    _keys = [
+      _characterListStateKey,
+      _soulCartaListStateKey,
+    ];
+    _pages = [
+      CharacterList(key: _characterListStateKey),
+      SoulCartaList(key: _soulCartaListStateKey),
+    ];
+    super.initState();
+  }
 
   _changeTo(int index) {
     setState(() {
@@ -33,6 +51,10 @@ class DestinyChildPageState extends State<DestinyChildPage> {
       appBar: AppBar(
         title: Text(S.of(context).destinyChild),
         actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 10),
+            child: ToolbarRefreshButton(widgetKey: _keys[_activeIndex]),
+          ),
           Container(
             margin: const EdgeInsets.only(right: 20),
             child: const LanguageSelection(),

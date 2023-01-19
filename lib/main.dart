@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:live2d_viewer/constants/application.dart';
 import 'package:live2d_viewer/providers/locale_provider.dart';
-import 'package:live2d_viewer/providers/settings_provider.dart';
-import 'package:live2d_viewer/services/settings_service.dart';
 import 'package:live2d_viewer/utils/registry_util.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -54,15 +52,10 @@ void main() async {
     storageDirectory.createSync(recursive: true);
   }
 
-  final settings = await SettingsService.loadSettings();
-
   RegistryUtil.init();
 
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(
-        create: (_) => SettingsProvider(settings: settings),
-      ),
       ChangeNotifierProvider(create: (_) {
         return LocaleProvider(const Locale('zh', 'CN'));
       }),

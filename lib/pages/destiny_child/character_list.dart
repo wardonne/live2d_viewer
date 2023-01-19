@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/components/global_components.dart';
 import 'package:live2d_viewer/services/destiny_child_service.dart';
-import 'package:live2d_viewer/widget/dialog/dialog.dart';
+import 'package:live2d_viewer/states/refreshable_state.dart';
+import 'package:live2d_viewer/widget/widget.dart';
 
 import 'components/components.dart';
 
@@ -12,7 +13,12 @@ class CharacterList extends StatefulWidget {
   State<StatefulWidget> createState() => CharacterListState();
 }
 
-class CharacterListState extends State<CharacterList> {
+class CharacterListState extends RefreshableState<CharacterList> {
+  @override
+  void reload({bool forceReload = false}) {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(

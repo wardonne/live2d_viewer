@@ -30,7 +30,7 @@ class SoulCartaCard extends StatelessWidget {
             color: Colors.transparent,
           ),
           Center(
-            child: Text(soulCarta.name ?? ''),
+            child: Text(soulCarta.name ?? soulCarta.image),
           ),
         ],
       ),

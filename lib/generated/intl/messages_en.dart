@@ -31,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "confirm": MessageLookupByLibrary.simpleMessage("confirm"),
         "destinyChild": MessageLookupByLibrary.simpleMessage("Destiny Child"),
         "dialogTitleError": MessageLookupByLibrary.simpleMessage("Error"),
+        "forceReload": MessageLookupByLibrary.simpleMessage("Force reload"),
         "gameTitles": m0,
         "indexTitle": MessageLookupByLibrary.simpleMessage("Games"),
         "nikke":

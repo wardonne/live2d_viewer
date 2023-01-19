@@ -21,15 +21,15 @@ class ApplicationConstants {
   );
 
   static String rootPath = File(Platform.resolvedExecutable).parent.path;
-
+  static String dataPath = PathUtil().join([rootPath, 'data']);
   static String screenshotPath = PathUtil().join([rootPath, 'screenshot']);
-
-  static String cachePath = PathUtil().join([rootPath, 'data', 'cached']);
+  static String cachePath = PathUtil().join([dataPath, 'cached']);
   static String imageCachePath = PathUtil().join([cachePath, 'images']);
   static String httpCachePath = PathUtil().join([cachePath, 'http']);
   static String resourceCachePath = PathUtil().join([cachePath, 'resources']);
 
   static const String assetsURL =
       'https://static.wardonet.cn/live2d-viewer/assets';
+  static const String versionURL = '$assetsURL/version.json';
   static const String localAssetsURL = 'static.live2d-viewer.local';
 }
