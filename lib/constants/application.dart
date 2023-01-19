@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:live2d_viewer/models/virtual_host.dart';
 import 'package:live2d_viewer/utils/utils.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -31,5 +32,11 @@ class ApplicationConstants {
   static const String assetsURL =
       'https://static.wardonet.cn/live2d-viewer/assets';
   static const String versionURL = '$assetsURL/version.json';
-  static const String localAssetsURL = 'static.live2d-viewer.local';
+  static Uri localAssetsURL = Uri(
+    scheme: 'http',
+    host: 'static.live2d-viewer.local',
+  );
+
+  static VirtualHost virtualHost =
+      VirtualHost(virtualHost: localAssetsURL.host, folderPath: rootPath);
 }

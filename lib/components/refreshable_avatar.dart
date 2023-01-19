@@ -9,6 +9,7 @@ class RefreshableAvatar extends StatelessWidget {
   final double width;
   final double height;
   final String? placeholder;
+  final bool contextMenu;
 
   RefreshableAvatar({
     super.key,
@@ -16,6 +17,7 @@ class RefreshableAvatar extends StatelessWidget {
     required this.width,
     required this.height,
     this.placeholder,
+    this.contextMenu = true,
   });
 
   final _imageKey = GlobalKey<CachedNetworkImageState>();
@@ -26,20 +28,28 @@ class RefreshableAvatar extends StatelessWidget {
       child: SizedBox(
         width: width,
         height: height,
-        child: ContextMenuWrapper(
-          child: CachedNetworkImage(
-            key: _imageKey,
-            width: width,
-            height: height,
-            path: path,
-            placeholder: placeholder,
-          ),
-          itemBuilder: (context) => [
-            CachedNetworkImageRefreshMenuItem(
-              widgetKey: _imageKey,
-            ),
-          ],
-        ),
+        child: contextMenu
+            ? ContextMenuWrapper(
+                child: CachedNetworkImage(
+                  key: _imageKey,
+                  width: width,
+                  height: height,
+                  path: path,
+                  placeholder: placeholder,
+                ),
+                itemBuilder: (context) => [
+                  CachedNetworkImageRefreshMenuItem(
+                    widgetKey: _imageKey,
+                  ),
+                ],
+              )
+            : CachedNetworkImage(
+                key: _imageKey,
+                width: width,
+                height: height,
+                path: path,
+                placeholder: placeholder,
+              ),
       ),
     );
   }

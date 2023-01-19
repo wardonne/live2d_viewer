@@ -37,7 +37,7 @@
 
         setCanvas('canvas');
 
-        loadLive2d(`http://${data.live2d}`);
+        loadLive2d(data.live2d);
 
         window.animeFrame = function() {
             let animationFrame = window.requestAnimationFrame;

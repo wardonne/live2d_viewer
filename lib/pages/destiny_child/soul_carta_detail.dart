@@ -4,13 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:live2d_viewer/components/global_components.dart';
 import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/models/destiny_child/soul_carta.dart';
-import 'package:live2d_viewer/models/virtual_host.dart';
 import 'package:live2d_viewer/services/destiny_child_service.dart';
 import 'package:live2d_viewer/services/http_service.dart';
-import 'package:live2d_viewer/widget/dialog/dialog.dart';
-import 'package:live2d_viewer/widget/image_viewer.dart';
-import 'package:live2d_viewer/widget/live2d_viewer.dart';
-import 'package:live2d_viewer/widget/toolbar.dart';
+import 'package:live2d_viewer/widget/widget.dart';
 import 'package:webview_windows/webview_windows.dart';
 
 class SoulCartaDetail extends StatefulWidget {
@@ -52,7 +48,7 @@ class SoulCartaDetailState extends State<SoulCartaDetail> {
                     '${DestinyChildConstants.soulCartaLive2DURL}/${soulCarta.live2d!}',
                 model: service.getModelJSON(soulCarta.live2d!),
               )
-            : http.downloadImage(soulCarta.imageURL),
+            : http.download(soulCarta.imageURL),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return ErrorDialog(message: snapshot.error.toString());
@@ -61,12 +57,7 @@ class SoulCartaDetailState extends State<SoulCartaDetail> {
                 ? Live2DViewer(
                     controller: webviewController,
                     html: snapshot.data! as String,
-                    virtualHosts: [
-                      VirtualHost(
-                        virtualHost: ApplicationConstants.localAssetsURL,
-                        folderPath: soulCarta.cachePath,
-                      ),
-                    ],
+                    virtualHosts: [ApplicationConstants.virtualHost],
                   )
                 : ImageViewer(image: snapshot.data! as File);
           } else {

@@ -25,11 +25,11 @@ class HTTPService {
     if (!localFile.existsSync() || reload) {
       await retry(
         () async {
-          await http.download(urlPath, savePath);
+          await http.download(urlPath, localFile.path);
         },
         retryIf: (e) => e is Error,
         maxAttempts: 3,
-        maxDelay: const Duration(seconds: 1),
+        maxDelay: const Duration(seconds: 3),
       );
     }
     return localFile;
@@ -47,7 +47,6 @@ class HTTPService {
       if (image.existsSync()) {
         image.deleteSync();
       }
-      debugPrint(error.toString());
       rethrow;
     }
   }
@@ -68,7 +67,6 @@ class HTTPService {
       if (response.existsSync()) {
         response.deleteSync();
       }
-      debugPrint(error.toString());
       rethrow;
     }
   }

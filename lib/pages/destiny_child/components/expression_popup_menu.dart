@@ -30,7 +30,6 @@ class _ExpressionPopupMenuState extends State<ExpressionPopupMenu> {
       controller: menuController,
       menuBuilder: () => Container(
         width: 220,
-        padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
         decoration: const BoxDecoration(
           color: Color(0xFF4C4C4C),
           borderRadius: BorderRadius.all(Radius.circular(3)),

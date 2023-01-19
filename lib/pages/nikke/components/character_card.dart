@@ -18,6 +18,7 @@ class CharacterCard extends StatelessWidget {
 
   void _toDetail(BuildContext context) {
     if (_isSkin) {
+      if (character.activeSkin == skin) return;
       character.activeSkinIndex = character.skins.indexOf(skin!);
       Navigator.pushReplacementNamed(
         context,
@@ -45,6 +46,7 @@ class CharacterCard extends StatelessWidget {
         children: [
           CharacterAvatar(
             avatar: _isSkin ? skin!.avatarURL : character.avatarURL,
+            contextMenu: !_isSkin,
           ),
           const Divider(
             height: 2,

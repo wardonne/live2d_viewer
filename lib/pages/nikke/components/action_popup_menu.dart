@@ -47,6 +47,9 @@ class _ActionPopupMenuState extends State<ActionPopupMenu> {
                     color: Styles.textColor,
                     hoverColor: Styles.hoverTextColor,
                     onClick: () {
+                      if (widget.character.activeSkin.activeAction == action) {
+                        return;
+                      }
                       widget.character.activeSkin.activeActionIndex =
                           widget.actions.indexOf(action);
                       Navigator.pushReplacementNamed(

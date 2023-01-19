@@ -14,15 +14,19 @@ class CharacterList extends StatefulWidget {
 }
 
 class CharacterListState extends RefreshableState<CharacterList> {
+  bool _reload = false;
+
   @override
   void reload({bool forceReload = false}) {
-    setState(() {});
+    setState(() {
+      _reload = forceReload;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: DestinyChildService().characters(),
+      future: DestinyChildService().characters(reload: _reload),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final items = snapshot.data!;

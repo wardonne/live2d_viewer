@@ -21,13 +21,9 @@ class SoulCartaListState extends RefreshableState<SoulCartaList> {
 
   @override
   void reload({bool forceReload = false}) {
-    if (forceReload) {
-      setState(() {
-        _reload = true;
-      });
-    } else {
-      setState(() {});
-    }
+    setState(() {
+      _reload = forceReload;
+    });
   }
 
   @override

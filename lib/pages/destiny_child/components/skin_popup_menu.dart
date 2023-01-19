@@ -26,21 +26,24 @@ class _SkinPopupMenuState extends State<SkinPopupMenu> {
       barrierColor: Colors.transparent,
       showArrow: false,
       controller: menuController,
-      menuBuilder: () => Container(
-        padding: const EdgeInsets.all(10),
-        decoration: const BoxDecoration(
-            color: Styles.popupBackgrounColor,
-            borderRadius: BorderRadius.all(Radius.circular(10))),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: widget.character.skins
-              .map((skin) => CharacterCard(
-                    character: widget.character,
-                    skin: skin,
-                  ))
-              .toList(),
-        ),
-      ),
+      enablePassEvent: false,
+      menuBuilder: () {
+        return Container(
+          padding: const EdgeInsets.all(10),
+          decoration: const BoxDecoration(
+              color: Styles.popupBackgrounColor,
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: widget.character.skins
+                .map((skin) => CharacterCard(
+                      character: widget.character,
+                      skin: skin,
+                    ))
+                .toList(),
+          ),
+        );
+      },
       pressType: PressType.singleClick,
       child: Tooltip(
         message: S.of(context).tooltipShowSkins,

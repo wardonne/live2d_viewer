@@ -42,8 +42,8 @@ class SpineUtil {
       await http.download(imageURL);
     }
     return <String, String>{
-      'atlas': localSkel.uri.pathSegments.last,
-      'skel': localSkel.uri.pathSegments.last,
+      'atlas': localAtlas.path,
+      'skel': localSkel.path,
     };
   }
 }

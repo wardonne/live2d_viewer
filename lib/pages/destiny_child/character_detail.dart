@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:live2d_viewer/components/global_components.dart';
 import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/models/destiny_child/character.dart';
-import 'package:live2d_viewer/models/virtual_host.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/components.dart';
 import 'package:live2d_viewer/services/destiny_child_service.dart';
 import 'package:live2d_viewer/widget/dialog/error_dialog.dart';
@@ -30,7 +29,7 @@ class CharacterDetail extends StatelessWidget {
         } else if (snapshot.hasData) {
           return Scaffold(
             appBar: AppBar(
-              title: Text(character.name),
+              title: Text(character.activeSkin.name),
               actions: const [
                 Padding(
                   padding: EdgeInsets.only(right: 20),
@@ -45,12 +44,7 @@ class CharacterDetail extends StatelessWidget {
             body: Live2DViewer(
               controller: webviewController,
               html: snapshot.data!,
-              virtualHosts: [
-                VirtualHost(
-                  virtualHost: ApplicationConstants.localAssetsURL,
-                  folderPath: skin.cachePath,
-                ),
-              ],
+              virtualHosts: [ApplicationConstants.virtualHost],
             ),
           );
         } else {

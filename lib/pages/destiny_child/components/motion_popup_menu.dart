@@ -28,55 +28,59 @@ class _MotionPopupMenuState extends State<MotionPopupMenu> {
       barrierColor: Colors.transparent,
       showArrow: false,
       controller: menuController,
-      menuBuilder: () => Container(
-        width: 220,
-        padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-        decoration: const BoxDecoration(
-          color: Styles.popupBackgrounColor,
-          borderRadius: BorderRadius.all(Radius.circular(3)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: widget.motions
-              .map(
-                (item) => ContainerButton(
-                  padding: const EdgeInsets.all(5.0),
-                  backgroundColor: Colors.transparent,
-                  hoverBackgroundColor: Colors.white24,
-                  color: Colors.white,
-                  onClick: () async {
-                    menuController.hideMenu();
-                    await widget.webviewController
-                        .executeScript('setMotion("${item.name}")');
-                  },
-                  child: Row(
-                    children: [
-                      const Icon(Icons.play_arrow_rounded, size: 20),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0, right: 9.0),
-                          child: Text(
-                            item.name,
-                            style: const TextStyle(fontSize: 16),
+      menuBuilder: () {
+        debugPrint('build');
+        return Container(
+          width: 220,
+          padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+          decoration: const BoxDecoration(
+            color: Styles.popupBackgrounColor,
+            borderRadius: BorderRadius.all(Radius.circular(3)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: widget.motions
+                .map(
+                  (item) => ContainerButton(
+                    padding: const EdgeInsets.all(5.0),
+                    backgroundColor: Colors.transparent,
+                    hoverBackgroundColor: Colors.white24,
+                    color: Colors.white,
+                    onClick: () async {
+                      menuController.hideMenu();
+                      await widget.webviewController
+                          .executeScript('setMotion("${item.name}")');
+                    },
+                    child: Row(
+                      children: [
+                        const Icon(Icons.play_arrow_rounded, size: 20),
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(left: 8.0, right: 9.0),
+                            child: Text(
+                              item.name,
+                              style: const TextStyle(fontSize: 16),
+                            ),
                           ),
                         ),
-                      ),
-                      ImageButton(
-                        icon: const Icon(Icons.videocam, size: 20),
-                        tooltip: S.of(context).tooltipPlayAndRecord,
-                        onPressed: () async {
-                          menuController.hideMenu();
-                          await widget.webviewController
-                              .executeScript('recordAnimation("${item.name}")');
-                        },
-                      ),
-                    ],
+                        ImageButton(
+                          icon: const Icon(Icons.videocam, size: 20),
+                          tooltip: S.of(context).tooltipPlayAndRecord,
+                          onPressed: () async {
+                            menuController.hideMenu();
+                            await widget.webviewController.executeScript(
+                                'recordAnimation("${item.name}")');
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              )
-              .toList(),
-        ),
-      ),
+                )
+                .toList(),
+          ),
+        );
+      },
       pressType: PressType.singleClick,
       child: const Tooltip(
         message: 'show motions',

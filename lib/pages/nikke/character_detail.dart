@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:live2d_viewer/components/global_components.dart';
 import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/models/nikke/character.dart';
-import 'package:live2d_viewer/models/virtual_host.dart';
 import 'package:live2d_viewer/services/nikke_service.dart';
 import 'package:live2d_viewer/widget/dialog/error_dialog.dart';
 import 'package:live2d_viewer/widget/webview.dart';
@@ -76,16 +75,10 @@ class CharacterDetailState extends State<CharacterDetail> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final html = snapshot.data!;
-            final virtualHost = VirtualHost(
-              virtualHost: ApplicationConstants.localAssetsURL,
-              folderPath:
-                  '${NikkeConstants.resourceCachePath}/${skin.hash}/${action.hash}',
-            );
-            debugPrint(virtualHost.toString());
             return WebView(
               controller: _controller,
               htmlStr: html,
-              virtualHosts: [virtualHost],
+              virtualHosts: [ApplicationConstants.virtualHost],
             );
           } else if (snapshot.hasError) {
             return ErrorDialog(message: snapshot.error!.toString());

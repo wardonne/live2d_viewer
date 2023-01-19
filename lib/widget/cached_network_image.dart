@@ -46,7 +46,7 @@ class CachedNetworkImageState extends State<CachedNetworkImage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: http.downloadImage(widget.path, reload: _forceRefresh),
+      future: http.download(widget.path, reload: _forceRefresh),
       builder: (BuildContext context, snapshot) {
         if (snapshot.hasData) {
           return Image.file(

@@ -28,9 +28,6 @@ class NikkeService {
 
   Future<String> loadHtml(Skin skin, Action action) async {
     final skinURL = '${NikkeConstants.characterSpineURL}/${skin.code}';
-    // final cachePath =
-    //     '${NikkeConstants.resourceCachePath}/${skin.hash}/${action.hash}';
-
     final cachePath = PathUtil()
         .join([ApplicationConstants.rootPath, Uri.parse(skinURL).path]);
     final resource = await SpineUtil().downloadResource(
@@ -41,11 +38,28 @@ class NikkeService {
       skeletonURL: '$skinURL/${action.skel}',
       atlasURL: '$skinURL/${action.atlas}',
     );
+
+    final skelUri = Uri(
+      scheme: ApplicationConstants.localAssetsURL.scheme,
+      host: ApplicationConstants.localAssetsURL.host,
+      path: Uri.parse(PathUtil().relative(
+        resource['skel'] as String,
+        ApplicationConstants.rootPath,
+      )).path,
+    );
+
+    final atlasUri = Uri(
+      scheme: ApplicationConstants.localAssetsURL.scheme,
+      host: ApplicationConstants.localAssetsURL.host,
+      path: Uri.parse(PathUtil().relative(
+        resource['atlas'] as String,
+        ApplicationConstants.rootPath,
+      )).path,
+    );
+
     final data = SpineHtmlData(
-      skelUrl:
-          'http://${ApplicationConstants.localAssetsURL}/${resource["skel"]!}',
-      atlasUrl:
-          'http://${ApplicationConstants.localAssetsURL}/${resource["atlas"]!}',
+      skelUrl: skelUri.toString(),
+      atlasUrl: atlasUri.toString(),
       animation: action.animation,
     );
     final html =
