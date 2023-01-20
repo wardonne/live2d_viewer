@@ -1,17 +1,18 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:live2d_viewer/constants/constants.dart';
-import 'package:live2d_viewer/models/destiny_child/character.dart';
-import 'package:live2d_viewer/models/destiny_child/soul_carta.dart';
+import 'package:live2d_viewer/models/destiny_child/character_model.dart';
+import 'package:live2d_viewer/models/destiny_child/expression_model.dart';
+import 'package:live2d_viewer/models/destiny_child/motion_model.dart';
+import 'package:live2d_viewer/models/destiny_child/skin_model.dart';
+import 'package:live2d_viewer/models/destiny_child/soul_carta_model.dart';
 import 'package:live2d_viewer/models/live2d_html_data.dart';
 import 'package:live2d_viewer/services/cache_service.dart';
 import 'package:live2d_viewer/services/http_service.dart';
 import 'package:live2d_viewer/services/webview_service.dart';
-import 'package:live2d_viewer/utils/hash_util.dart';
 import 'package:live2d_viewer/utils/live2d_util.dart';
 import 'package:live2d_viewer/utils/path_util.dart';
 
@@ -23,16 +24,16 @@ class DestinyChildService {
     return DestinyChildConstants.modelJSONFormat.replaceAll('%s', code);
   }
 
-  Future<List<Character>> characters({bool reload = false}) async {
+  Future<List<CharacterModel>> characters({bool reload = false}) async {
     const url = DestinyChildConstants.characterDataURL;
     final localFile = await http.download(url, reload: reload);
     final list = jsonDecode(localFile.readAsStringSync()) as List<dynamic>;
     return list
-        .map((item) => Character.fromJson(item as Map<String, dynamic>))
+        .map((item) => CharacterModel.fromJson(item as Map<String, dynamic>))
         .toList();
   }
 
-  Future<List<SoulCarta>> soulCartas({bool reload = false}) async {
+  Future<List<SoulCartaModel>> soulCartas({bool reload = false}) async {
     const url = DestinyChildConstants.soulCartaDataURL;
     final cachedHttpResponse = cache.getCachedHttpResponse(path: url);
     List<dynamic> list = [];
@@ -46,34 +47,35 @@ class DestinyChildService {
       cache.cacheHttpResponse(bytes: bytes, path: url);
     }
     return list
-        .map((item) => SoulCarta.fromJson(item as Map<String, dynamic>))
+        .map((item) => SoulCartaModel.fromJson(item as Map<String, dynamic>))
         .toList();
   }
 
-  Future<String> loadCharacterHTML({
-    required Skin skin,
-    required String baseURL,
-    required String model,
-  }) async {
-    final cachePath =
-        '${DestinyChildConstants.resourceCachePath}/${HashUtil().hashMd5(skin.code)}';
+  Future<String> loadCharacterHTML(SkinModel skin) async {
     final modelJSONFile = await Live2DUtil().downloadResource(
-      cacheDirectory: Directory(cachePath),
-      baseURL: baseURL,
-      modelJSON: model,
+      baseURL: skin.live2dURL,
+      modelURL: skin.modelURL,
     );
     final modelContent =
         jsonDecode(modelJSONFile.readAsStringSync()) as Map<String, dynamic>? ??
             {};
     final expressions = modelContent['expressions'] as List<dynamic>? ?? [];
     skin.expressions = expressions
-        .map((expression) => Expression(
+        .map((expression) => ExpressionModel(
               name: expression['name'] as String? ?? '',
               file: expression['file'] as String? ?? '',
-            ))
+            )..skin = skin)
         .toList();
     final motionGroups = modelContent['motions'] as Map<String, dynamic>? ?? {};
-    skin.motions = motionGroups.keys.map((name) => Motion(name: name)).toList();
+    skin.motions = motionGroups.keys
+        .map(
+          (name) => MotionModel.fromJson({
+            'name': name,
+            'configs': motionGroups[name],
+          })
+            ..skin = skin,
+        )
+        .toList();
 
     final live2dUri = Uri(
       scheme: ApplicationConstants.localAssetsURL.scheme,
@@ -90,16 +92,10 @@ class DestinyChildService {
     return WebviewService.renderHtml(html, data);
   }
 
-  Future<String> loadSoulCartaHTML({
-    required SoulCarta soulCarta,
-    required String baseURL,
-    required String model,
-  }) async {
-    final cachePath = soulCarta.cachePath;
+  Future<String> loadSoulCartaHTML(SoulCartaModel soulCarta) async {
     final modelJSON = await Live2DUtil().downloadResource(
-      cacheDirectory: Directory(cachePath),
-      baseURL: baseURL,
-      modelJSON: model,
+      baseURL: soulCarta.live2dURL!,
+      modelURL: soulCarta.modelURL!,
     );
     final backgroundImage = await http.download(soulCarta.imageURL);
     final live2dUri = Uri(

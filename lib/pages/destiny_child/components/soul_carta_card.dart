@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/constants/constants.dart';
-import 'package:live2d_viewer/models/destiny_child/soul_carta.dart';
+import 'package:live2d_viewer/models/destiny_child/soul_carta_model.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/components.dart';
 import 'package:live2d_viewer/widget/buttons/buttons.dart';
 
 class SoulCartaCard extends StatelessWidget {
-  final SoulCarta soulCarta;
+  final SoulCartaModel soulCarta;
   const SoulCartaCard({super.key, required this.soulCarta});
 
   @override
@@ -30,7 +30,7 @@ class SoulCartaCard extends StatelessWidget {
             color: Colors.transparent,
           ),
           Center(
-            child: Text(soulCarta.name ?? soulCarta.image),
+            child: Text(soulCarta.name),
           ),
         ],
       ),

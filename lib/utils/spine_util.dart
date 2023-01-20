@@ -27,12 +27,10 @@ class SpineUtil {
   }
 
   Future<Map<String, String>> downloadResource({
-    required Directory cacheDirectory,
     required String baseURL,
     required String imageBaseURL,
     required String skeletonURL,
     required String atlasURL,
-    Duration? duration,
   }) async {
     final localSkel = await http.download(skeletonURL);
     final localAtlas = await http.download(atlasURL);

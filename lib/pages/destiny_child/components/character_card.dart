@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/constants/constants.dart';
-import 'package:live2d_viewer/models/destiny_child/character.dart';
+import 'package:live2d_viewer/models/destiny_child/character_model.dart';
+import 'package:live2d_viewer/models/destiny_child/skin_model.dart';
 import 'package:live2d_viewer/widget/buttons/buttons.dart';
 
 import 'character_avatar.dart';
 
 class CharacterCard extends StatelessWidget {
-  final Character character;
-  final Skin? skin;
+  final CharacterModel character;
+  final SkinModel? skin;
   final bool _isSkin;
   const CharacterCard({
     super.key,
@@ -18,7 +19,7 @@ class CharacterCard extends StatelessWidget {
   void _toDetail(BuildContext context) {
     if (_isSkin) {
       if (character.activeSkin == skin) return;
-      character.activeSkinIndex = character.skins.indexOf(skin!);
+      character.switchSkin(skin!);
       Navigator.pushReplacementNamed(
         context,
         Routes.destinyChildCharacterDetail,

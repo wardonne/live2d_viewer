@@ -3,19 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:live2d_viewer/constants/routes.dart';
 import 'package:live2d_viewer/constants/styles.dart';
 import 'package:live2d_viewer/generated/l10n.dart';
+import 'package:live2d_viewer/models/nikke/action_model.dart';
+import 'package:live2d_viewer/models/nikke/character_model.dart';
+import 'package:live2d_viewer/models/nikke/skin_model.dart';
 import 'package:live2d_viewer/widget/buttons/container_button.dart';
-import 'package:live2d_viewer/models/nikke/character.dart' as nikke;
 
 class ActionPopupMenu extends StatefulWidget {
-  final nikke.Character character;
+  final CharacterModel character;
   const ActionPopupMenu({
     super.key,
     required this.character,
   });
 
-  nikke.Skin get skin => character.activeSkin;
+  SkinModel get skin => character.activeSkin;
 
-  List<nikke.Action> get actions => skin.actions;
+  List<ActionModel> get actions => skin.actions;
 
   @override
   State<StatefulWidget> createState() => _ActionPopupMenuState();

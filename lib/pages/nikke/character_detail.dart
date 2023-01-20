@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/components/global_components.dart';
 import 'package:live2d_viewer/constants/constants.dart';
-import 'package:live2d_viewer/models/nikke/character.dart';
+import 'package:live2d_viewer/models/nikke/character_model.dart';
 import 'package:live2d_viewer/services/nikke_service.dart';
 import 'package:live2d_viewer/widget/dialog/error_dialog.dart';
 import 'package:live2d_viewer/widget/webview.dart';
@@ -51,10 +51,9 @@ class CharacterDetailState extends State<CharacterDetail> {
 
   @override
   Widget build(BuildContext context) {
-    final character = ModalRoute.of(context)?.settings.arguments as Character;
-    debugPrint('character: $character');
-    final skin = character.activeSkin;
-    final action = skin.activeAction;
+    final character =
+        ModalRoute.of(context)?.settings.arguments as CharacterModel;
+    final action = character.activeAction;
     return Scaffold(
       appBar: AppBar(
         title: Text(character.name),
@@ -71,7 +70,7 @@ class CharacterDetailState extends State<CharacterDetail> {
         webviewController: _controller,
       ),
       body: FutureBuilder(
-        future: service.loadHtml(skin, action),
+        future: service.loadHtml(action),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final html = snapshot.data!;

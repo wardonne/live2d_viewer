@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:live2d_viewer/components/global_components.dart';
 import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/generated/l10n.dart';
-import 'package:live2d_viewer/models/nikke/character.dart';
+import 'package:live2d_viewer/models/nikke/character_model.dart';
 import 'package:live2d_viewer/pages/nikke/components/character_card.dart';
 import 'package:live2d_viewer/services/nikke_service.dart';
 import 'package:live2d_viewer/widget/widget.dart';
@@ -50,8 +50,10 @@ class CharacterListState extends State<CharacterList> {
                 child: Wrap(
                   alignment: WrapAlignment.start,
                   crossAxisAlignment: WrapCrossAlignment.start,
-                  children: items.where((item) => item.enable).map((item) {
-                    return CharacterCard(character: item);
+                  children: items
+                      .where((character) => character.enable)
+                      .map((character) {
+                    return CharacterCard(character: character);
                   }).toList(),
                 ),
               ),
@@ -77,7 +79,7 @@ class CharacterListState extends State<CharacterList> {
     );
   }
 
-  Widget characterAvatar(Character item) {
+  Widget characterAvatar(CharacterModel character) {
     final cachedNetworkImageKey = GlobalKey<CachedNetworkImageState>();
     return Center(
       child: SizedBox(
@@ -108,8 +110,7 @@ class CharacterListState extends State<CharacterList> {
             key: cachedNetworkImageKey,
             width: 100,
             height: 200,
-            path:
-                '${NikkeConstants.assetsURL}/character/avatars/${item.avatar}',
+            path: character.avatarURL,
             placeholder: ResourceConstants.nikkeCharacterDefaultAvatar,
           ),
         ),

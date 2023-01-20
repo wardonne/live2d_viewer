@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/components/global_components.dart';
 import 'package:live2d_viewer/constants/constants.dart';
-import 'package:live2d_viewer/models/destiny_child/soul_carta.dart';
+import 'package:live2d_viewer/models/destiny_child/soul_carta_model.dart';
 import 'package:live2d_viewer/services/destiny_child_service.dart';
 import 'package:live2d_viewer/services/http_service.dart';
 import 'package:live2d_viewer/widget/widget.dart';
@@ -25,10 +25,11 @@ class SoulCartaDetailState extends State<SoulCartaDetail> {
   @override
   Widget build(BuildContext context) {
     final webviewController = WebviewController();
-    final soulCarta = ModalRoute.of(context)!.settings.arguments as SoulCarta;
+    final soulCarta =
+        ModalRoute.of(context)!.settings.arguments as SoulCartaModel;
     return Scaffold(
       appBar: AppBar(
-        title: Text(soulCarta.name ?? ''),
+        title: Text(soulCarta.name),
       ),
       bottomNavigationBar: Toolbar(
         height: Styles.bottomAppBarHeight,
@@ -42,12 +43,7 @@ class SoulCartaDetailState extends State<SoulCartaDetail> {
       ),
       body: FutureBuilder(
         future: soulCarta.useLive2d
-            ? service.loadSoulCartaHTML(
-                soulCarta: soulCarta,
-                baseURL:
-                    '${DestinyChildConstants.soulCartaLive2DURL}/${soulCarta.live2d!}',
-                model: service.getModelJSON(soulCarta.live2d!),
-              )
+            ? service.loadSoulCartaHTML(soulCarta)
             : http.download(soulCarta.imageURL),
         builder: (context, snapshot) {
           if (snapshot.hasError) {

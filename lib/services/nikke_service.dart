@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:live2d_viewer/constants/constants.dart';
-import 'package:live2d_viewer/models/nikke/character.dart';
+import 'package:live2d_viewer/models/nikke/action_model.dart';
+import 'package:live2d_viewer/models/nikke/character_model.dart';
 import 'package:live2d_viewer/models/spine_html_data.dart';
 import 'package:live2d_viewer/services/cache_service.dart';
 import 'package:live2d_viewer/services/http_service.dart';
@@ -17,28 +19,23 @@ class NikkeService {
 
   NikkeService();
 
-  Future<List<Character>> characters() async {
+  Future<List<CharacterModel>> characters() async {
     final File response = await http.get(NikkeConstants.characterDataURL,
         duration: const Duration(days: 1));
     final List<dynamic> list = jsonDecode(response.readAsStringSync()) as List;
-    return list
-        .map((item) => Character.fromJson(item as Map<String, dynamic>))
-        .toList();
+    return list.map((item) {
+      return CharacterModel.fromJson(item as Map<String, dynamic>);
+    }).toList();
   }
 
-  Future<String> loadHtml(Skin skin, Action action) async {
-    final skinURL = '${NikkeConstants.characterSpineURL}/${skin.code}';
-    final cachePath = PathUtil()
-        .join([ApplicationConstants.rootPath, Uri.parse(skinURL).path]);
+  Future<String> loadHtml(ActionModel action) async {
+    debugPrint(action.skelURL);
     final resource = await SpineUtil().downloadResource(
-      cacheDirectory: Directory(cachePath),
-      baseURL: skinURL,
-      imageBaseURL:
-          action.name == 'default' ? skinURL : '$skinURL/${action.name}',
-      skeletonURL: '$skinURL/${action.skel}',
-      atlasURL: '$skinURL/${action.atlas}',
+      baseURL: action.skin.spineURL,
+      imageBaseURL: action.spineURL,
+      skeletonURL: action.skelURL,
+      atlasURL: action.atlasURL,
     );
-
     final skelUri = Uri(
       scheme: ApplicationConstants.localAssetsURL.scheme,
       host: ApplicationConstants.localAssetsURL.host,

@@ -2,13 +2,13 @@ import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/generated/l10n.dart';
-import 'package:live2d_viewer/models/destiny_child/character.dart';
+import 'package:live2d_viewer/models/destiny_child/motion_model.dart';
 import 'package:live2d_viewer/widget/buttons/container_button.dart';
 import 'package:live2d_viewer/widget/buttons/image_button.dart';
 import 'package:webview_windows/webview_windows.dart';
 
 class MotionPopupMenu extends StatefulWidget {
-  final List<Motion> motions;
+  final List<MotionModel> motions;
   final WebviewController webviewController;
   const MotionPopupMenu({
     super.key,

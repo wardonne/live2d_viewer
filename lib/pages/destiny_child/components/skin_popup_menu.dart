@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:live2d_viewer/components/iconfont.dart';
 import 'package:live2d_viewer/constants/styles.dart';
 import 'package:live2d_viewer/generated/l10n.dart';
-import 'package:live2d_viewer/models/destiny_child/character.dart';
+import 'package:live2d_viewer/models/destiny_child/skin_model.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/character_card.dart';
 
 class SkinPopupMenu extends StatefulWidget {
-  final Character character;
+  final List<SkinModel> skins;
 
-  const SkinPopupMenu({super.key, required this.character});
+  const SkinPopupMenu({super.key, required this.skins});
 
   @override
   State<StatefulWidget> createState() {
@@ -35,9 +35,9 @@ class _SkinPopupMenuState extends State<SkinPopupMenu> {
               borderRadius: BorderRadius.all(Radius.circular(10))),
           child: Row(
             mainAxisSize: MainAxisSize.min,
-            children: widget.character.skins
+            children: widget.skins
                 .map((skin) => CharacterCard(
-                      character: widget.character,
+                      character: skin.character,
                       skin: skin,
                     ))
                 .toList(),

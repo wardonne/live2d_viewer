@@ -1,20 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:live2d_viewer/services/cache_service.dart';
 import 'package:live2d_viewer/services/http_service.dart';
 
 class Live2DUtil {
-  final CacheService cache = CacheService();
   final HTTPService http = HTTPService();
 
   Future<File> downloadResource({
-    required Directory cacheDirectory,
     required String baseURL,
-    required String modelJSON,
-    Duration? duration,
+    required String modelURL,
   }) async {
-    final modelURL = '$baseURL/$modelJSON';
     final localModelJSON = await http.download(modelURL);
     final Map<String, dynamic> model =
         jsonDecode(localModelJSON.readAsStringSync()) as Map<String, dynamic>;

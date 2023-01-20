@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:live2d_viewer/components/iconfont.dart';
 import 'package:live2d_viewer/constants/styles.dart';
 import 'package:live2d_viewer/generated/l10n.dart';
-import 'package:live2d_viewer/models/nikke/character.dart';
+import 'package:live2d_viewer/models/nikke/character_model.dart';
 import 'package:live2d_viewer/pages/nikke/components/components.dart';
 
 class SkinPopupMenu extends StatefulWidget {
-  final Character character;
+  final CharacterModel character;
   const SkinPopupMenu({
     super.key,
     required this.character,

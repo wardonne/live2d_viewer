@@ -3,7 +3,7 @@ import 'package:live2d_viewer/components/global_components.dart';
 import 'package:live2d_viewer/components/iconfont.dart';
 import 'package:live2d_viewer/constants/styles.dart';
 import 'package:live2d_viewer/generated/l10n.dart';
-import 'package:live2d_viewer/models/nikke/character.dart';
+import 'package:live2d_viewer/models/nikke/character_model.dart';
 import 'package:live2d_viewer/pages/nikke/components/skin_popup_menu.dart';
 import 'package:live2d_viewer/widget/buttons/buttons.dart';
 import 'package:live2d_viewer/widget/toolbar.dart';
@@ -12,7 +12,7 @@ import 'package:webview_windows/webview_windows.dart';
 import 'components.dart';
 
 class BottomToolbar extends StatefulWidget {
-  final Character character;
+  final CharacterModel character;
   final BottomToolbarController _controller;
   final WebviewController _webviewController;
   const BottomToolbar({
