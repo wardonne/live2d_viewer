@@ -10,6 +10,7 @@ class RefreshableAvatar extends StatelessWidget {
   final double height;
   final String? placeholder;
   final bool contextMenu;
+  final String? queueKey;
 
   RefreshableAvatar({
     super.key,
@@ -18,38 +19,35 @@ class RefreshableAvatar extends StatelessWidget {
     required this.height,
     this.placeholder,
     this.contextMenu = true,
+    this.queueKey,
   });
 
   final _imageKey = GlobalKey<CachedNetworkImageState>();
 
   @override
   Widget build(BuildContext context) {
+    final cachedImage = CachedNetworkImage(
+      key: _imageKey,
+      width: width,
+      height: height,
+      path: path,
+      placeholder: placeholder,
+      queueKey: queueKey,
+    );
     return Center(
       child: SizedBox(
         width: width,
         height: height,
         child: contextMenu
             ? ContextMenuWrapper(
-                child: CachedNetworkImage(
-                  key: _imageKey,
-                  width: width,
-                  height: height,
-                  path: path,
-                  placeholder: placeholder,
-                ),
+                child: cachedImage,
                 itemBuilder: (context) => [
                   CachedNetworkImageRefreshMenuItem(
                     widgetKey: _imageKey,
                   ),
                 ],
               )
-            : CachedNetworkImage(
-                key: _imageKey,
-                width: width,
-                height: height,
-                path: path,
-                placeholder: placeholder,
-              ),
+            : cachedImage,
       ),
     );
   }

@@ -1,15 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:live2d_viewer/constants/constants.dart';
-import 'package:live2d_viewer/models/nikke/action_model.dart';
-import 'package:live2d_viewer/models/nikke/character_model.dart';
+import 'package:live2d_viewer/models/nikke/models.dart';
 import 'package:live2d_viewer/models/spine_html_data.dart';
-import 'package:live2d_viewer/services/cache_service.dart';
-import 'package:live2d_viewer/services/http_service.dart';
-import 'package:live2d_viewer/services/webview_service.dart';
+import 'package:live2d_viewer/services/services.dart';
 import 'package:live2d_viewer/utils/utils.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -36,23 +34,9 @@ class NikkeService {
       skeletonURL: action.skelURL,
       atlasURL: action.atlasURL,
     );
-    final skelUri = Uri(
-      scheme: ApplicationConstants.localAssetsURL.scheme,
-      host: ApplicationConstants.localAssetsURL.host,
-      path: Uri.parse(PathUtil().relative(
-        resource['skel'] as String,
-        ApplicationConstants.rootPath,
-      )).path,
-    );
 
-    final atlasUri = Uri(
-      scheme: ApplicationConstants.localAssetsURL.scheme,
-      host: ApplicationConstants.localAssetsURL.host,
-      path: Uri.parse(PathUtil().relative(
-        resource['atlas'] as String,
-        ApplicationConstants.rootPath,
-      )).path,
-    );
+    final skelUri = PathUtil().localAssetsUrl(resource['skel'] as String);
+    final atlasUri = PathUtil().localAssetsUrl(resource['atlas'] as String);
 
     final data = SpineHtmlData(
       skelUrl: skelUri.toString(),

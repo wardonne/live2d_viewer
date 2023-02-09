@@ -1,23 +1,14 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:live2d_viewer/constants/constants.dart';
-import 'package:live2d_viewer/models/destiny_child/character_model.dart';
-import 'package:live2d_viewer/models/destiny_child/expression_model.dart';
-import 'package:live2d_viewer/models/destiny_child/motion_model.dart';
-import 'package:live2d_viewer/models/destiny_child/skin_model.dart';
-import 'package:live2d_viewer/models/destiny_child/soul_carta_model.dart';
+import 'package:live2d_viewer/models/destiny_child/models.dart';
 import 'package:live2d_viewer/models/live2d_html_data.dart';
-import 'package:live2d_viewer/services/cache_service.dart';
-import 'package:live2d_viewer/services/http_service.dart';
-import 'package:live2d_viewer/services/webview_service.dart';
-import 'package:live2d_viewer/utils/live2d_util.dart';
-import 'package:live2d_viewer/utils/path_util.dart';
+import 'package:live2d_viewer/services/services.dart';
+import 'package:live2d_viewer/utils/utils.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class DestinyChildService {
-  final CacheService cache = CacheService();
   final HTTPService http = HTTPService();
 
   String getModelJSON(String code) {
@@ -35,24 +26,15 @@ class DestinyChildService {
 
   Future<List<SoulCartaModel>> soulCartas({bool reload = false}) async {
     const url = DestinyChildConstants.soulCartaDataURL;
-    final cachedHttpResponse = cache.getCachedHttpResponse(path: url);
-    List<dynamic> list = [];
-    if (cache.isUsable(cachedHttpResponse, duration: const Duration(days: 1)) &&
-        !reload) {
-      list = jsonDecode(cachedHttpResponse.readAsStringSync()) as List;
-    } else {
-      final response = await Dio().get<List<dynamic>>(url);
-      list = response.data ?? [];
-      final bytes = Int32List.fromList(utf8.encode(jsonEncode(list)));
-      cache.cacheHttpResponse(bytes: bytes, path: url);
-    }
+    final localFile = await http.download(url, reload: reload);
+    final list = jsonDecode(localFile.readAsStringSync()) as List<dynamic>;
     return list
         .map((item) => SoulCartaModel.fromJson(item as Map<String, dynamic>))
         .toList();
   }
 
   Future<String> loadCharacterHTML(SkinModel skin) async {
-    final modelJSONFile = await Live2DUtil().downloadResource(
+    final modelJSONFile = await Live2DUtil().downloadResourceV2(
       baseURL: skin.live2dURL,
       modelURL: skin.modelURL,
     );
@@ -77,13 +59,7 @@ class DestinyChildService {
         )
         .toList();
 
-    final live2dUri = Uri(
-      scheme: ApplicationConstants.localAssetsURL.scheme,
-      host: ApplicationConstants.localAssetsURL.host,
-      path: Uri.parse(PathUtil()
-              .relative(modelJSONFile.path, ApplicationConstants.rootPath))
-          .path,
-    );
+    final live2dUri = PathUtil().localAssetsUrl(modelJSONFile.path);
 
     final data = Live2DHtmlData(
       live2d: live2dUri.toString(),
@@ -93,7 +69,7 @@ class DestinyChildService {
   }
 
   Future<String> loadSoulCartaHTML(SoulCartaModel soulCarta) async {
-    final modelJSON = await Live2DUtil().downloadResource(
+    final modelJSON = await Live2DUtil().downloadResourceV2(
       baseURL: soulCarta.live2dURL!,
       modelURL: soulCarta.modelURL!,
     );
@@ -116,5 +92,25 @@ class DestinyChildService {
     final html =
         await rootBundle.loadString(ResourceConstants.live2dVersion2Html);
     return WebviewService.renderHtml(html, data);
+  }
+
+  saveSreenshot(String data) {
+    final path = PathUtil().join([
+      DestinyChildConstants.screenshotPath,
+      'images',
+      '${DateTime.now().millisecondsSinceEpoch}.jpeg',
+    ]);
+    FileUtil().write(path, base64Decode(data));
+    launchUrlString(path);
+  }
+
+  saveVideo(String data) {
+    final path = PathUtil().join([
+      DestinyChildConstants.screenshotPath,
+      'videos',
+      '${DateTime.now().millisecondsSinceEpoch}.webm',
+    ]);
+    FileUtil().write(path, base64Decode(data));
+    launchUrlString(path);
   }
 }

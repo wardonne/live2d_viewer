@@ -12,6 +12,7 @@ class MotionModel extends BaseModel {
   MotionModel({
     required this.name,
     required this.files,
+    required this.skin,
   });
 
   MotionModel.fromJson(Map<String, dynamic> json)

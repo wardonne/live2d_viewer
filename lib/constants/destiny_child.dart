@@ -1,12 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:live2d_viewer/constants/application.dart';
 import 'package:live2d_viewer/utils/path_util.dart';
 // ignore: depend_on_referenced_packages
 
 class DestinyChildConstants {
-  static List<Widget> detailWindows = [];
-
-  static int? activeTabIndex;
+  static const String name = 'destinyChild';
 
   static const String assetsURL =
       '${ApplicationConstants.assetsURL}/destiny-child';
@@ -21,8 +18,6 @@ class DestinyChildConstants {
   static const String soulCartaAvatarHashURL = '$soulCartaAvatarURL/hash.json';
   static const String soulCartaImageHashURL = '$soulCartaImageURL/hash.json';
 
-  static String resourceCachePath = PathUtil()
-      .join([ApplicationConstants.resourceCachePath, 'destiny_child']);
   static String screenshotPath =
       PathUtil().join([ApplicationConstants.screenshotPath, 'destiny_child']);
 

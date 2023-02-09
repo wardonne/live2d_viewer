@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:live2d_viewer/widget/buttons/buttons.dart';
 
 class RefreshWidgetButton extends StatelessWidget {
-  final GlobalKey widgetKey;
+  final GlobalKey? widgetKey;
   final Widget child;
   final String? title;
   final dynamic Function()? beforeRefresh;
@@ -18,7 +18,7 @@ class RefreshWidgetButton extends StatelessWidget {
 
   const RefreshWidgetButton({
     super.key,
-    required this.widgetKey,
+    this.widgetKey,
     required this.child,
     this.title,
     this.beforeRefresh,
@@ -29,7 +29,9 @@ class RefreshWidgetButton extends StatelessWidget {
     this.hoverBackgroundColor,
     this.color,
     this.hoverColor,
-  });
+  }) : assert(
+            widgetKey != null || (widgetKey == null && refreshFunction != null),
+            'widgetKey and refreshFunction can\'t be both empty');
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +55,7 @@ class RefreshWidgetButton extends StatelessWidget {
         if (refreshFunction != null) {
           await refreshFunction!();
         } else {
-          widgetKey.currentState?.setState(() {});
+          widgetKey!.currentState?.setState(() {});
         }
       },
     );

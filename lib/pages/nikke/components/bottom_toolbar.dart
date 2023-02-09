@@ -76,7 +76,7 @@ class _BottomToolbarState extends State<BottomToolbar> {
                   min: 0.5,
                   webviewController: widget._webviewController,
                 ),
-                SpeedPopupControl(
+                SpeedPlayPopupControl(
                   value: 1.0,
                   max: 2.0,
                   min: 0.5,

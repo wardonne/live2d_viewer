@@ -45,7 +45,7 @@ class CharacterModel extends BaseModel {
 
   late int activeSkinIndex = 0;
 
-  SkinModel get activeSkin => skins[activeSkinIndex];
+  SkinModel get activeSkin => !springMode ? skins[activeSkinIndex] : spring!;
 
   switchSkin(SkinModel skin) {
     if (skin != activeSkin) {
@@ -53,7 +53,14 @@ class CharacterModel extends BaseModel {
     }
   }
 
+  bool springMode = false;
+
+  switchSpringMode() {
+    springMode = !springMode;
+  }
+
   reset() {
     activeSkinIndex = 0;
+    springMode = false;
   }
 }

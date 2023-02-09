@@ -1,7 +1,7 @@
 {
     "title": "Live2D Viewer",
     "indexTitle": "游戏库",
-    "gameTitles": "{section, select, destinyChild {天命之子} nikke {NIKKE：胜利女神}}",
+    "gameTitles": "{section, select, destinyChild {天命之子} nikke {NIKKE：胜利女神} girlFrontline {少女前线}}",
     "@gameTitles": {
         "placeholders": {
             "section": {}
@@ -9,6 +9,7 @@
     },
     "destinyChild": "天命之子",
     "nikke": "NIKKE：胜利女神",
+    "girlFrontline": "少女前线",
     "reload": "重新加载",
     "confirm": "确认",
     "requestError": "请求错误",
@@ -25,6 +26,7 @@
     "tooltipShowMotions": "动作列表",
     "tooltipSnapshot": "快照",
     "tooltipSnapshotWithExpession": "设置表情并快照",
+    "tooltipSpringSkin": "温泉皮肤",
     "forceReload": "强制刷新",
     "soulCarta": "魂卡",
     "child": "天子"

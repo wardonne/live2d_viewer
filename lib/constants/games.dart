@@ -1,22 +1,28 @@
-import 'package:live2d_viewer/constants/resources.dart';
-import 'package:live2d_viewer/constants/routes.dart';
-import 'package:live2d_viewer/models/game.dart' as model_game;
+import 'package:live2d_viewer/constants/constants.dart';
+import 'package:live2d_viewer/models/game.dart';
 
 class Games {
-  static model_game.Game destinyChild = model_game.Game(
-    name: 'destinyChild',
+  static Game destinyChild = Game(
+    name: DestinyChildConstants.name,
     icon: ResourceConstants.destinyChildIcon,
     route: Routes.destinyChild,
   );
 
-  static model_game.Game nikke = model_game.Game(
-    name: 'nikke',
+  static Game nikke = Game(
+    name: NikkeConstants.name,
     icon: ResourceConstants.nikkeIcon,
     route: Routes.nikke,
   );
 
-  static List<model_game.Game> get list => [
+  static Game girlFrontline = Game(
+    name: GirlFrontlineConstants.name,
+    icon: ResourceConstants.girlFrontlineIcon,
+    route: Routes.girlFrontline,
+  );
+
+  static List<Game> get list => [
         destinyChild,
         nikke,
+        girlFrontline,
       ];
 }

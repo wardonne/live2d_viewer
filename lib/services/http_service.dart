@@ -23,32 +23,21 @@ class HTTPService {
       {String? savePath, bool reload = false}) async {
     final localFile = File(savePath ?? getSavePath(urlPath));
     if (!localFile.existsSync() || reload) {
-      await retry(
-        () async {
-          await http.download(urlPath, localFile.path);
-        },
-        retryIf: (e) => e is Error,
-        maxAttempts: 3,
-        maxDelay: const Duration(seconds: 3),
-      );
+      try {
+        await retry(
+          () async {
+            await http.download(urlPath, localFile.path);
+          },
+          retryIf: (e) => e is Error,
+          maxAttempts: 3,
+          maxDelay: const Duration(seconds: 3),
+        );
+      } on DioError {
+        debugPrint(urlPath);
+        rethrow;
+      }
     }
     return localFile;
-  }
-
-  Future<File> downloadImage(String path, {bool reload = false}) async {
-    final image = File(getSavePath(path));
-    if (image.existsSync() && !reload) {
-      return image;
-    }
-    try {
-      await http.download(path, image.path);
-      return image;
-    } catch (error) {
-      if (image.existsSync()) {
-        image.deleteSync();
-      }
-      rethrow;
-    }
   }
 
   Future<File> get(String path,

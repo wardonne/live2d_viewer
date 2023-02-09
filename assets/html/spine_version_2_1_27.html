@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://static.wardonet.cn/live2d-viewer/js/spine-v2.1.27/pixi.min.js"></script>
+    <script src="https://static.wardonet.cn/live2d-viewer/js/spine-v2.1.27/pixi-spine.js"></script>
+    <script src="https://static.wardonet.cn/live2d-viewer/js/spine-v2.1.27/skel2json.js"></script>
+    <script src="https://static.wardonet.cn/live2d-viewer/js/spine-v2.1.27/spine-web-player.js"></script>
+    <title>Spine Version 2.1.27</title>
+</head>
+<body>
+    <div id="spine-container"></div>
+</body>
+<script>
+    let data = {{data}};
+
+    window.onload = init;
+
+    function init() {
+        window.player = new SpineWebPlayer('spine-container', {
+            atlasUrl: data.atlas_url,
+            skelUrl: data.skel_url,
+            textureUrl: data.texture_url,
+            success: (player) => {
+                let animations = player.animations ?? [];
+                let animationNames = [];
+                for(let index in animations) {
+                    animationNames.push(animations[index].name);
+                }
+                window.chrome.webview.postMessage({
+                    event: 'animations',
+                    data: {
+                        'items': animationNames,
+                    },
+                });
+
+                let skins = player.skins ?? [];
+                let skinNames = [];
+                for(let index in skins) {
+                    skinNames.push(skins[index].name);
+                }
+                window.chrome.webview.postMessage({
+                    event: 'clothes',
+                    data: {
+                        items: skinNames,
+                    },
+                });
+
+                window.animeFrame = function() {
+                    let animationFrame = window.requestAnimationFrame;
+                    if (window.captureFrame) {
+                        window.captureFrame = false;
+                        let dataURL = window.player.canvas.toDataURL("image/jpeg", 1.0);
+                        let dataURLParts = dataURL.split(",");
+                        let base64Data = dataURLParts[1];
+                        let mime = dataURLParts[0].match(/:(.*?);/)[1];
+                        window.chrome.webview.postMessage({
+                            event: "snapshot",
+                            data: base64Data,
+                        });
+                    }
+                    animationFrame(window.animeFrame);
+                };
+                window.animeFrame();
+            }
+        });
+        
+        if(data.animation && window.player.hasAnimation(data.animation)) {
+            window.player.setAnimation(data.animation);
+        }
+
+        if(data.skin && window.player.hasSkin(data.skin)) {
+            window.player.setSkin(data.skin);
+        }
+    }
+
+    function setAnimation(name, loop) {
+        if(window.player.hasAnimation(name)) {
+            window.player.setAnimation(name, loop);
+        }
+    }
+
+    function recordAnimation(name) {
+        let animation = window.player.findAnimation(name);
+        if(!animation) return;
+        let stream = window.player.renderer.view.captureStream();
+        let recorder = new MediaRecorder(stream, {mimeType: 'video/webm'});
+        let data = [];
+        let duration = animation.duration;
+        recorder.ondataavailable = (event) => {
+            if(event.data && event.data.size) {
+                data.push(event.data);
+            }
+        };
+        recorder.onstart = () => {
+            speedPlay(1);
+            setAnimation(name, false);    
+        };
+        recorder.onstop = () => {
+            let reader = new FileReader();
+            reader.onload = () => {
+                let dataURL = reader.result;
+                let dataURLParts = dataURL.split(',');
+                let base64Data = dataURLParts[1];
+                window.chrome.webview.postMessage({
+                    event: "video",
+                    data: base64Data,
+                });
+            };
+            let blob = new Blob(data, {type: 'video/webm'});
+            reader.readAsDataURL(blob);
+        };
+        recorder.start();
+        setTimeout(() => {
+            recorder.stop();
+        }, duration * 1000 + 100);
+    }
+
+    function speedPlay(speed) {
+        window.player.speed = speed;
+    }
+
+    function zoom(value) {
+        window.player.scale = value;
+    }
+
+    function snapshot() {
+        window.captureFrame = true;
+    }
+</script>
+<style>
+    * {margin: 0; padding: 0;}
+
+    html, body {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    #spine-container {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+</html>

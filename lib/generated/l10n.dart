@@ -70,13 +70,14 @@ class S {
     );
   }
 
-  /// `{section, select, destinyChild {Destiny Child} nikke {GODDESS OF VICTORY: NIKKE}}`
+  /// `{section, select, destinyChild {Destiny Child} nikke {GODDESS OF VICTORY: NIKKE} girlFrontline {Girls' Frontline}}`
   String gameTitles(Object section) {
     return Intl.select(
       section,
       {
         'destinyChild': 'Destiny Child',
         'nikke': 'GODDESS OF VICTORY: NIKKE',
+        'girlFrontline': 'Girls\' Frontline',
       },
       name: 'gameTitles',
       desc: '',
@@ -99,6 +100,16 @@ class S {
     return Intl.message(
       'GODDESS OF VICTORY: NIKKE',
       name: 'nikke',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Girls' Frontline`
+  String get girlFrontline {
+    return Intl.message(
+      'Girls\' Frontline',
+      name: 'girlFrontline',
       desc: '',
       args: [],
     );
@@ -244,21 +255,31 @@ class S {
     );
   }
 
-  /// `snapshot`
+  /// `Snapshot`
   String get tooltipSnapshot {
     return Intl.message(
-      'snapshot',
+      'Snapshot',
       name: 'tooltipSnapshot',
       desc: '',
       args: [],
     );
   }
 
-  /// `set expression & snapshot`
+  /// `Set expression & snapshot`
   String get tooltipSnapshotWithExpession {
     return Intl.message(
-      'set expression & snapshot',
+      'Set expression & snapshot',
       name: 'tooltipSnapshotWithExpession',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Spring skin`
+  String get tooltipSpringSkin {
+    return Intl.message(
+      'Spring skin',
+      name: 'tooltipSpringSkin',
       desc: '',
       args: [],
     );

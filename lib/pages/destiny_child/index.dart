@@ -16,7 +16,7 @@ class DestinyChildPage extends StatefulWidget {
 }
 
 class DestinyChildPageState extends State<DestinyChildPage> {
-  int _activeIndex = 1;
+  int _activeIndex = 0;
 
   final _characterListStateKey = GlobalKey<CharacterListState>();
 

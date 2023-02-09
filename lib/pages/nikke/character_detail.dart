@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/components/global_components.dart';
 import 'package:live2d_viewer/constants/constants.dart';
+import 'package:live2d_viewer/enum/web_message.dart';
 import 'package:live2d_viewer/models/nikke/character_model.dart';
 import 'package:live2d_viewer/services/nikke_service.dart';
 import 'package:live2d_viewer/widget/dialog/error_dialog.dart';
-import 'package:live2d_viewer/widget/webview.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:live2d_viewer/widget/spine_viewer.dart';
 import 'package:webview_windows/webview_windows.dart';
 
 import 'components/components.dart';
@@ -27,24 +27,17 @@ class CharacterDetailState extends State<CharacterDetail> {
   @override
   void initState() {
     super.initState();
-    _controller.webMessage.listen((messages) {
-      final event = messages['event'] as String;
-      debugPrint(event);
-      final data = messages['data'];
-      switch (event) {
-        case 'animations':
-          final items = data['items'];
-          _bottomToolbarController.setAnimations(
-              (items as List<dynamic>).map((item) => item as String).toList());
-          break;
-        case 'snapshot':
-          NikkeService().saveScreenshot(data as String);
-          break;
-        case 'video':
-          NikkeService().saveVideo(data as String);
-          break;
-        default:
-          break;
+    _controller.webMessage.listen((message) {
+      final event = message['event'] as String;
+      final data = message['data'];
+      if (WebMessage.animations.label == event) {
+        final items = data['items'];
+        _bottomToolbarController.setAnimations(
+            (items as List<dynamic>).map((item) => item as String).toList());
+      } else if (WebMessage.snapshot.label == event) {
+        service.saveScreenshot(data as String);
+      } else if (WebMessage.video.label == event) {
+        service.saveVideo(data as String);
       }
     });
   }
@@ -74,23 +67,15 @@ class CharacterDetailState extends State<CharacterDetail> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final html = snapshot.data!;
-            return WebView(
+            return SpineViewer(
               controller: _controller,
-              htmlStr: html,
+              html: html,
               virtualHosts: [ApplicationConstants.virtualHost],
             );
           } else if (snapshot.hasError) {
             return ErrorDialog(message: snapshot.error!.toString());
           } else {
-            final size = MediaQuery.of(context).size;
-            return SizedBox(
-              width: size.width,
-              height: size.height,
-              child: LoadingAnimationWidget.threeArchedCircle(
-                color: Styles.iconColor,
-                size: 30,
-              ),
-            );
+            return const LoadingAnimation(size: 30.0);
           }
         },
       ),

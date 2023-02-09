@@ -38,8 +38,6 @@ class WebViewState extends State<WebView> {
   Future<void> initPlatformState() async {
     try {
       await _controller.initialize();
-      await _controller
-          .setPopupWindowPolicy(webview.WebviewPopupWindowPolicy.deny);
 
       if (widget.virtualHosts != null) {
         for (final item in widget.virtualHosts!) {
@@ -50,7 +48,8 @@ class WebViewState extends State<WebView> {
           );
         }
       }
-
+      await _controller
+          .setPopupWindowPolicy(webview.WebviewPopupWindowPolicy.deny);
       if (!mounted) {
         return;
       }
@@ -110,7 +109,9 @@ class WebViewState extends State<WebView> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _controller.loadStringContent(widget.htmlStr),
+      future: () async {
+        await _controller.loadStringContent(widget.htmlStr);
+      }(),
       builder: (context, snapshot) {
         return webview.Webview(
           _controller,

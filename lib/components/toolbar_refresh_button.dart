@@ -6,11 +6,16 @@ import 'package:live2d_viewer/widget/buttons/buttons.dart';
 import 'package:live2d_viewer/widget/wrappers/context_menu_wrapper.dart';
 
 class ToolbarRefreshButton extends StatelessWidget {
-  final GlobalKey<RefreshableState<StatefulWidget>> widgetKey;
+  final GlobalKey<RefreshableState<StatefulWidget>>? widgetKey;
+  final RefreshableState<StatefulWidget>? widgetState;
   const ToolbarRefreshButton({
     super.key,
-    required this.widgetKey,
-  });
+    this.widgetKey,
+    this.widgetState,
+  }) : assert(
+            (widgetKey != null && widgetState == null) ||
+                (widgetKey == null && widgetState != null),
+            'widgetKey and widgetState can\'t be set at the same time');
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +24,11 @@ class ToolbarRefreshButton extends StatelessWidget {
         icon: Icons.refresh,
         tooltip: S.of(context).reload,
         onPressed: () {
-          widgetKey.currentState?.reload();
+          if (widgetKey != null) {
+            widgetKey!.currentState?.reload();
+          } else {
+            widgetState!.reload();
+          }
         },
       ),
       itemBuilder: (context) => [
@@ -33,7 +42,11 @@ class ToolbarRefreshButton extends StatelessWidget {
           title: S.of(context).forceReload,
           beforeRefresh: Navigator.of(context).pop,
           refreshFunction: () {
-            (widgetKey.currentState!).reload(forceReload: true);
+            if (widgetKey != null) {
+              widgetKey!.currentState?.reload(forceReload: true);
+            } else {
+              widgetState!.reload(forceReload: true);
+            }
           },
           child: Container(
             padding: const EdgeInsets.only(left: 8.0, right: 8.0),

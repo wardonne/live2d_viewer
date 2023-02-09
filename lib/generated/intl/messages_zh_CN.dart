@@ -23,6 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m0(section) => "${Intl.select(section, {
             'destinyChild': '天命之子',
             'nikke': 'NIKKE：胜利女神',
+            'girlFrontline': '少女前线',
           })}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -33,6 +34,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dialogTitleError": MessageLookupByLibrary.simpleMessage("错误"),
         "forceReload": MessageLookupByLibrary.simpleMessage("强制刷新"),
         "gameTitles": m0,
+        "girlFrontline": MessageLookupByLibrary.simpleMessage("少女前线"),
         "indexTitle": MessageLookupByLibrary.simpleMessage("游戏库"),
         "nikke": MessageLookupByLibrary.simpleMessage("NIKKE：胜利女神"),
         "reload": MessageLookupByLibrary.simpleMessage("重新加载"),
@@ -51,6 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tooltipSnapshotWithExpession":
             MessageLookupByLibrary.simpleMessage("设置表情并快照"),
         "tooltipSpeedPlay": MessageLookupByLibrary.simpleMessage("倍速播放"),
+        "tooltipSpringSkin": MessageLookupByLibrary.simpleMessage("温泉皮肤"),
         "tooltipZoom": MessageLookupByLibrary.simpleMessage("缩放")
       };
 }

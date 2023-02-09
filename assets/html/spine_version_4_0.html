@@ -51,8 +51,8 @@
                 });
 
                 window.animeFrame = function() {
-                let animationFrame = window.requestAnimationFrame;
-                if (window.captureFrame) {
+                    let animationFrame = window.requestAnimationFrame;
+                    if (window.captureFrame) {
                         window.captureFrame = false;
                         let dataURL = window.player.canvas.toDataURL("image/jpeg", 1.0);
                         let dataURLParts = dataURL.split(",");
@@ -143,8 +143,8 @@
                 let dataURLParts = dataURL.split(",");
                 let base64Data = dataURLParts[1];
                 window.chrome.webview.postMessage({
-                    "event": "video",
-                    "data": base64Data,
+                    event: "video",
+                    data: base64Data,
                 });
             };
             let blob = new Blob(data, {type: 'video/webm'});

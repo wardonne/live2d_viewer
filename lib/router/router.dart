@@ -5,6 +5,9 @@ import 'package:live2d_viewer/pages/destiny_child/destiny_child.dart'
 import 'package:live2d_viewer/pages/index.dart';
 import 'package:live2d_viewer/pages/nikke/nikke.dart' as nikke;
 
+import 'package:live2d_viewer/pages/girl_frontline/girl_frontline.dart'
+    as girl_frontline;
+
 var router = <String, WidgetBuilder>{
   routes.Routes.index: (context) => const IndexPage(),
   // destiny-child
@@ -21,4 +24,9 @@ var router = <String, WidgetBuilder>{
   routes.Routes.nikkeCharacters: (context) => const nikke.CharacterList(),
   routes.Routes.nikkeCharacterDetail: (context) =>
       const nikke.CharacterDetail(),
+  // girl-frontline
+  routes.Routes.girlFrontline: (context) =>
+      const girl_frontline.GirlFrontlinePage(),
+  routes.Routes.girlFrontlineCharacterDetail: (context) =>
+      const girl_frontline.CharacterDetail(),
 };

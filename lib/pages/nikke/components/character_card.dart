@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/constants/routes.dart';
 import 'package:live2d_viewer/constants/styles.dart';
+import 'package:live2d_viewer/controllers/load_controller.dart';
 import 'package:live2d_viewer/models/nikke/character_model.dart';
 import 'package:live2d_viewer/models/nikke/skin_model.dart';
+import 'package:live2d_viewer/pages/nikke/components/character_avatar.dart';
 import 'package:live2d_viewer/widget/buttons/buttons.dart';
-
-import 'character_avatar.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class CharacterCard extends StatelessWidget {
   final CharacterModel character;
@@ -37,6 +38,7 @@ class CharacterCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loadController = LoadController();
     return ContainerButton(
       width: 100,
       padding: const EdgeInsets.all(10.0),
@@ -45,9 +47,16 @@ class CharacterCard extends StatelessWidget {
       onClick: () => _toDetail(context),
       child: Column(
         children: [
-          CharacterAvatar(
-            avatar: _isSkin ? skin!.avatarURL : character.avatarURL,
-            contextMenu: !_isSkin,
+          VisibilityDetector(
+            key: ObjectKey(_isSkin ? skin : character),
+            child: CharacterAvatar(
+              avatar: _isSkin ? skin!.avatarURL : character.avatarURL,
+              contextMenu: !_isSkin,
+              controller: loadController,
+            ),
+            onVisibilityChanged: (info) {
+              loadController.load = true;
+            },
           ),
           const Divider(
             height: 2,

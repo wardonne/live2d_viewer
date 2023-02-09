@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/constants/constants.dart';
+import 'package:live2d_viewer/controllers/load_controller.dart';
 import 'package:live2d_viewer/models/destiny_child/character_model.dart';
 import 'package:live2d_viewer/models/destiny_child/skin_model.dart';
 import 'package:live2d_viewer/widget/buttons/buttons.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 import 'character_avatar.dart';
 
@@ -10,11 +12,13 @@ class CharacterCard extends StatelessWidget {
   final CharacterModel character;
   final SkinModel? skin;
   final bool _isSkin;
-  const CharacterCard({
+  CharacterCard({
     super.key,
     required this.character,
     this.skin,
   }) : _isSkin = skin != null;
+
+  final loadController = LoadController();
 
   void _toDetail(BuildContext context) {
     if (_isSkin) {
@@ -44,9 +48,14 @@ class CharacterCard extends StatelessWidget {
       onClick: () => _toDetail(context),
       child: Column(
         children: [
-          CharacterAvatar(
-            avatar: _isSkin ? skin!.avatarURL : character.avatarURL,
-            contextMenu: !_isSkin,
+          VisibilityDetector(
+            key: ObjectKey(_isSkin ? skin! : character),
+            child: CharacterAvatar(
+              avatar: _isSkin ? skin!.avatarURL : character.avatarURL,
+              contextMenu: !_isSkin,
+              controller: loadController,
+            ),
+            onVisibilityChanged: (info) => loadController.load = true,
           ),
           const Divider(
             height: 2,

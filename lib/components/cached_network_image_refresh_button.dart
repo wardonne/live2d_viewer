@@ -21,6 +21,7 @@ class CachedNetworkImageRefreshMenuItem extends StatelessWidget {
       title: S.of(context).reload,
       beforeRefresh: Navigator.of(context).pop,
       refreshFunction: () {
+        debugPrint(widgetKey.toString());
         (widgetKey.currentState!).reload();
       },
       child: Container(

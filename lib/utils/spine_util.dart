@@ -12,17 +12,18 @@ class SpineUtil {
     if (!atlasFile.existsSync()) {
       return [];
     }
-    var images = <String>[];
-    await atlasFile
+    final images = <String>[];
+    final stream = await atlasFile
         .openRead()
         .map(utf8.decode)
         .transform(const LineSplitter())
-        .forEach((line) {
-      if (line.trim().isEmpty) return;
-      if (line.split(':').length > 1) return;
-      if (images.isNotEmpty) return;
+        .toList();
+    for (final line in stream) {
+      if (line.trim().isEmpty) continue;
+      if (line.split(':').length > 1) continue;
+      if (images.isNotEmpty) break;
       images.add(line.trim());
-    });
+    }
     return images;
   }
 
@@ -35,13 +36,15 @@ class SpineUtil {
     final localSkel = await http.download(skeletonURL);
     final localAtlas = await http.download(atlasURL);
     final images = await listTexture2DFromAltas(localAtlas);
+    File? localTexture;
     for (final image in images) {
       String imageURL = '$imageBaseURL/$image';
-      await http.download(imageURL);
+      localTexture = await http.download(imageURL);
     }
     return <String, String>{
       'atlas': localAtlas.path,
       'skel': localSkel.path,
+      'texture': localTexture?.path ?? '',
     };
   }
 }

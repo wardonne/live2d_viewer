@@ -7,3 +7,4 @@ export 'registry.dart';
 export 'resources.dart';
 export 'routes.dart';
 export 'styles.dart';
+export 'girl_frontline.dart';

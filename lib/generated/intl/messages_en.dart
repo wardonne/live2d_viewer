@@ -23,6 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m0(section) => "${Intl.select(section, {
             'destinyChild': 'Destiny Child',
             'nikke': 'GODDESS OF VICTORY: NIKKE',
+            'girlFrontline': 'Girls\' Frontline',
           })}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -33,6 +34,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "dialogTitleError": MessageLookupByLibrary.simpleMessage("Error"),
         "forceReload": MessageLookupByLibrary.simpleMessage("Force reload"),
         "gameTitles": m0,
+        "girlFrontline":
+            MessageLookupByLibrary.simpleMessage("Girls\' Frontline"),
         "indexTitle": MessageLookupByLibrary.simpleMessage("Games"),
         "nikke":
             MessageLookupByLibrary.simpleMessage("GODDESS OF VICTORY: NIKKE"),
@@ -52,10 +55,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Expressions"),
         "tooltipShowMotions": MessageLookupByLibrary.simpleMessage("Motions"),
         "tooltipShowSkins": MessageLookupByLibrary.simpleMessage("Clothes"),
-        "tooltipSnapshot": MessageLookupByLibrary.simpleMessage("snapshot"),
+        "tooltipSnapshot": MessageLookupByLibrary.simpleMessage("Snapshot"),
         "tooltipSnapshotWithExpession":
-            MessageLookupByLibrary.simpleMessage("set expression & snapshot"),
+            MessageLookupByLibrary.simpleMessage("Set expression & snapshot"),
         "tooltipSpeedPlay": MessageLookupByLibrary.simpleMessage("Speed"),
+        "tooltipSpringSkin":
+            MessageLookupByLibrary.simpleMessage("Spring skin"),
         "tooltipZoom": MessageLookupByLibrary.simpleMessage("Zoom")
       };
 }

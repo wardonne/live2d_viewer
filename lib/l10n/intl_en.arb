@@ -1,7 +1,7 @@
 {
     "title": "Live2D Viewer",
     "indexTitle": "Games",
-    "gameTitles": "{section, select, destinyChild {Destiny Child} nikke {GODDESS OF VICTORY: NIKKE}}",
+    "gameTitles": "{section, select, destinyChild {Destiny Child} nikke {GODDESS OF VICTORY: NIKKE} girlFrontline {Girls' Frontline}}",
     "@gameTitles": {
         "placeholders": {
             "section": {}
@@ -9,6 +9,7 @@
     },
     "destinyChild": "Destiny Child",
     "nikke": "GODDESS OF VICTORY: NIKKE",
+    "girlFrontline": "Girls' Frontline",
     "reload": "reload",
     "confirm": "confirm",
     "requestError": "Request Error",
@@ -23,8 +24,9 @@
     "tooltipPlayAndRecord": "Play & Record",
     "tooltipShowExpressions": "Expressions",
     "tooltipShowMotions": "Motions",
-    "tooltipSnapshot": "snapshot",
-    "tooltipSnapshotWithExpession": "set expression & snapshot",
+    "tooltipSnapshot": "Snapshot",
+    "tooltipSnapshotWithExpession": "Set expression & snapshot",
+    "tooltipSpringSkin": "Spring skin",
     "forceReload": "Force reload",
     "soulCarta": "Soul Carta",
     "child": "Child"
