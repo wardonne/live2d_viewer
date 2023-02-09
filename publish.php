@@ -206,7 +206,7 @@ class Publisher
     {
         $signature = [];
         $this->output('Signation: ' . $executable, true);
-        $signatureCommand = 'flutter pub run auto_updater:sign_update ' . $executable . ' --no-version-check';
+        $signatureCommand = 'flutter pub run auto_updater:sign_update ' . $executable;
         if(!exec($signatureCommand, $signature)) {
             throw new Exception('signature failed, command: ' . $signatureCommand);
         }
