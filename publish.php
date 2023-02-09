@@ -69,7 +69,7 @@ class Publisher
         return isset($this->arguments['skip-build']);
     }
 
-    private function restorePubspec() : void
+    public function restorePubspec() : void
     {
         if(is_file($this->pubspec . '.backup')) {
             unlink($this->pubspec);
@@ -97,7 +97,6 @@ class Publisher
             $buildnum++;
             $this->version = "$mainver.$subver.$stagever+$buildnum";
         }
-
         $pattern = '/version:\s((\d+).(\d+).(\d+)\+(\d+))/';
         $pubspec = file_get_contents($this->pubspec);
         if(preg_match($pattern, $pubspec, $matches)) {
@@ -207,7 +206,7 @@ class Publisher
     {
         $signature = [];
         $this->output('Signation: ' . $executable, true);
-        $signatureCommand = 'flutter pub run auto_updater:sign_update ' . $executable;
+        $signatureCommand = 'flutter pub run auto_updater:sign_update ' . $executable . ' --no-version-check';
         if(!exec($signatureCommand, $signature)) {
             throw new Exception('signature failed, command: ' . $signatureCommand);
         }
@@ -321,6 +320,9 @@ function main() {
     } catch(Throwable $e) {
         echo $e->getMessage(), PHP_EOL;
         echo $e->getTraceAsString(), PHP_EOL;
+        if(isset($publisher)) {
+            $publisher->restorePubspec();
+        }
     }
 }
 
