@@ -36,6 +36,23 @@ class Publisher
         ]);
         $this->validate();
         $this->version = $this->arguments['version'] ?? '';
+
+        $this->checkDartGlobalPackage([
+            'flutter_distributor',
+        ]);
+    }
+ 
+    private function checkDartGlobalPackage(array $packages)
+    {
+        $checkCommand = 'dart pub global list';
+        $outputs = [];
+        exec($checkCommand, $outputs);
+        foreach($packages as $package) {
+            if(!in_array($package, $outputs)) {
+                $installCommand = 'dart pub global activate ' . $package;
+                $this->execute($installCommand);
+            }
+        }
     }
 
     private function validate() : void
@@ -188,8 +205,8 @@ class Publisher
         }
         
         $this->connect();
-        $this->uploadAppcast();
         $this->uploadPackage($package);
+        $this->uploadAppcast();
         $this->disconnect();
     }
 
@@ -254,16 +271,18 @@ class Publisher
         )) {
             throw new Exception('can\'t pass login authentication');
         }
-        $this->output('Opening sftp connection', true);
+        $this->output('Opening SFTP connection', true);
         $this->sftp = ssh2_sftp($this->session);
         if($this->sftp === false) {
             throw new Exception('can\'t connect sftp');
         }
+        $this->output('Opened SFTP connection', true);
     }
 
     private function disconnect() : void
     {
         ssh2_exec($this->session, 'exit');
+        $this->output('Disconneted SFTP', true);
     }
 
     private function uploadSftp(string $localPath, string $remotePath) : void
@@ -318,9 +337,17 @@ class Publisher
 
 function main() {
     try {
+        if (version_compare(PHP_VERSION, '7.4.0', '<')) {
+            throw new Exception('php version ^7.4.0 required');
+        }
         if(!extension_loaded('ssh2')) {
             throw new Exception('extension `ssh2` not loaded');
         }
+        sapi_windows_set_ctrl_handler(function(int $event) {
+            if($event === PHP_WINDOWS_EVENT_CTRL_C) {
+                throw new Exception('stopped by ctrl+c');
+            }
+        });
         $publisher = new Publisher();
         $publisher->run();
     } catch(Throwable $e) {
