@@ -11,7 +11,7 @@
 - [x] Girls' Frontline Characters' Painting
 - [x] Girls' Frontline Characters' Spine
 - [x] Girls' Frontline Characters' Live2D
-- [] Girls' Frontline Sprite
-- [] Azurlane (Characters' Painting)
-- [] Azurlane (Characters' Spine)
-- [] Azurlane (Characters' Live2D)
+- [ ] Girls' Frontline Sprite
+- [ ] Azurlane (Characters' Painting)
+- [ ] Azurlane (Characters' Spine)
+- [ ] Azurlane (Characters' Live2D)
