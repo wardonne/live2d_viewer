@@ -19,14 +19,19 @@ var router = <String, WidgetBuilder>{
       const destiny_child.CharacterDetail(),
   routes.Routes.destinyChildSoulCartaDetail: (context) =>
       const destiny_child.SoulCartaDetail(),
+
   // nikke
   routes.Routes.nikke: (context) => const nikke.NikkePage(),
   routes.Routes.nikkeCharacters: (context) => const nikke.CharacterList(),
   routes.Routes.nikkeCharacterDetail: (context) =>
       const nikke.CharacterDetail(),
+
   // girl-frontline
   routes.Routes.girlFrontline: (context) =>
       const girl_frontline.GirlFrontlinePage(),
   routes.Routes.girlFrontlineCharacterDetail: (context) =>
       const girl_frontline.CharacterDetail(),
+
+  // azurlane
+  routes.Routes.azurlane: (context) => Container(),
 };

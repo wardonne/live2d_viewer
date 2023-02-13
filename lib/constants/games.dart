@@ -20,9 +20,16 @@ class Games {
     route: Routes.girlFrontline,
   );
 
+  static Game azurlane = Game(
+    name: AzurlaneConstants.name,
+    icon: ResourceConstants.azurlaneIcon,
+    route: Routes.azurlane,
+  );
+
   static List<Game> get list => [
         destinyChild,
         nikke,
         girlFrontline,
+        // azurlane,
       ];
 }

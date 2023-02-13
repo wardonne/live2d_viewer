@@ -13,4 +13,6 @@ class Routes {
   static const girlFrontline = 'girl-frontline';
   static const girlFrontlineCharacters = 'girl-frontline/characters';
   static const girlFrontlineCharacterDetail = 'girl-frontline/character-detail';
+
+  static const azurlane = 'azurlane';
 }

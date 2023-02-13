@@ -24,10 +24,12 @@ class MessageLookup extends MessageLookupByLibrary {
             'destinyChild': 'Destiny Child',
             'nikke': 'GODDESS OF VICTORY: NIKKE',
             'girlFrontline': 'Girls\' Frontline',
+            'azurlane': 'Azur Lane',
           })}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "azurlane": MessageLookupByLibrary.simpleMessage("Azur Lane"),
         "child": MessageLookupByLibrary.simpleMessage("Child"),
         "confirm": MessageLookupByLibrary.simpleMessage("confirm"),
         "destinyChild": MessageLookupByLibrary.simpleMessage("Destiny Child"),

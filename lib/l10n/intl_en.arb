@@ -1,7 +1,7 @@
 {
     "title": "Live2D Viewer",
     "indexTitle": "Games",
-    "gameTitles": "{section, select, destinyChild {Destiny Child} nikke {GODDESS OF VICTORY: NIKKE} girlFrontline {Girls' Frontline}}",
+    "gameTitles": "{section, select, destinyChild {Destiny Child} nikke {GODDESS OF VICTORY: NIKKE} girlFrontline {Girls' Frontline} azurlane {Azur Lane}}",
     "@gameTitles": {
         "placeholders": {
             "section": {}
@@ -10,8 +10,9 @@
     "destinyChild": "Destiny Child",
     "nikke": "GODDESS OF VICTORY: NIKKE",
     "girlFrontline": "Girls' Frontline",
+    "azurlane": "Azur Lane",
     "reload": "reload",
-    "confirm": "confirm",
+    "confirm": "confirm", 
     "requestError": "Request Error",
     "dialogTitleError": "Error",
     "tooltipShowAnimation": "Animations",

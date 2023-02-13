@@ -7,7 +7,7 @@ class ResourceConstants {
 
   static const spineIcon = 'assets/images/spine.png';
 
-  static const azurelaneIcon = 'assets/images/azurelane.png';
+  static const azurlaneIcon = 'assets/images/azurlane.png';
   static const destinyChildIcon = 'assets/images/destiny_child.png';
   static const girlFrontlineIcon = 'assets/images/girl_frontline.png';
   static const nikkeIcon = 'assets/images/nikke.png';

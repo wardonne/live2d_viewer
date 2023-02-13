@@ -31,15 +31,8 @@ class BottomToolbar extends StatefulWidget {
 }
 
 class BottomToolbarState extends State<BottomToolbar> {
-  late final CharacterModel character;
-  late final SkinModel skin;
-
-  @override
-  void initState() {
-    super.initState();
-    character = widget.character;
-    skin = character.activeSkin;
-  }
+  late CharacterModel character;
+  late SkinModel skin;
 
   Widget _buildAppBar(
     CharacterDetailController controller,
@@ -62,7 +55,9 @@ class BottomToolbarState extends State<BottomToolbar> {
           if (!controller.isSpine)
             ImageButton(
               icon: Icon(
-                controller.isDestory ? IconFont.iconHeart : Icons.heart_broken,
+                controller.isDestory
+                    ? IconFont.iconHeartFill
+                    : Icons.heart_broken,
               ),
               onPressed: () => controller.isDestory = !controller.isDestory,
             ),
@@ -78,9 +73,9 @@ class BottomToolbarState extends State<BottomToolbar> {
                 webviewController: widget.webviewController!,
               ),
           ],
-          if (controller.isLive2D && skin.motions.length > 1)
+          if (controller.isLive2D && toolbarController!.motions.length > 1)
             MotionPopupMenu(
-              motions: skin.motions.map((e) => e.name).toList(),
+              motions: toolbarController.motions,
               webviewController: widget.webviewController!,
             ),
           if (!controller.isLive2D && character.activeSkin.hasLive2d)
@@ -117,27 +112,44 @@ class BottomToolbarState extends State<BottomToolbar> {
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<CharacterDetailController>();
-    return controller.isSpine
+    character = widget.character;
+    skin = character.activeSkin;
+    final toolbarController = widget.bottomToolbarController;
+    return !controller.isImage
         ? AnimatedBuilder(
-            animation: widget.bottomToolbarController!,
+            animation: toolbarController!,
             builder: (context, _) {
-              return _buildAppBar(controller, widget.bottomToolbarController);
+              return _buildAppBar(controller, toolbarController);
             })
-        : _buildAppBar(controller, widget.bottomToolbarController);
+        : _buildAppBar(controller, toolbarController);
   }
 }
 
 class BottomToolbarController extends ChangeNotifier {
   List<String> _animations;
+  List<String> _motions;
   BottomToolbarController({
     required List<String> animations,
-  }) : _animations = animations;
+    required List<String> motions,
+  })  : _animations = animations,
+        _motions = motions;
 
   List<String> get animations => _animations;
 
-  set animations(List<String> value) {
+  setAnimations(List<String> value) {
+    debugPrint('setAnimations: $value');
     if (_animations != value) {
       _animations = value;
+      notifyListeners();
+    }
+  }
+
+  List<String> get motions => _motions;
+
+  setMotions(List<String> value) {
+    debugPrint('setMotions: $value');
+    if (_motions != value) {
+      _motions = value;
       notifyListeners();
     }
   }

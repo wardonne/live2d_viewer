@@ -50,6 +50,7 @@ class CharacterDetailState extends State<CharacterDetail> {
         return CharacterLive2D(
           character: character,
           webviewController: webviewController!,
+          bottomToolbarController: bottomToolbarController!,
         );
     }
   }
@@ -60,19 +61,19 @@ class CharacterDetailState extends State<CharacterDetail> {
     skin = character.activeSkin;
     final defaultMode = skin.hasLive2d ? DetailMode.live2d : DetailMode.image;
     final isDestory = skin.isDestoryMode;
-    final controller = CharacterDetailController(
-      mode: defaultMode,
-      isDestory: isDestory,
-    );
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) {
-            return controller;
+            return CharacterDetailController(
+              mode: defaultMode,
+              isDestory: isDestory,
+            );
           }),
         ],
         builder: (context, child) {
           if (!context.watch<CharacterDetailController>().isImage) {
-            bottomToolbarController = BottomToolbarController(animations: []);
+            bottomToolbarController =
+                BottomToolbarController(animations: [], motions: []);
             webviewController = WebviewController();
             webviewController!.webMessage.listen((message) {
               final event = message['event'] as String;
@@ -81,7 +82,7 @@ class CharacterDetailState extends State<CharacterDetail> {
                 final items = (data['items'] as List<dynamic>)
                     .map((e) => e as String)
                     .toList();
-                bottomToolbarController!.animations = items;
+                bottomToolbarController!.setAnimations(items);
               } else if (WebMessage.snapshot.label == event) {
                 service.saveScreenshot(data as String);
               } else if (WebMessage.video.label == event) {

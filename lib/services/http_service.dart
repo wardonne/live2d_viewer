@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -11,6 +12,8 @@ class HTTPService {
   final CacheService cache = CacheService();
 
   final Dio http = Dio(BaseOptions(receiveTimeout: 0));
+
+  final CancelToken cancelToken = CancelToken();
 
   String getSavePath(String url) {
     return PathUtil().join([
@@ -26,9 +29,40 @@ class HTTPService {
       try {
         await retry(
           () async {
-            await http.download(urlPath, localFile.path);
+            final tmpFile = File('${localFile.path}.tmp');
+            final startBytes = tmpFile.existsSync() ? tmpFile.lengthSync() : 0;
+            final response = await http.get<ResponseBody>(urlPath,
+                options: Options(
+                  responseType: ResponseType.stream,
+                  followRedirects: false,
+                  headers: {
+                    'Range': 'bytes=$startBytes-',
+                  },
+                ));
+            final raf = tmpFile.openSync(mode: FileMode.append);
+            final stream = response.data!.stream;
+            final StreamSubscription<Uint8List>? subscription;
+            subscription = stream.listen(
+              (data) {
+                raf.writeFromSync(data);
+              },
+              onDone: () {
+                raf.closeSync();
+                tmpFile.renameSync(localFile.path);
+              },
+              onError: (e) {
+                raf.closeSync();
+              },
+              cancelOnError: true,
+            );
+            cancelToken.whenCancel.then((_) async {
+              await subscription?.cancel();
+              await raf.close();
+            });
           },
-          retryIf: (e) => e is Error,
+          retryIf: (e) {
+            return e is! DioError && !CancelToken.isCancel(e as DioError);
+          },
           maxAttempts: 3,
           maxDelay: const Duration(seconds: 3),
         );

@@ -1,7 +1,7 @@
 {
     "title": "Live2D Viewer",
     "indexTitle": "游戏库",
-    "gameTitles": "{section, select, destinyChild {天命之子} nikke {NIKKE：胜利女神} girlFrontline {少女前线}}",
+    "gameTitles": "{section, select, destinyChild {天命之子} nikke {NIKKE：胜利女神} girlFrontline {少女前线} azurlane {碧蓝航线}}",
     "@gameTitles": {
         "placeholders": {
             "section": {}
@@ -10,6 +10,7 @@
     "destinyChild": "天命之子",
     "nikke": "NIKKE：胜利女神",
     "girlFrontline": "少女前线",
+    "azurlane": "碧蓝航线",
     "reload": "重新加载",
     "confirm": "确认",
     "requestError": "请求错误",

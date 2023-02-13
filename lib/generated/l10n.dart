@@ -70,7 +70,7 @@ class S {
     );
   }
 
-  /// `{section, select, destinyChild {Destiny Child} nikke {GODDESS OF VICTORY: NIKKE} girlFrontline {Girls' Frontline}}`
+  /// `{section, select, destinyChild {Destiny Child} nikke {GODDESS OF VICTORY: NIKKE} girlFrontline {Girls' Frontline} azurlane {Azur Lane}}`
   String gameTitles(Object section) {
     return Intl.select(
       section,
@@ -78,6 +78,7 @@ class S {
         'destinyChild': 'Destiny Child',
         'nikke': 'GODDESS OF VICTORY: NIKKE',
         'girlFrontline': 'Girls\' Frontline',
+        'azurlane': 'Azur Lane',
       },
       name: 'gameTitles',
       desc: '',
@@ -110,6 +111,16 @@ class S {
     return Intl.message(
       'Girls\' Frontline',
       name: 'girlFrontline',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Azur Lane`
+  String get azurlane {
+    return Intl.message(
+      'Azur Lane',
+      name: 'azurlane',
       desc: '',
       args: [],
     );

@@ -24,10 +24,12 @@ class MessageLookup extends MessageLookupByLibrary {
             'destinyChild': '天命之子',
             'nikke': 'NIKKE：胜利女神',
             'girlFrontline': '少女前线',
+            'azurlane': '碧蓝航线',
           })}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "azurlane": MessageLookupByLibrary.simpleMessage("碧蓝航线"),
         "child": MessageLookupByLibrary.simpleMessage("天子"),
         "confirm": MessageLookupByLibrary.simpleMessage("确认"),
         "destinyChild": MessageLookupByLibrary.simpleMessage("天命之子"),

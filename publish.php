@@ -190,6 +190,7 @@ class Publisher
         $this->connect();
         $this->uploadAppcast();
         $this->uploadPackage($package);
+        $this->disconnect();
     }
 
     private function uploadAppcast() : void
@@ -258,6 +259,11 @@ class Publisher
         if($this->sftp === false) {
             throw new Exception('can\'t connect sftp');
         }
+    }
+
+    private function disconnect() : void
+    {
+        ssh2_exec($this->session, 'exit');
     }
 
     private function uploadSftp(string $localPath, string $remotePath) : void

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/components/global_components.dart';
-import 'package:live2d_viewer/components/toolbar_refresh_button.dart';
 import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/generated/l10n.dart';
 import 'package:live2d_viewer/pages/girl_frontline/components/character_card.dart';
@@ -52,7 +51,7 @@ class CharacterListState extends RefreshableState<CharacterList> {
           if (snapshot.hasData) {
             final items = snapshot.data!;
             return ListContainer(
-              items: items.map((item) {
+              items: items.where((item) => item.code == 'dsr50').map((item) {
                 return CharacterCard(
                   character: item,
                 );
