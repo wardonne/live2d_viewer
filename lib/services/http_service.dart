@@ -25,12 +25,16 @@ class HTTPService {
   Future<File> download(String urlPath,
       {String? savePath, bool reload = false}) async {
     final localFile = File(savePath ?? getSavePath(urlPath));
+    final tmpFile = File('${localFile.path}.tmp');
     if (!localFile.existsSync() || reload) {
+      final completer = Completer();
       try {
         await retry(
           () async {
-            final tmpFile = File('${localFile.path}.tmp');
-            final startBytes = tmpFile.existsSync() ? tmpFile.lengthSync() : 0;
+            if (!tmpFile.existsSync()) {
+              tmpFile.createSync(recursive: true);
+            }
+            final startBytes = tmpFile.lengthSync();
             final response = await http.get<ResponseBody>(urlPath,
                 options: Options(
                   responseType: ResponseType.stream,
@@ -48,7 +52,7 @@ class HTTPService {
               },
               onDone: () {
                 raf.closeSync();
-                tmpFile.renameSync(localFile.path);
+                completer.complete();
               },
               onError: (e) {
                 raf.closeSync();
@@ -61,13 +65,19 @@ class HTTPService {
             });
           },
           retryIf: (e) {
-            return e is! DioError && !CancelToken.isCancel(e as DioError);
+            if (e is DioError && e.response!.statusCode == 416) {
+              tmpFile.deleteSync();
+            }
+            return e is! DioError || !CancelToken.isCancel(e);
           },
           maxAttempts: 3,
           maxDelay: const Duration(seconds: 3),
         );
-      } on DioError {
-        debugPrint(urlPath);
+        await completer.future;
+        tmpFile.renameSync(localFile.path);
+      } on DioError catch (e) {
+        debugPrint('error with $urlPath');
+        debugPrint(e.toString());
         rethrow;
       }
     }

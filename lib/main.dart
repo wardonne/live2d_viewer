@@ -28,6 +28,7 @@ void main() async {
   if (kReleaseMode) {
     String feedURL = 'https://appcast.wardonet.cn/live2d-viewer/appcast.xml';
     await autoUpdater.setFeedURL(feedURL);
+    await autoUpdater.setScheduledCheckInterval(3600);
     await autoUpdater.checkForUpdates(inBackground: true);
   }
 
