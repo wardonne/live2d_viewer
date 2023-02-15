@@ -51,7 +51,7 @@ class CharacterListState extends RefreshableState<CharacterList> {
           if (snapshot.hasData) {
             final items = snapshot.data!;
             return ListContainer(
-              items: items.where((item) => item.code == 'dsr50').map((item) {
+              items: items.map((item) {
                 return CharacterCard(
                   character: item,
                 );
