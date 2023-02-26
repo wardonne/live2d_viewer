@@ -32,7 +32,7 @@
                 window.chrome.webview.postMessage({
                     event: 'animations',
                     data: {
-                        'items': animationNames,
+                        items: animationNames,
                     },
                 });
 
@@ -49,10 +49,9 @@
                 });
 
                 window.animeFrame = function() {
-                    let animationFrame = window.requestAnimationFrame;
                     if (window.captureFrame) {
                         window.captureFrame = false;
-                        let dataURL = window.player.canvas.toDataURL("image/jpeg", 1.0);
+                        let dataURL = window.player.renderer.view.toDataURL("image/jpeg", 1.0);
                         let dataURLParts = dataURL.split(",");
                         let base64Data = dataURLParts[1];
                         let mime = dataURLParts[0].match(/:(.*?);/)[1];
@@ -61,7 +60,7 @@
                             data: base64Data,
                         });
                     }
-                    animationFrame(window.animeFrame);
+                    window.requestAnimationFrame(window.animeFrame);
                 };
                 window.animeFrame();
             }

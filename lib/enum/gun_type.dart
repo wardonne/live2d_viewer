@@ -1,4 +1,3 @@
-// 'hg', 'smg', 'rf', 'ar', 'mg', 'sg'
 import 'package:live2d_viewer/constants/constants.dart';
 
 enum GunType {

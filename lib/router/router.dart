@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:live2d_viewer/constants/routes.dart' as routes;
+import 'package:live2d_viewer/pages/azurlane/azurlane.dart' as azurlane;
 import 'package:live2d_viewer/pages/destiny_child/destiny_child.dart'
     as destiny_child;
 import 'package:live2d_viewer/pages/index.dart';
@@ -33,5 +34,7 @@ var router = <String, WidgetBuilder>{
       const girl_frontline.CharacterDetail(),
 
   // azurlane
-  routes.Routes.azurlane: (context) => Container(),
+  routes.Routes.azurlane: (context) => const azurlane.AzurlanePage(),
+  routes.Routes.azurlaneCharacterDetail: (context) =>
+      const azurlane.CharacterDetail(),
 };

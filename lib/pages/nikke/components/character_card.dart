@@ -63,7 +63,10 @@ class CharacterCard extends StatelessWidget {
             color: Colors.transparent,
           ),
           Center(
-            child: Text(character.name),
+            child: Text(
+              character.name,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ],
       ),

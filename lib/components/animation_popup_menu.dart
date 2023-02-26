@@ -38,52 +38,59 @@ class AnimationPopupMenuState extends State<AnimationPopupMenu> {
             color: Styles.popupBackgrounColor,
             borderRadius: BorderRadius.all(Radius.circular(3)),
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: widget.animations
-                .map((item) => ContainerButton(
-                      padding: const EdgeInsets.all(5.0),
-                      backgroundColor: Styles.popupBackgrounColor,
-                      hoverBackgroundColor: Styles.hoverBackgroundColor,
-                      color: Styles.textColor,
-                      hoverColor: Styles.hoverTextColor,
-                      onClick: () async {
-                        menuController.hideMenu();
-                        await widget.webviewController
-                            .executeScript('setAnimation("$item", false)');
-                      },
-                      child: Row(
-                        children: [
-                          const Icon(Icons.play_arrow_rounded),
-                          const Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 8.0, right: 8.0),
+          constraints: const BoxConstraints(
+            maxHeight: 300,
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: widget.animations
+                  .map((item) => ContainerButton(
+                        padding: const EdgeInsets.all(5.0),
+                        backgroundColor: Styles.popupBackgrounColor,
+                        hoverBackgroundColor: Styles.hoverBackgroundColor,
+                        color: Styles.textColor,
+                        hoverColor: Styles.hoverTextColor,
+                        onClick: () async {
+                          menuController.hideMenu();
+                          await widget.webviewController
+                              .executeScript('setAnimation("$item", false)');
+                        },
+                        child: Row(
+                          children: [
+                            const Icon(Icons.play_arrow_rounded),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 8.0, right: 8.0),
+                                child: Text(item),
+                              ),
                             ),
-                          ),
-                          ImageButton(
-                            icon: const Icon(Icons.loop_sharp),
-                            tooltip: S.of(context).tooltipLoopPlay,
-                            onPressed: () async {
-                              menuController.hideMenu();
-                              await widget.webviewController
-                                  .executeScript('setAnimation("$item", true)');
-                            },
-                          ),
-                          ImageButton(
-                            icon: const Icon(Icons.videocam, size: 20),
-                            tooltip: S.of(context).tooltipPlayAndRecord,
-                            onPressed: () async {
-                              menuController.hideMenu();
-                              var newVariable = await widget.webviewController
-                                  .executeScript(
-                                      'recordAnimation("$item", false)');
-                              return newVariable;
-                            },
-                          ),
-                        ],
-                      ),
-                    ))
-                .toList(),
+                            ImageButton(
+                              icon: const Icon(Icons.loop_sharp),
+                              tooltip: S.of(context).tooltipLoopPlay,
+                              onPressed: () async {
+                                menuController.hideMenu();
+                                await widget.webviewController.executeScript(
+                                    'setAnimation("$item", true)');
+                              },
+                            ),
+                            ImageButton(
+                              icon: const Icon(Icons.videocam, size: 20),
+                              tooltip: S.of(context).tooltipPlayAndRecord,
+                              onPressed: () async {
+                                menuController.hideMenu();
+                                var newVariable = await widget.webviewController
+                                    .executeScript(
+                                        'recordAnimation("$item", false)');
+                                return newVariable;
+                              },
+                            ),
+                          ],
+                        ),
+                      ))
+                  .toList(),
+            ),
           ),
         );
       },

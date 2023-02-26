@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/components/global_components.dart';
-import 'package:live2d_viewer/components/refreshable_avatar.dart';
 import 'package:live2d_viewer/controllers/load_controller.dart';
 
 class SoulCartaAvatar extends StatelessWidget {
@@ -22,7 +21,7 @@ class SoulCartaAvatar extends StatelessWidget {
         } else {
           return const SizedBox(
             width: 100,
-            height: 180,
+            height: 100,
             child: LoadingAnimation(),
           );
         }

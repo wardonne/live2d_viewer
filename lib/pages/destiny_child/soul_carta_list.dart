@@ -35,6 +35,8 @@ class SoulCartaListState extends RefreshableState<SoulCartaList> {
           _reload = false;
           final items = snapshot.data!;
           return ListContainer(
+            width: 100,
+            height: 160,
             items: items
                 .where((item) => item.enable)
                 .map((item) => SoulCartaCard(soulCarta: item))

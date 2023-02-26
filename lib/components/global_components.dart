@@ -12,3 +12,4 @@ export 'expression_popup_menu.dart';
 export 'motion_popup_menu.dart';
 export 'animation_popup_menu.dart';
 export 'speed_play_popup_control.dart';
+export 'snapshot_button.dart';

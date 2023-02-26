@@ -11,6 +11,10 @@ class FileUtil {
 
   void write(String path, List<int> content) {
     final file = File(path);
+    return writeFile(file, content);
+  }
+
+  void writeFile(File file, List<int> content) {
     if (!file.existsSync()) {
       file.createSync(recursive: true);
     }

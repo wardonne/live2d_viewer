@@ -46,10 +46,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "soulCarta": MessageLookupByLibrary.simpleMessage("Soul Carta"),
         "title": MessageLookupByLibrary.simpleMessage("Live2D Viewer"),
         "tooltipDevtool": MessageLookupByLibrary.simpleMessage("Devtool"),
+        "tooltipLive2D": MessageLookupByLibrary.simpleMessage("Live2D"),
         "tooltipLoopPlay":
             MessageLookupByLibrary.simpleMessage("Loop Playback"),
         "tooltipPlayAndRecord":
             MessageLookupByLibrary.simpleMessage("Play & Record"),
+        "tooltipSD": MessageLookupByLibrary.simpleMessage("SD Model"),
         "tooltipShowActions": MessageLookupByLibrary.simpleMessage("Actions"),
         "tooltipShowAnimation":
             MessageLookupByLibrary.simpleMessage("Animations"),

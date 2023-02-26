@@ -1,5 +1,5 @@
 enum WebMessage {
-  snapshot('snaphost'),
+  snapshot('snapshot'),
   video('video'),
   animations('animations'),
   clothes('clothes'),

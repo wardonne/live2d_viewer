@@ -80,9 +80,9 @@ class _MotionPopupMenuState extends State<MotionPopupMenu> {
         );
       },
       pressType: PressType.singleClick,
-      child: const Tooltip(
-        message: 'show motions',
-        child: Icon(Icons.animation, size: 20),
+      child: Tooltip(
+        message: S.of(context).tooltipShowMotions,
+        child: const Icon(Icons.animation, size: 20),
       ),
     );
   }

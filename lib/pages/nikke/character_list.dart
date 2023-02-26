@@ -43,20 +43,13 @@ class CharacterListState extends State<CharacterList> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final items = snapshot.data!;
-            return Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(10),
-              child: SingleChildScrollView(
-                child: Wrap(
-                  alignment: WrapAlignment.start,
-                  crossAxisAlignment: WrapCrossAlignment.start,
-                  children: items
-                      .where((character) => character.enable)
-                      .map((character) {
-                    return CharacterCard(character: character);
-                  }).toList(),
-                ),
-              ),
+            return ListContainer(
+              items:
+                  items.where((character) => character.enable).map((character) {
+                return CharacterCard(character: character);
+              }).toList(),
+              width: 100,
+              height: 270,
             );
           } else if (snapshot.hasError) {
             final error = snapshot.error;

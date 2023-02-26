@@ -1,18 +1,17 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:live2d_viewer/constants/constants.dart';
+import 'package:live2d_viewer/errors/texture_download_error.dart';
 import 'package:live2d_viewer/models/girl_frontline/models.dart';
 import 'package:live2d_viewer/models/live2d_html_data.dart';
 import 'package:live2d_viewer/models/spine_html_data.dart';
+import 'package:live2d_viewer/services/base_service.dart';
 import 'package:live2d_viewer/services/services.dart';
 import 'package:live2d_viewer/utils/utils.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-class GirlFrontlineService {
-  final HTTPService http = HTTPService();
-
+class GirlFrontlineService extends BaseService {
   Future<List<CharacterModel>> characters({bool reload = false}) async {
     const url = GirlFrontlineConstants.characterDataURL;
     final localFile = await http.download(url, reload: reload);
@@ -31,7 +30,7 @@ class GirlFrontlineService {
     );
 
     if (resource['texture'] as String == '') {
-      throw ErrorHint('no texture downloaded');
+      throw TextureDownloadError();
     }
 
     final skelUri = PathUtil().localAssetsUrl(resource['skel'] as String);
@@ -52,9 +51,7 @@ class GirlFrontlineService {
   Future<String> loadLive2DHtml(Live2DModel live2d,
       {bool isDestory = false}) async {
     final modelURL = isDestory ? live2d.destroyLive2D : live2d.normalLive2D;
-    final parts = modelURL.split('/');
-    parts.removeLast();
-    final baseURL = parts.join('/');
+    final baseURL = PathUtil().parent(modelURL);
     final localModelJSON = await Live2DUtil().downloadResourceV3(
       baseURL: baseURL,
       modelURL: modelURL,

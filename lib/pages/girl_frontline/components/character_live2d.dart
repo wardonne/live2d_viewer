@@ -39,10 +39,6 @@ class CharacterLive2DState extends State<CharacterLive2D> {
     super.initState();
     character = widget.character;
     skin = character.activeSkin;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.bottomToolbarController
-          .setMotions(skin.motions.map((e) => e.name).toList());
-    });
   }
 
   @override
@@ -57,12 +53,14 @@ class CharacterLive2DState extends State<CharacterLive2D> {
         }
         if (snapshot.hasData) {
           final html = snapshot.data!;
+          Future.delayed(const Duration(seconds: 1), () {
+            widget.bottomToolbarController
+                .setMotions(skin.motions.map((e) => e.name).toList());
+          });
           return Live2DViewer(
             controller: controller,
             html: html,
-            virtualHosts: [
-              ApplicationConstants.virtualHost,
-            ],
+            virtualHosts: [ApplicationConstants.virtualHost],
           );
         } else if (snapshot.hasError) {
           return ErrorDialog(message: '${snapshot.error}');

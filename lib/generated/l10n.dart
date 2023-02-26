@@ -296,6 +296,26 @@ class S {
     );
   }
 
+  /// `SD Model`
+  String get tooltipSD {
+    return Intl.message(
+      'SD Model',
+      name: 'tooltipSD',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Live2D`
+  String get tooltipLive2D {
+    return Intl.message(
+      'Live2D',
+      name: 'tooltipLive2D',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Force reload`
   String get forceReload {
     return Intl.message(
