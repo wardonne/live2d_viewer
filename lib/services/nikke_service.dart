@@ -7,12 +7,12 @@ import 'package:flutter/services.dart';
 import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/models/nikke/models.dart';
 import 'package:live2d_viewer/models/spine_html_data.dart';
+import 'package:live2d_viewer/services/base_service.dart';
 import 'package:live2d_viewer/services/services.dart';
 import 'package:live2d_viewer/utils/utils.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-class NikkeService {
-  final http = HTTPService();
+class NikkeService extends BaseService {
   final cache = CacheService();
 
   NikkeService();

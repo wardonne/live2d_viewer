@@ -13,6 +13,7 @@ class CachedNetworkImage extends StatefulWidget {
   final double? height;
   final String? placeholder;
   final String? queueKey;
+  final BoxFit? fit;
 
   const CachedNetworkImage({
     super.key,
@@ -21,6 +22,7 @@ class CachedNetworkImage extends StatefulWidget {
     this.height,
     this.placeholder,
     this.queueKey,
+    this.fit,
   });
 
   @override
@@ -80,6 +82,7 @@ class CachedNetworkImageState extends State<CachedNetworkImage> {
             key: imageKey,
             width: widget.width,
             height: widget.height,
+            fit: widget.fit,
           );
         } else if (snapshot.hasError) {
           debugPrint('${snapshot.error}');

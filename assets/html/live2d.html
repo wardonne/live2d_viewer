@@ -61,31 +61,37 @@
    };
 
    async function init() {
-       const settings = {
-           view: document.getElementById("canvas"),
-           resizeTo: window,
-           width: window.innerWidth,
-           height: window.innerHeight,
-           backgroundColor: 0x333333,
-       };
+        const settings = {
+            view: document.getElementById("canvas"),
+            resizeTo: window,
+            width: window.innerWidth,
+            height: window.innerHeight,
+            backgroundColor: 0x333333,
+        };
 
-       window.app = new PIXI.Application(settings);
+        window.app = new PIXI.Application(settings);
 
-       PIXI.live2d.config.motionFadingDuration = 0;
-       PIXI.live2d.config.idleMotionFadingDuration = 0;
-       PIXI.live2d.config.expressionFadingDuration = 0;
+        PIXI.live2d.config.motionFadingDuration = 0;
+        PIXI.live2d.config.idleMotionFadingDuration = 0;
+        PIXI.live2d.config.expressionFadingDuration = 0;
 
-       window.model = await PIXI.live2d.Live2DModel.from(data.live2d);
-       window.app.stage.addChild(window.model);
-       let scale = Math.min(window.app.renderer.width/window.model.width, 
-           window.app.renderer.height/window.model.height);
-       scale = Math.round(scale * 10) / 10;
-       window.model.scale.set(scale, scale);
-       window.model.position.set(window.app.renderer.width/2, window.app.renderer.height/2);
-       window.model.anchor.set(0.5, 0.5);
+        window.model = await PIXI.live2d.Live2DModel.from(data.live2d);
+        
+        for(const motionGroup in window.model.internalModel.motionManager.motionGroups) {
+            if(motionGroup.toUpperCase() == 'login'.toUpperCase()) {
+                setMotion(motionGroup);                
+            }
+        }
 
-       window.model.filters = [];
-       draggable(model);
+        window.app.stage.addChild(window.model);
+        let scale = Math.min(window.app.renderer.width/window.model.width, 
+            window.app.renderer.height/window.model.height);
+        scale = Math.round(scale * 10) / 10;
+        window.model.scale.set(scale, scale);
+        window.model.position.set(window.app.renderer.width/2, window.app.renderer.height/2);
+        window.model.anchor.set(0.5, 0.5);
+        window.model.filters = [];
+        draggable(model);
    }
 
    // don't change this function name or delete this function

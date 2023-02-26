@@ -11,6 +11,7 @@ class ContainerButton extends StatefulWidget {
   final double? height;
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
+  final BoxDecoration? decoration;
 
   const ContainerButton({
     super.key,
@@ -24,6 +25,7 @@ class ContainerButton extends StatefulWidget {
     this.height,
     this.padding,
     this.margin,
+    this.decoration,
   });
 
   @override
@@ -39,6 +41,7 @@ class _ContainerButtonState extends State<ContainerButton> {
       style: TextStyle(color: isHover ? widget.hoverColor : widget.color),
       child: Container(
         margin: widget.margin,
+        decoration: widget.decoration,
         child: MouseRegion(
           cursor: SystemMouseCursors.click,
           onEnter: (event) {

@@ -30,6 +30,6 @@ class Games {
         destinyChild,
         nikke,
         girlFrontline,
-        // azurlane,
+        azurlane,
       ];
 }

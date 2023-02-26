@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/components/global_components.dart';
 import 'package:live2d_viewer/components/iconfont.dart';
-import 'package:live2d_viewer/components/snapshot_button.dart';
 import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/enum/detail_mode.dart';
-import 'package:live2d_viewer/models/girl_frontline/character_model.dart';
-import 'package:live2d_viewer/models/girl_frontline/skin_model.dart';
+import 'package:live2d_viewer/generated/l10n.dart';
+import 'package:live2d_viewer/models/girl_frontline/models.dart';
 import 'package:live2d_viewer/pages/girl_frontline/character_detail.dart';
 import 'package:live2d_viewer/pages/girl_frontline/components/components.dart';
 import 'package:live2d_viewer/widget/buttons/image_button.dart';
@@ -49,6 +48,7 @@ class BottomToolbarState extends State<BottomToolbar> {
                 ResourceConstants.girlFrontlineAnimatedFilterLogo,
                 width: 20.0,
               ),
+              tooltip: S.of(context).tooltipSD,
               onPressed: () => controller.mode = DetailMode.spine,
             ),
           ],
@@ -84,6 +84,7 @@ class BottomToolbarState extends State<BottomToolbar> {
                 ResourceConstants.girlFrontlineLive2DFilterLogo,
                 width: 20.0,
               ),
+              tooltip: S.of(context).tooltipLive2D,
               onPressed: () => controller.mode = DetailMode.live2d,
             ),
           if (!controller.isImage) ...[
@@ -137,7 +138,6 @@ class BottomToolbarController extends ChangeNotifier {
   List<String> get animations => _animations;
 
   setAnimations(List<String> value) {
-    debugPrint('setAnimations: $value');
     if (_animations != value) {
       _animations = value;
       notifyListeners();
@@ -147,7 +147,6 @@ class BottomToolbarController extends ChangeNotifier {
   List<String> get motions => _motions;
 
   setMotions(List<String> value) {
-    debugPrint('setMotions: $value');
     if (_motions != value) {
       _motions = value;
       notifyListeners();

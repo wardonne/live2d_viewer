@@ -1,8 +1,10 @@
 app_id: adbd5e8a-0c65-4f5c-b6d7-e47e30b40069
+script_template: inno_setup.iss
 publisher: Wardon
 publisher_url: https://gitee.com/wardonne/live2d_viewer
 display_name: Live2D Viewer
 create_desktop_icon: true
 install_dir_name: Live2D Viewer
 locales:
+  - en
   - zh

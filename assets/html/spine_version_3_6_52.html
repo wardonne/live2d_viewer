@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://static.wardonet.cn/live2d-viewer/js/spine-v3.6.52/spine-webgl.js"></script>
+    <script src="https://static.wardonet.cn/live2d-viewer/js/spine-v3.6.52/spine-web-player.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="canvas" class="spine-canvas" style="background-color: black;"></canvas>
+</body>
+<script>
+const data = {{data}};
+
+window.onload = init;
+
+function init() {
+    const player = new SpineWebPlayer('canvas', {
+        skelUrl: data.skel_url,
+        atlasUrl: data.atlas_url,
+        success: (player) => {
+            const animations = player.animations ?? [];
+            const animationNames = [];
+            for (const index in animations) {
+                animationNames.push(animations[index].name);
+            }
+            window.chrome.webview.postMessage({
+                event: 'animations',
+                data: {
+                    items: animationNames,
+                },
+            });
+
+            window.animeFrame = function() {
+                if(window.captureFrame) {
+                    window.captureFrame = false;
+                    const dataURL = window.player.canvas.toDataURL("image/jpeg", 1.0);
+                    const dataURLParts = dataURL.split(",");
+                    const base64Data = dataURLParts[1];
+                    const mime = dataURLParts[0].match(/:(.*?);/)[1];
+                    window.chrome.webview.postMessage({
+                        event: "snapshot",
+                        data: base64Data,
+                    });
+                }
+                window.requestAnimationFrame(window.animeFrame);
+            };
+
+            window.animeFrame();
+        },
+    });
+    
+    window.player = player;
+}
+
+function setAnimation(name, loop) {
+    if(window.player.hasAnimation(name)) {
+        window.player.setAnimation(name, loop);
+    }
+}
+
+function snapshot() {
+    window.captureFrame = true;
+}
+
+function recordAnimation(name) {
+    const animation = window.player.findAnimation(name);
+    if(!animation) return;
+    const stream = window.player.canvas.captureStream();
+    const recorder = new MediaRecorder(stream, {mimeType: 'video/webm'});
+    const data = [];
+    const duration = animation.duration;
+    recorder.ondataavailable = (event) => {
+        if(event.data && event.data.size) {
+            data.push(event.data);
+        }
+    };
+    recorder.onstop = () => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const dataURL = reader.result;
+            const dataURLParts = dataURL.split(',');
+            const base64Data = dataURLParts[1];
+            window.chrome.webview.postMessage({
+                event: 'video',
+                data: base64Data,
+            });
+        }
+        let blob = new Blob(data, {type: 'video/webm'});
+        reader.readAsDataURL(blob);
+    };
+    recorder.start();
+    setTimeout(() => {
+        recorder.stop();
+    }, duration + 500);
+}
+
+</script>
+</html>
+<style>
+    * {margin: 0; padding: 0;}
+
+    html, body {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    #spine-container {
+        width: 100%;
+        height: 100%;
+}
+</style>

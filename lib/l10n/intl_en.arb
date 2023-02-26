@@ -28,6 +28,8 @@
     "tooltipSnapshot": "Snapshot",
     "tooltipSnapshotWithExpession": "Set expression & snapshot",
     "tooltipSpringSkin": "Spring skin",
+    "tooltipSD": "SD Model",
+    "tooltipLive2D": "Live2D",
     "forceReload": "Force reload",
     "soulCarta": "Soul Carta",
     "child": "Child"

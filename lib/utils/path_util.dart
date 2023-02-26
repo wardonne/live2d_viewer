@@ -22,4 +22,10 @@ class PathUtil {
       )).path,
     );
   }
+
+  String parent(String path, {String seq = '/'}) {
+    final parts = path.split(seq);
+    parts.removeLast();
+    return parts.join(seq);
+  }
 }

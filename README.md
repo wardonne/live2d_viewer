@@ -6,12 +6,17 @@
 
 # Todo
 - [x] Nikke
-- [x] Destiny Child Child
-- [x] Destiny Child Soul Carta
-- [x] Girls' Frontline Characters' Painting
-- [x] Girls' Frontline Characters' Spine
-- [x] Girls' Frontline Characters' Live2D
-- [ ] Girls' Frontline Sprite
-- [ ] Azurlane (Characters' Painting)
-- [ ] Azurlane (Characters' Spine)
-- [ ] Azurlane (Characters' Live2D)
+    - [x] 角色Spine动画
+- [x] 天命之子
+    - [x] 角色Live2D
+    - [x] 魂卡Live2D
+    - [x] 魂卡图片
+- [x] 少女前线
+    - [x] 角色立绘
+    - [x] 角色SD小人
+    - [x] 角色Live2D
+- [x] 碧蓝航线
+    - [x] 角色静态立绘
+    - [x] 角色静态立绘拆分表情
+    - [ ] 角色Spine动态立绘
+    - [x] 角色Live2D

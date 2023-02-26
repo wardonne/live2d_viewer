@@ -4,13 +4,12 @@ import 'package:flutter/services.dart';
 import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/models/destiny_child/models.dart';
 import 'package:live2d_viewer/models/live2d_html_data.dart';
+import 'package:live2d_viewer/services/base_service.dart';
 import 'package:live2d_viewer/services/services.dart';
 import 'package:live2d_viewer/utils/utils.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-class DestinyChildService {
-  final HTTPService http = HTTPService();
-
+class DestinyChildService extends BaseService {
   String getModelJSON(String code) {
     return DestinyChildConstants.modelJSONFormat.replaceAll('%s', code);
   }
