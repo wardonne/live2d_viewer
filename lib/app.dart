@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/constants/routes.dart';
 import 'package:live2d_viewer/constants/styles.dart';
@@ -28,6 +30,13 @@ class _Live2DViewerState extends State<Live2DViewer> with WindowListener {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       onGenerateTitle: (context) => S.of(context).title,
+      scrollBehavior: ScrollConfiguration.of(context)
+        ..copyWith(
+          dragDevices: {
+            PointerDeviceKind.touch,
+            PointerDeviceKind.mouse,
+          },
+        ),
       theme: ThemeData(
         brightness: Brightness.dark,
         hoverColor: Styles.hoverBackgroundColor,

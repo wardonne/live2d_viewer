@@ -12,6 +12,7 @@ class ContainerButton extends StatefulWidget {
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
   final BoxDecoration? decoration;
+  final bool isHover;
 
   const ContainerButton({
     super.key,
@@ -26,6 +27,7 @@ class ContainerButton extends StatefulWidget {
     this.padding,
     this.margin,
     this.decoration,
+    this.isHover = false,
   });
 
   @override
@@ -34,6 +36,12 @@ class ContainerButton extends StatefulWidget {
 
 class _ContainerButtonState extends State<ContainerButton> {
   bool isHover = false;
+
+  @override
+  initState() {
+    isHover = widget.isHover;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

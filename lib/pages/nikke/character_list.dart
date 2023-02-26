@@ -48,8 +48,8 @@ class CharacterListState extends State<CharacterList> {
                   items.where((character) => character.enable).map((character) {
                 return CharacterCard(character: character);
               }).toList(),
-              width: 100,
-              height: 270,
+              itemWidth: 100,
+              itemHeight: 270,
             );
           } else if (snapshot.hasError) {
             final error = snapshot.error;

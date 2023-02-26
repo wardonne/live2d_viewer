@@ -62,7 +62,7 @@ class CharacterCardState extends State<CharacterCard> {
   @override
   Widget build(BuildContext context) {
     const double width = 120;
-    const double height = 165;
+    const double height = 220;
     final key = GlobalKey<CharacterAvatarState>();
     final avatar = isSkin ? skin!.avatarURL : character.avatarURL;
     final rarity = isSkin ? skin!.shipRarity : character.shipRarity;
@@ -97,7 +97,8 @@ class CharacterCardState extends State<CharacterCard> {
         height: height,
         padding: const EdgeInsets.all(10.0),
         backgroundColor: Colors.transparent,
-        hoverBackgroundColor: Colors.transparent,
+        hoverBackgroundColor: Styles.hoverBackgroundColor,
+        isHover: isSkin ? character.activeSkin == skin! : false,
         onClick: _toDetail,
         child: Column(
           children: [
@@ -123,7 +124,7 @@ class CharacterCardState extends State<CharacterCard> {
             ),
             Center(
               child: Text(
-                character.name,
+                isSkin ? skin!.name : character.name,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
