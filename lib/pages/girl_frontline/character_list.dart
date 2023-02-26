@@ -51,8 +51,8 @@ class CharacterListState extends RefreshableState<CharacterList> {
           if (snapshot.hasData) {
             final items = snapshot.data!;
             return ListContainer(
-              width: 170,
-              height: 320,
+              itemWidth: 170,
+              itemHeight: 320,
               items: items.map((item) {
                 return CharacterCard(
                   character: item,

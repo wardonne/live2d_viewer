@@ -1,4 +1,5 @@
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/components/iconfont.dart';
 import 'package:live2d_viewer/constants/constants.dart';
@@ -20,24 +21,49 @@ class SkinPopupMenu extends StatefulWidget {
 }
 
 class SkinPopupMenuState extends State<SkinPopupMenu> {
+  final scrollController = ScrollController();
   final menuController = CustomPopupMenuController();
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    menuController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final menu = Container(
+      constraints: BoxConstraints(
+        maxWidth: MediaQuery.of(context).size.width * 0.75,
+      ),
       padding: const EdgeInsets.all(10.0),
       decoration: const BoxDecoration(
         color: Styles.popupBackgrounColor,
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: widget.skins
-            .map((skin) => CharacterCard(
-                  character: skin.character,
-                  skin: skin,
-                ))
-            .toList(),
+      child: Listener(
+        onPointerSignal: (event) {
+          if (event is PointerScrollEvent) {
+            scrollController.animateTo(
+                scrollController.offset + event.scrollDelta.dy,
+                duration: const Duration(milliseconds: 2),
+                curve: Curves.bounceIn);
+          }
+        },
+        child: SingleChildScrollView(
+          controller: scrollController,
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: widget.skins
+                .map((skin) => CharacterCard(
+                      character: skin.character,
+                      skin: skin,
+                    ))
+                .toList(),
+          ),
+        ),
       ),
     );
     return CustomPopupMenu(

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class ListContainer extends StatelessWidget {
   final List<Widget> items;
-  final double width;
-  final double height;
+  final double itemWidth;
+  final double itemHeight;
   const ListContainer({
     super.key,
     required this.items,
-    required this.width,
-    required this.height,
+    required this.itemWidth,
+    required this.itemHeight,
   });
 
   @override
@@ -17,8 +17,8 @@ class ListContainer extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(10),
       child: GridView.extent(
-        maxCrossAxisExtent: width,
-        childAspectRatio: width / height,
+        maxCrossAxisExtent: itemWidth,
+        childAspectRatio: itemWidth / itemHeight,
         children: items,
       ),
     );
