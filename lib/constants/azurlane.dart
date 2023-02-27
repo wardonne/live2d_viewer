@@ -14,6 +14,8 @@ class AzurlaneConstants {
       '$assetsURL/character/paintingfaces';
   static const String characterFaceRectURL = '$assetsURL/character/face_rects';
   static const String characterSpineURL = '$assetsURL/character/spine';
+  static const String characterSpinePaintingURL =
+      '$assetsURL/character/spinepainting';
 
   static String screenshotPath =
       PathUtil().join([ApplicationConstants.screenshotPath, 'azurlane']);

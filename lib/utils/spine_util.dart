@@ -29,7 +29,6 @@ class SpineUtil {
 
   Future<Map<String, String>> downloadResource({
     required String baseURL,
-    required String imageBaseURL,
     required String skeletonURL,
     required String atlasURL,
   }) async {
@@ -38,7 +37,7 @@ class SpineUtil {
     final images = await listTexture2DFromAltas(localAtlas);
     File? localTexture;
     for (final image in images) {
-      String imageURL = '$imageBaseURL/$image';
+      String imageURL = '$baseURL/$image';
       localTexture = await http.download(imageURL);
     }
     return <String, String>{

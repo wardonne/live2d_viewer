@@ -4,10 +4,13 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart';
 import 'package:live2d_viewer/constants/constants.dart';
+import 'package:live2d_viewer/enum/spine_painting_layer_type.dart';
 import 'package:live2d_viewer/errors/texture_download_error.dart';
 import 'package:live2d_viewer/models/azurlane/models.dart';
+import 'package:live2d_viewer/models/azurlane/spine_painting_model.dart';
 import 'package:live2d_viewer/models/live2d_html_data.dart';
 import 'package:live2d_viewer/models/spine_html_data.dart';
+import 'package:live2d_viewer/models/spine_layer_html_data.dart';
 import 'package:live2d_viewer/services/base_service.dart';
 import 'package:live2d_viewer/services/webview_service.dart';
 import 'package:live2d_viewer/utils/utils.dart';
@@ -26,7 +29,6 @@ class AzurlaneService extends BaseService {
   Future<String> loadSpineHtml(SpineModel spine) async {
     final resource = await SpineUtil().downloadResource(
       baseURL: AzurlaneConstants.characterSpineURL,
-      imageBaseURL: spine.resourceURL,
       skeletonURL: spine.skelURL,
       atlasURL: spine.atlasURL,
     );
@@ -74,6 +76,49 @@ class AzurlaneService extends BaseService {
     );
     final html = await rootBundle.loadString(ResourceConstants.live2dHtml);
     return WebviewService.renderHtml(html, data);
+  }
+
+  Future<String> loadSpinePaintingHtml(SkinModel skin) async {
+    final spinePaintingConfig = await http.download(skin.spinePaintingURL);
+    final spinePaintingModel = SpinePaintingModel.fromJson(
+        jsonDecode(spinePaintingConfig.readAsStringSync())
+            as Map<String, dynamic>);
+    final futures = <Future<Map<String, dynamic>>>[];
+    for (final layer in spinePaintingModel.layers) {
+      final baseUrl = PathUtil().parent(skin.spinePaintingURL);
+      if (layer.type == SpinePaintingLayerType.spine) {
+        futures.add(() async {
+          final resource = await SpineUtil().downloadResource(
+            baseURL: baseUrl,
+            skeletonURL: '$baseUrl/${layer.skel}',
+            atlasURL: '$baseUrl/${layer.atlas}',
+          );
+          return <String, String>{
+            'type': layer.type.value,
+            'skel': PathUtil()
+                .localAssetsUrl(resource['skel'] as String)
+                .toString(),
+            'atlas': PathUtil()
+                .localAssetsUrl(resource['atlas'] as String)
+                .toString(),
+          };
+        }());
+      } else if (layer.type == SpinePaintingLayerType.image) {
+        futures.add(() async {
+          final texture = await http.download('$baseUrl/${layer.texture}');
+          return <String, dynamic>{
+            'type': layer.type.value,
+            'texture': PathUtil().localAssetsUrl(texture.path).toString(),
+            'size': layer.size,
+            'offset': layer.offset,
+          };
+        }());
+      }
+    }
+    final layers = await Future.wait(futures);
+    final html = await rootBundle
+        .loadString(ResourceConstants.azurlaneSpintPaintingHtml);
+    return WebviewService.renderHtml(html, SpineLayerHtmlData(layers: layers));
   }
 
   saveScreenshot(String data) {

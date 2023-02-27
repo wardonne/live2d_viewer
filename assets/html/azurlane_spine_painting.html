@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="https://static.wardonet.cn/live2d-viewer/js/spine-v3.6.52/spine-webgl.js"></script>
+    <title>Azurlane Spine Painting</title>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+</body>
+<script>
+const data = {{data}};
+const LAYER_TYPE_SPINE = 'spine';
+const LAYER_TYPE_IMAGE = 'image';
+const DEFAULT_ANIMATION = 'normal';
+
+function init() {
+    let lastFrameTime = Date.now() / 1000;
+    const canvas = document.getElementById("canvas");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const context = new spine.webgl.ManagedWebGLRenderingContext(canvas, {alpha: false});
+    const gl = context.gl;
+    const renderer = new spine.webgl.SceneRenderer(canvas, context);
+    const camera = renderer.camera;
+    const assetManager = new spine.webgl.AssetManager(gl);
+    const instances = [];
+
+    window.instances = instances;
+
+    for(const layer of data.layers) {
+        if(layer.type == LAYER_TYPE_SPINE) {
+            assetManager.loadBinary(layer.skel);
+            assetManager.loadTextureAtlas(layer.atlas);
+        } else if (layer.type == LAYER_TYPE_IMAGE) {
+            assetManager.loadTexture(layer.texture);
+        }
+    }
+
+    requestAnimationFrame(load);
+    
+    function load() {
+        if(assetManager.isLoadingComplete()) {
+            for(const layer of data.layers) {
+                if(layer.type == LAYER_TYPE_SPINE) {
+                    const skeleton = loadSkeleton(layer);
+                    instances.push(skeleton);
+                } else if (layer.type == LAYER_TYPE_IMAGE) {
+                    const texture = loadTexture(layer);
+                    instances.push(texture);
+                }
+            }
+
+            requestAnimationFrame(render);
+
+            for (const instance of instances) {
+                if(instance.type == LAYER_TYPE_SPINE) {
+                    instance.state.setAnimation(0, DEFAULT_ANIMATION, true);
+                }
+            }
+        } else {
+            requestAnimationFrame(load);
+        }
+    }
+
+    function render() {
+        for(const instance of instances) {
+            const now = Date.now() / 1000;
+            const delta = now - lastFrameTime;
+            lastFrameTime = now;
+            resize(instance);
+            if(instance.type == LAYER_TYPE_SPINE) {
+                const state = instance.state;
+                const skeleton = instance.skeleton;
+                state.update(delta);
+                state.apply(skeleton);
+                skeleton.updateWorldTransform();
+                renderer.begin();
+                renderer.drawSkeleton(skeleton, true);
+                renderer.end();
+            } else if (instance.type == LAYER_TYPE_IMAGE) {
+                const texture = instance.texture;
+                const bounds = instance.bounds;
+                renderer.begin();
+                renderer.drawTexture(texture, 0, 0, bounds.size.x, bounds.size.y);   
+                renderer.end();
+            }
+        }
+        requestAnimationFrame(render);
+    }
+
+    function calculateBounds(skeleton) {
+        skeleton.setToSetupPose();
+        skeleton.updateWorldTransform();
+        const offset = new spine.Vector2();
+        const size = new spine.Vector2();
+        skeleton.getBounds(offset, size, []);
+        return {offset: offset, size: size};
+    }
+
+    function loadSkeleton(layer) {
+        const atlas = assetManager.get(layer.atlas);
+        const atlasLoader = new spine.AtlasAttachmentLoader(atlas);
+        const skeletonBinary = new spine.SkeletonBinary(atlasLoader);
+        const skeletonData = skeletonBinary.readSkeletonData(assetManager.get(layer.skel));
+        const skeleton = new spine.Skeleton(skeletonData);
+        const bounds = calculateBounds(skeleton);
+        const animationStateData = new spine.AnimationStateData(skeleton.data);
+        const animationState = new spine.AnimationState(animationStateData);
+        return {
+            type: LAYER_TYPE_SPINE,
+            skeleton: skeleton,
+            state: animationState,
+            bounds: bounds,
+            premultipliedAlpha: true,
+        }
+    }
+
+    function loadTexture(layer) {
+        const texture = assetManager.get(layer.texture);
+        return {
+            type: LAYER_TYPE_IMAGE,
+            texture: texture,
+            bounds: {
+                offset: layer.offset,
+                size: layer.size,
+            }
+        }
+    }
+
+    function resize(instance) {
+        const offset = instance.bounds.offset;
+        const size = instance.bounds.size;
+        const centerX = size.x / 2 + offset.x;
+        const centerY = size.y / 2 + offset.y;
+        var scaleX = size.x / canvas.width;
+        var scaleY = size.y / canvas.height;
+        var scale = Math.max(scaleX, scaleY) * 1.2;
+        if (scale < 1) scale = 1;
+        const width = canvas.width * scale;
+        const height = canvas.height * scale;
+        camera.position.x = centerX;
+        camera.position.y = centerY;
+        camera.viewportWidth = width;
+        camera.viewportHeight = height;
+    }
+}
+
+window.onload = init;
+
+
+</script>
+<style>
+    * {margin: 0; padding: 0;}
+    body {overflow: hidden;}
+</style>
+</html>

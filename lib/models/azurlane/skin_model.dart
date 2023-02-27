@@ -12,6 +12,7 @@ class SkinModel extends BaseModel {
   late final String? faceRect;
   late final String? live2d;
   late final SpineModel? spine;
+  final String? spinePainting;
 
   late final CharacterModel character;
 
@@ -26,6 +27,7 @@ class SkinModel extends BaseModel {
     this.faceRect,
     this.live2d,
     this.spine,
+    this.spinePainting,
     required this.character,
   });
 
@@ -35,7 +37,8 @@ class SkinModel extends BaseModel {
         avatar = json['avatar'] as String,
         painting = json['painting'] as String,
         faceRect = json['face_rect'] as String?,
-        live2d = json['live2d'] as String? {
+        live2d = json['live2d'] as String?,
+        spinePainting = json['spine_painting'] as String? {
     spine = (json['spine'] as Map<String, dynamic>?) == null
         ? null
         : (SpineModel.fromJson(json['spine'] as Map<String, dynamic>)
@@ -58,6 +61,8 @@ class SkinModel extends BaseModel {
   }
 
   bool get hasLive2d => live2d != null;
+
+  bool get hasSpinePainting => spinePainting != null;
 
   String get avatarURL => '${AzurlaneConstants.characterAvatarURL}/$avatar';
 
@@ -96,4 +101,8 @@ class SkinModel extends BaseModel {
   int activeFaceIndex = 0;
 
   String get activeFaceURL => enableFace ? faceURL(activeFaceIndex) : '';
+
+  String get spinePaintingURL => spinePainting != null
+      ? '${AzurlaneConstants.characterSpinePaintingURL}/$spinePainting'
+      : '';
 }
