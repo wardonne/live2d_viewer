@@ -42,6 +42,7 @@ class CharacterDetailState extends State<CharacterDetail> {
       case DetailMode.image:
         return CharacterImage(character: character);
       case DetailMode.spine:
+      case DetailMode.spinepainting:
         return CharacterSpine(
           character: character,
           controller: webviewController!,

@@ -29,8 +29,7 @@ class NikkeService extends BaseService {
   Future<String> loadHtml(ActionModel action) async {
     debugPrint(action.skelURL);
     final resource = await SpineUtil().downloadResource(
-      baseURL: action.skin.spineURL,
-      imageBaseURL: action.spineURL,
+      baseURL: action.spineURL,
       skeletonURL: action.skelURL,
       atlasURL: action.atlasURL,
     );

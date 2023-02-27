@@ -74,6 +74,10 @@ class BottomToolbarState extends State<BottomToolbar> {
               onPressed: () => controller.mode = DetailMode.live2d,
             ),
           if (!controller.isImage) ...[
+            ImageButton(
+              icon: const Icon(Icons.image),
+              onPressed: () => controller.mode = DetailMode.image,
+            ),
             SnapshotButton(webviewController: widget.webviewController!),
             WebviewRefreshButton(controller: widget.webviewController!),
             WebviewConsoleButton(controller: widget.webviewController!),

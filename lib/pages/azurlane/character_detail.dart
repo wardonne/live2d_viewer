@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:live2d_viewer/enum/detail_mode.dart';
 import 'package:live2d_viewer/enum/web_message.dart';
 import 'package:live2d_viewer/models/azurlane/models.dart';
+import 'package:live2d_viewer/pages/azurlane/components/character_spine_painting.dart';
 import 'package:live2d_viewer/pages/azurlane/components/components.dart';
 import 'package:live2d_viewer/services/azurlane_service.dart';
 import 'package:provider/provider.dart';
@@ -47,6 +48,11 @@ class CharacterDetailState extends State<CharacterDetail> {
           character: character,
           controller: webviewController!,
         );
+      case DetailMode.spinepainting:
+        return CharacterSpinePainting(
+          character: character,
+          controller: webviewController!,
+        );
       case DetailMode.live2d:
         return CharacterLive2D(
           character: character,
@@ -60,7 +66,9 @@ class CharacterDetailState extends State<CharacterDetail> {
   Widget build(BuildContext context) {
     character = ModalRoute.of(context)!.settings.arguments as CharacterModel;
     skin = character.activeSkin;
-    final defaultMode = skin.hasLive2d ? DetailMode.live2d : DetailMode.image;
+    final defaultMode = skin.hasLive2d
+        ? DetailMode.live2d
+        : (skin.hasSpinePainting ? DetailMode.spinepainting : DetailMode.image);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) {

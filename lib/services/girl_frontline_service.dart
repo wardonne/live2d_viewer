@@ -23,8 +23,7 @@ class GirlFrontlineService extends BaseService {
 
   Future<String> loadSpineHtml(SpineModel spine) async {
     final resource = await SpineUtil().downloadResource(
-      baseURL: GirlFrontlineConstants.characterSpineURL,
-      imageBaseURL: spine.resourceURL,
+      baseURL: spine.resourceURL,
       skeletonURL: spine.skelURL,
       atlasURL: spine.atlasURL,
     );

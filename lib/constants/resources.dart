@@ -5,6 +5,8 @@ class ResourceConstants {
   static const spineVersion40Html = 'assets/html/spine_version_4_0.html';
   static const spineVersion2127Html = 'assets/html/spine_version_2_1_27.html';
   static const spineVersion3652Html = 'assets/html/spine_version_3_6_52.html';
+  static const azurlaneSpintPaintingHtml =
+      'assets/html/azurlane_spine_painting.html';
 
   static const spineIcon = 'assets/images/spine.png';
 
