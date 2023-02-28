@@ -1,5 +1,6 @@
 import 'package:live2d_viewer/constants/azurlane.dart';
 import 'package:live2d_viewer/enum/ship_rarity.dart';
+import 'package:live2d_viewer/enum/ship_type.dart';
 import 'package:live2d_viewer/models/azurlane/models.dart';
 import 'package:live2d_viewer/models/base_model.dart';
 
@@ -19,6 +20,7 @@ class CharacterModel extends BaseModel {
     required this.type,
     required this.rarity,
     required this.nationality,
+    required this.skins,
   });
 
   CharacterModel.fromJson(Map<String, dynamic> json)
@@ -45,9 +47,20 @@ class CharacterModel extends BaseModel {
     };
   }
 
+  String get rarityLabel => AzurlaneConstants.rarityLabels[rarity] as String;
+
   String get avatarURL => '${AzurlaneConstants.characterAvatarURL}/$avatar';
 
   ShipRarity get shipRarity => skins.first.shipRarity;
+
+  ShipType get shipType {
+    for (final item in ShipType.values) {
+      if (item.value == type) {
+        return item;
+      }
+    }
+    return ShipType.type1;
+  }
 
   int activeSkinIndex = 0;
 

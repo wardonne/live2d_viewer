@@ -110,6 +110,10 @@ class DestinyChildService extends BaseService {
       '${DateTime.now().millisecondsSinceEpoch}.webm',
     ]);
     FileUtil().write(path, base64Decode(data));
-    launchUrlString(path);
+    FfmpegUtil()
+        .convert(path, path.replaceAll(RegExp(r'.webm'), '.mp4'))
+        .then((result) {
+      launchUrlString(path);
+    });
   }
 }

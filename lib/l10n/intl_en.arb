@@ -30,7 +30,16 @@
     "tooltipSpringSkin": "Spring skin",
     "tooltipSD": "SD Model",
     "tooltipLive2D": "Live2D",
+    "tooltipFilter": "filter",
     "forceReload": "Force reload",
     "soulCarta": "Soul Carta",
-    "child": "Child"
+    "child": "Child",
+    "filterTitle": "Filter",
+    "formLabelName": "Name",
+    "formLabelRarity": "Rarity",
+    "formLabelType": "Type",
+    "formLabelNationality": "Nationality",
+    "buttonCancel": "Cancel",
+    "buttonSubmit": "Submit",
+    "buttonReset": "Reset"
 }

@@ -38,4 +38,14 @@ class AzurlaneConstants {
     14: ShipRarity.rarity14,
     15: ShipRarity.rarity15,
   };
+
+  static const rarityLabels = {
+    2: '普通',
+    3: '稀有',
+    4: '精锐',
+    5: '超稀有',
+    6: '海上传奇',
+    7: '最高方案',
+    8: '决战方案',
+  };
 }

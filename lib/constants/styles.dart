@@ -10,6 +10,7 @@ class Styles {
   static const Color hoverTextColor = Colors.white;
   static const Color shadowColor = Color(0xFF424242);
   static const Color appBarColor = Color(0xFF424242);
+  static const Color warningButtonColor = Color(0xFFFFA726);
 
   static const double iconSize = 24.0;
   static const double bottomAppBarHeight = 56.0;

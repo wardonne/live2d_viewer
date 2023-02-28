@@ -30,7 +30,16 @@
     "tooltipSpringSkin": "温泉皮肤",
     "tooltipSD": "SD模型",
     "tooltipLive2D": "Live2D",
+    "tooltipFilter": "筛选",
     "forceReload": "强制刷新",
     "soulCarta": "魂卡",
-    "child": "天子"
+    "child": "天子",
+    "filterTitle": "筛选",
+    "formLabelName": "名称",
+    "formLabelRarity": "稀有度",
+    "formLabelType": "类型",
+    "formLabelNationality": "阵营",
+    "buttonCancel": "取消",
+    "buttonSubmit": "提交",
+    "buttonReset": "重置"
 }

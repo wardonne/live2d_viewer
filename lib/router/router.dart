@@ -5,7 +5,6 @@ import 'package:live2d_viewer/pages/destiny_child/destiny_child.dart'
     as destiny_child;
 import 'package:live2d_viewer/pages/index.dart';
 import 'package:live2d_viewer/pages/nikke/nikke.dart' as nikke;
-
 import 'package:live2d_viewer/pages/girl_frontline/girl_frontline.dart'
     as girl_frontline;
 

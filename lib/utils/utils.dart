@@ -4,3 +4,5 @@ export 'registry_util.dart';
 export 'spine_util.dart';
 export 'path_util.dart';
 export 'live2d_util.dart';
+export 'ffmpeg_util.dart';
+export 'image_util.dart';

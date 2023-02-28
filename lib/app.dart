@@ -1,8 +1,8 @@
 import 'dart:ui';
 
+import 'package:args/args.dart';
 import 'package:flutter/material.dart';
-import 'package:live2d_viewer/constants/routes.dart';
-import 'package:live2d_viewer/constants/styles.dart';
+import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/generated/l10n.dart';
 import 'package:live2d_viewer/providers/locale_provider.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +12,9 @@ import 'router/router.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 class Live2DViewer extends StatefulWidget {
-  const Live2DViewer({super.key});
+  final ArgResults args;
+
+  const Live2DViewer({super.key, required this.args});
 
   @override
   State<StatefulWidget> createState() => _Live2DViewerState();
@@ -66,6 +68,15 @@ class _Live2DViewerState extends State<Live2DViewer> with WindowListener {
       supportedLocales: S.delegate.supportedLocales,
       routes: router,
       initialRoute: Routes.index,
+      onGenerateInitialRoutes: (initialRoute) {
+        final page = widget.args['page'] as String;
+        final builder = router[Routes.index];
+        return [
+          MaterialPageRoute(builder: router[Routes.index]!),
+          if (page != Routes.index && builder != null)
+            MaterialPageRoute(builder: builder),
+        ];
+      },
     );
   }
 }

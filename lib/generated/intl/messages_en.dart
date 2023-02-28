@@ -30,11 +30,20 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "azurlane": MessageLookupByLibrary.simpleMessage("Azur Lane"),
+        "buttonCancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "buttonReset": MessageLookupByLibrary.simpleMessage("Reset"),
+        "buttonSubmit": MessageLookupByLibrary.simpleMessage("Submit"),
         "child": MessageLookupByLibrary.simpleMessage("Child"),
         "confirm": MessageLookupByLibrary.simpleMessage("confirm"),
         "destinyChild": MessageLookupByLibrary.simpleMessage("Destiny Child"),
         "dialogTitleError": MessageLookupByLibrary.simpleMessage("Error"),
+        "filterTitle": MessageLookupByLibrary.simpleMessage("Filter"),
         "forceReload": MessageLookupByLibrary.simpleMessage("Force reload"),
+        "formLabelName": MessageLookupByLibrary.simpleMessage("Name"),
+        "formLabelNationality":
+            MessageLookupByLibrary.simpleMessage("Nationality"),
+        "formLabelRarity": MessageLookupByLibrary.simpleMessage("Rarity"),
+        "formLabelType": MessageLookupByLibrary.simpleMessage("Type"),
         "gameTitles": m0,
         "girlFrontline":
             MessageLookupByLibrary.simpleMessage("Girls\' Frontline"),
@@ -46,6 +55,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "soulCarta": MessageLookupByLibrary.simpleMessage("Soul Carta"),
         "title": MessageLookupByLibrary.simpleMessage("Live2D Viewer"),
         "tooltipDevtool": MessageLookupByLibrary.simpleMessage("Devtool"),
+        "tooltipFilter": MessageLookupByLibrary.simpleMessage("filter"),
         "tooltipLive2D": MessageLookupByLibrary.simpleMessage("Live2D"),
         "tooltipLoopPlay":
             MessageLookupByLibrary.simpleMessage("Loop Playback"),

@@ -1,8 +1,6 @@
 class Routes {
   static const index = '/';
-  static const init = 'init';
   static const destinyChild = 'destiny-child';
-  // static const destinyChildCharacters = 'destiny-child/characters';
   static const destinyChildCharacterDetail = 'destiny-child/character-detail';
   static const destinyChildSoulCartaDetail = 'destiny-child/soul-carta-detail';
 
@@ -17,4 +15,22 @@ class Routes {
   static const azurlane = 'azurlane';
   static const azurlaneCharacters = 'azurlane/characters';
   static const azurlaneCharacterDetail = 'azurlane/character-detail';
+
+  static List<String> all() {
+    return [
+      index,
+      destinyChild,
+      destinyChildCharacterDetail,
+      destinyChildSoulCartaDetail,
+      nikke,
+      nikkeCharacters,
+      nikkeCharacterDetail,
+      girlFrontline,
+      girlFrontlineCharacters,
+      girlFrontlineCharacterDetail,
+      azurlane,
+      azurlaneCharacters,
+      azurlaneCharacterDetail,
+    ];
+  }
 }

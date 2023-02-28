@@ -316,6 +316,16 @@ class S {
     );
   }
 
+  /// `filter`
+  String get tooltipFilter {
+    return Intl.message(
+      'filter',
+      name: 'tooltipFilter',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Force reload`
   String get forceReload {
     return Intl.message(
@@ -341,6 +351,86 @@ class S {
     return Intl.message(
       'Child',
       name: 'child',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Filter`
+  String get filterTitle {
+    return Intl.message(
+      'Filter',
+      name: 'filterTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name`
+  String get formLabelName {
+    return Intl.message(
+      'Name',
+      name: 'formLabelName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rarity`
+  String get formLabelRarity {
+    return Intl.message(
+      'Rarity',
+      name: 'formLabelRarity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Type`
+  String get formLabelType {
+    return Intl.message(
+      'Type',
+      name: 'formLabelType',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nationality`
+  String get formLabelNationality {
+    return Intl.message(
+      'Nationality',
+      name: 'formLabelNationality',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get buttonCancel {
+    return Intl.message(
+      'Cancel',
+      name: 'buttonCancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Submit`
+  String get buttonSubmit {
+    return Intl.message(
+      'Submit',
+      name: 'buttonSubmit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset`
+  String get buttonReset {
+    return Intl.message(
+      'Reset',
+      name: 'buttonReset',
       desc: '',
       args: [],
     );

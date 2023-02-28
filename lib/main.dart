@@ -1,11 +1,12 @@
 import 'dart:io';
 
+import 'package:args/args.dart';
 import 'package:auto_updater/auto_updater.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
-import 'package:live2d_viewer/constants/application.dart';
+import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/providers/locale_provider.dart';
 import 'package:live2d_viewer/utils/registry_util.dart';
 import 'package:path_provider/path_provider.dart';
@@ -16,7 +17,7 @@ import 'package:path/path.dart' as p;
 
 import 'app.dart';
 
-void main() async {
+void main(List<String> args) async {
   DartVLC.initialize();
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,12 +56,23 @@ void main() async {
 
   RegistryUtil.init();
 
+  final argParser = ArgParser()
+    ..addOption(Args.optionPage, defaultsTo: Routes.index, allowed: [
+      Routes.index,
+      Routes.nikke,
+      Routes.azurlane,
+      Routes.destinyChild,
+    ]);
+
+  final argResults = argParser.parse(args);
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) {
         return LocaleProvider(const Locale('zh', 'CN'));
       }),
     ],
-    child: const Live2DViewer(),
+    child: Live2DViewer(
+      args: argResults,
+    ),
   ));
 }
