@@ -75,3 +75,5 @@ dsa_priv.pem
 *.backup
 
 publish.bat
+
+*.exe
