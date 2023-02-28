@@ -12,8 +12,9 @@ class FfmpegUtil {
         '-i',
         input,
         '-vf',
-        'pad="width=ceil(iw/2)*2;height=ceil(ih/2)*2"',
+        'pad="ceil(iw/2)*2:ceil(ih/2)*2"',
         output,
+        '-y',
       ],
     );
   }
