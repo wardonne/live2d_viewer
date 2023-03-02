@@ -22,6 +22,7 @@ class AzurlaneService extends BaseService {
     const url = AzurlaneConstants.characterDataURL;
     final localFile = await http.download(url, reload: reload);
     final list = jsonDecode(localFile.readAsStringSync()) as List<dynamic>;
+
     final filteredList = list
         .where((item) {
           item = item as Map<String, dynamic>;
@@ -43,7 +44,6 @@ class AzurlaneService extends BaseService {
           }
           return true;
         })
-    return list
         .map((item) => CharacterModel.fromJson(item as Map<String, dynamic>))
         .toList();
     return filteredList..sort((a, b) => a.compareTo(b));
@@ -161,11 +161,7 @@ class AzurlaneService extends BaseService {
       '${DateTime.now().millisecondsSinceEpoch}.webm',
     ]);
     FileUtil().write(path, base64Decode(data));
-    FfmpegUtil()
-        .convert(path, path.replaceAll(RegExp(r'.webm'), '.mp4'))
-        .then((result) {
-      launchUrlString(path);
-    });
+    launchUrlString(path);
   }
 
   Future<File> setFace(SkinModel skin) async {

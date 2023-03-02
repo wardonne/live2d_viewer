@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:live2d_viewer/components/global_components.dart';
 import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/controllers/visible_controller.dart';
@@ -29,7 +28,9 @@ class CharacterListState extends RefreshableState<CharacterList> {
   bool _reload = false;
 
   @override
-  void initState() {
+<<<<<<< HEAD
+  void @override
+  initState() {
     super.initState();
     hotKeyManager.register(
       HotKeys.find,
@@ -50,6 +51,9 @@ class CharacterListState extends RefreshableState<CharacterList> {
   }
 
   @override
+=======
+>>>>>>> parent of 9c8420e (添加初始化页面参数page 添加碧蓝航线筛选)
+  @override
   void reload({bool forceReload = false}) {
     setState(() {
       _reload = forceReload;
@@ -64,6 +68,7 @@ class CharacterListState extends RefreshableState<CharacterList> {
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 10),
+<<<<<<< HEAD
             child: ImageButton(
               icon: const Icon(Icons.filter_list),
               onPressed: () => visibleController.toggle(),
@@ -71,6 +76,8 @@ class CharacterListState extends RefreshableState<CharacterList> {
           ),
           Container(
             margin: const EdgeInsets.only(right: 10),
+=======
+>>>>>>> parent of 9c8420e (添加初始化页面参数page 添加碧蓝航线筛选)
             child: ToolbarRefreshButton(widgetState: this),
           ),
           Container(
@@ -79,6 +86,7 @@ class CharacterListState extends RefreshableState<CharacterList> {
           )
         ],
       ),
+<<<<<<< HEAD
       body: Column(
         children: [
           VisibleWrapper(
@@ -134,6 +142,39 @@ class CharacterListState extends RefreshableState<CharacterList> {
                 }),
           ),
         ],
+=======
+      body: FutureBuilder(
+        future: service.characters(reload: _reload),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final items = snapshot.data!;
+            return ListContainer(
+              itemWidth: 120,
+              itemHeight: 220,
+              items: items.map((item) {
+                return CharacterCard(
+                  character: item,
+                );
+              }).toList(),
+            );
+          } else if (snapshot.hasError) {
+            final error = snapshot.error;
+            debugPrint('$error');
+            return ErrorDialog(
+                message: '${S.of(context).requestError}: $error');
+          } else {
+            final size = MediaQuery.of(context).size;
+            return SizedBox(
+              width: size.width,
+              height: size.height,
+              child: LoadingAnimationWidget.threeArchedCircle(
+                color: Styles.iconColor,
+                size: 30,
+              ),
+            );
+          }
+        },
+>>>>>>> parent of 9c8420e (添加初始化页面参数page 添加碧蓝航线筛选)
       ),
     );
   }
