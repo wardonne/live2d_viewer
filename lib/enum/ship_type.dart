@@ -22,3 +22,9 @@ enum ShipType {
     required this.label,
   });
 }
+
+extension ShipTypeCompare on ShipType {
+  int compareTo(ShipType shipType) {
+    return value.compareTo(shipType.value);
+  }
+}

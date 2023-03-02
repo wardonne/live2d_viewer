@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -17,11 +16,16 @@ class NikkeService extends BaseService {
 
   NikkeService();
 
-  Future<List<CharacterModel>> characters() async {
-    final File response = await http.get(NikkeConstants.characterDataURL,
-        duration: const Duration(days: 1));
-    final List<dynamic> list = jsonDecode(response.readAsStringSync()) as List;
-    return list.map((item) {
+  Future<List<CharacterModel>> characters(
+      {String name = '', bool reload = false}) async {
+    const url = NikkeConstants.characterDataURL;
+    final localFile = await http.download(url, reload: reload);
+    final list = jsonDecode(localFile.readAsStringSync()) as List<dynamic>;
+    return list.where((item) {
+      if (name.isEmpty) return true;
+      if (!(item['enable'] as bool)) return false;
+      return item['name'] as String == name;
+    }).map((item) {
       return CharacterModel.fromJson(item as Map<String, dynamic>);
     }).toList();
   }

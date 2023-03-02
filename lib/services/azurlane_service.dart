@@ -22,26 +22,30 @@ class AzurlaneService extends BaseService {
     const url = AzurlaneConstants.characterDataURL;
     final localFile = await http.download(url, reload: reload);
     final list = jsonDecode(localFile.readAsStringSync()) as List<dynamic>;
-    return list
+    final filteredList = list
         .where((item) {
           item = item as Map<String, dynamic>;
           if (filter == null) return true;
-          if (filter.name != null &&
-              filter.name!.isNotEmpty &&
-              item['name'] as String != filter.name) return false;
-          if (filter.rarity != null &&
-              filter.rarity! > 0 &&
-              item['rarity'] as int != filter.rarity) return false;
-          if (filter.type != null &&
-              filter.type! > 0 &&
-              item['type'] as int != filter.type) return false;
-          if (filter.nationality != null &&
-              filter.nationality! > 0 &&
-              item['nationality'] as int != filter.nationality) return false;
+          if (filter.name.isNotEmpty && item['name'] as String != filter.name) {
+            return false;
+          }
+          if (filter.rarity.isNotEmpty &&
+              !filter.rarity.contains(item['rarity'] as int)) {
+            return false;
+          }
+          if (filter.type.isNotEmpty &&
+              !filter.type.contains(item['type'] as int)) {
+            return false;
+          }
+          if (filter.nationality.isNotEmpty &&
+              !filter.nationality.contains(item['nationality'] as int)) {
+            return false;
+          }
           return true;
         })
         .map((item) => CharacterModel.fromJson(item as Map<String, dynamic>))
         .toList();
+    return filteredList..sort((a, b) => a.compareTo(b));
   }
 
   Future<String> loadSpineHtml(SpineModel spine) async {

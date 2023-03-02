@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/controllers/paginator_controller.dart';
 
-class Paginator extends StatelessWidget {
-  final PaginatorController _controller;
+class Paginator<T> extends StatelessWidget {
+  final PaginatorController<T> _controller;
   final int startIndex;
   final int endIndex;
 
   const Paginator({
     super.key,
-    required PaginatorController controller,
+    required PaginatorController<T> controller,
     required this.startIndex,
     required this.endIndex,
   }) : _controller = controller;
@@ -18,7 +18,7 @@ class Paginator extends StatelessWidget {
     final MaterialLocalizations localizations =
         MaterialLocalizations.of(context);
     return DefaultTextStyle(
-      style: Theme.of(context).textTheme.caption!,
+      style: Theme.of(context).textTheme.bodySmall!,
       child: IconTheme.merge(
         data: const IconThemeData(
           opacity: 0.54,

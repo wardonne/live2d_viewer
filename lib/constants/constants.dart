@@ -11,3 +11,4 @@ export 'girl_frontline.dart';
 export 'azurlane.dart';
 export 'args.dart';
 export 'tools.dart';
+export 'hotkeys.dart';
