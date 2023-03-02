@@ -17,13 +17,36 @@ import 'package:live2d_viewer/utils/utils.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class AzurlaneService extends BaseService {
-  Future<List<CharacterModel>> characters({bool reload = false}) async {
+  Future<List<CharacterModel>> characters(
+      {FilterFormModel? filter, bool reload = false}) async {
     const url = AzurlaneConstants.characterDataURL;
     final localFile = await http.download(url, reload: reload);
     final list = jsonDecode(localFile.readAsStringSync()) as List<dynamic>;
+    final filteredList = list
+        .where((item) {
+          item = item as Map<String, dynamic>;
+          if (filter == null) return true;
+          if (filter.name.isNotEmpty && item['name'] as String != filter.name) {
+            return false;
+          }
+          if (filter.rarity.isNotEmpty &&
+              !filter.rarity.contains(item['rarity'] as int)) {
+            return false;
+          }
+          if (filter.type.isNotEmpty &&
+              !filter.type.contains(item['type'] as int)) {
+            return false;
+          }
+          if (filter.nationality.isNotEmpty &&
+              !filter.nationality.contains(item['nationality'] as int)) {
+            return false;
+          }
+          return true;
+        })
     return list
         .map((item) => CharacterModel.fromJson(item as Map<String, dynamic>))
         .toList();
+    return filteredList..sort((a, b) => a.compareTo(b));
   }
 
   Future<String> loadSpineHtml(SpineModel spine) async {
@@ -138,7 +161,11 @@ class AzurlaneService extends BaseService {
       '${DateTime.now().millisecondsSinceEpoch}.webm',
     ]);
     FileUtil().write(path, base64Decode(data));
-    launchUrlString(path);
+    FfmpegUtil()
+        .convert(path, path.replaceAll(RegExp(r'.webm'), '.mp4'))
+        .then((result) {
+      launchUrlString(path);
+    });
   }
 
   Future<File> setFace(SkinModel skin) async {

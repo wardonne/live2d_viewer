@@ -33,7 +33,7 @@ void main() async {
   }
 
   hotKeyManager.register(
-    HotKey(KeyCode.f11, scope: HotKeyScope.inapp),
+    HotKeys.fullscreen,
     keyDownHandler: (hotKey) async =>
         windowManager.setFullScreen(!await windowManager.isFullScreen()),
   );

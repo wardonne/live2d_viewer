@@ -12,13 +12,31 @@ import 'package:live2d_viewer/utils/utils.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class GirlFrontlineService extends BaseService {
-  Future<List<CharacterModel>> characters({bool reload = false}) async {
+  Future<List<CharacterModel>> characters(
+      {FilterFormModel? filter, bool reload = false}) async {
     const url = GirlFrontlineConstants.characterDataURL;
     final localFile = await http.download(url, reload: reload);
     final list = jsonDecode(localFile.readAsStringSync()) as List<dynamic>;
-    return list
+    final filteredList = list
+        .where((item) {
+          if (filter == null) return true;
+          if (filter.name.isNotEmpty && item['name'] as String != filter.name) {
+            return false;
+          }
+          if (filter.type.isNotEmpty &&
+              !filter.type.contains(item['type'] as int)) {
+            return false;
+          }
+          if (filter.rank.isNotEmpty &&
+              !filter.rank.contains(item['rank'] as int)) {
+            return false;
+          }
+          return true;
+        })
         .map((item) => CharacterModel.fromJson(item as Map<String, dynamic>))
         .toList();
+    filteredList.sort((a, b) => a.compareTo(b));
+    return filteredList;
   }
 
   Future<String> loadSpineHtml(SpineModel spine) async {

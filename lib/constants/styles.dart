@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class Styles {
   static const Color borderColor = Colors.white70;
+  static Color selectedBorderColor = Colors.blue.shade700;
   static const Color iconColor = Color(0xFFE1E1E3);
   static const Color backgroundColor = Color(0xFF252733);
   static const Color popupBackgrounColor = Color(0xFF30323d);

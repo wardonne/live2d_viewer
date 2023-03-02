@@ -17,7 +17,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.1+9
+version: 1.0.1+11
 
 environment:
   sdk: '>=2.18.5 <3.0.0'
@@ -45,7 +45,10 @@ dependencies:
   path_provider: ^2.0.11
   url_launcher: ^6.1.7
   dart_vlc: ^0.4.0
-  hotkey_manager: ^0.1.7
+  hotkey_manager:
+    git: 
+      url: https://github.com/leanflutter/hotkey_manager.git
+      ref: main
   custom_pop_up_menu: ^1.2.4
   auto_updater: ^0.1.6
   win32_registry: ^1.0.2

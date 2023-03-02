@@ -47,7 +47,18 @@ class CharacterModel extends BaseModel {
 
   String get avatarURL => '${AzurlaneConstants.characterAvatarURL}/$avatar';
 
-  ShipRarity get shipRarity => skins.first.shipRarity;
+  ShipRarity get shipRarity {
+    int value = 0;
+    if (nationality == 97) {
+      value += 10;
+    }
+    if (code.endsWith('_g')) {
+      value += rarity + 1;
+    } else {
+      value += rarity;
+    }
+    return AzurlaneConstants.raritys[value] ?? ShipRarity.rarity2;
+  }
 
   int activeSkinIndex = 0;
 
@@ -61,5 +72,12 @@ class CharacterModel extends BaseModel {
 
   void reset() {
     activeSkinIndex = 0;
+  }
+
+  int compareTo(CharacterModel character) {
+    int result = character.shipRarity.compareTo(shipRarity);
+    result = result == 0 ? character.shipType.compareTo(shipType) : result;
+    result = result == 0 ? code.compareTo(character.code) : result;
+    return result;
   }
 }
