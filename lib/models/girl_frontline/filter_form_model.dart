@@ -3,32 +3,28 @@ import 'package:live2d_viewer/models/base_model.dart';
 class FilterFormModel extends BaseModel {
   String name;
   List<int> type;
-  List<int> rarity;
-  List<int> nationality;
+  List<int> rank;
+
   FilterFormModel({
     required this.name,
     required this.type,
-    required this.rarity,
-    required this.nationality,
+    required this.rank,
   });
 
   FilterFormModel.init()
       : name = '',
         type = [],
-        rarity = [],
-        nationality = [];
+        rank = [];
 
   FilterFormModel.from(FilterFormModel model)
       : name = model.name,
         type = model.type,
-        rarity = model.rarity,
-        nationality = model.nationality;
+        rank = model.rank;
 
   void reset() {
     name = '';
     type = [];
-    rarity = [];
-    nationality = [];
+    rank = [];
   }
 
   @override
@@ -36,8 +32,7 @@ class FilterFormModel extends BaseModel {
     return {
       'name': name,
       'type': type,
-      'rarity': rarity,
-      'nationality': nationality,
+      'rank': rank,
     };
   }
 }

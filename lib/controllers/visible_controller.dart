@@ -7,7 +7,7 @@ class VisibleController extends ChangeNotifier {
     this.visible = true,
   });
 
-  hidden() {
+  hide() {
     if (visible) {
       visible = false;
       notifyListeners();
@@ -19,5 +19,10 @@ class VisibleController extends ChangeNotifier {
       visible = true;
       notifyListeners();
     }
+  }
+
+  toggle() {
+    visible = !visible;
+    notifyListeners();
   }
 }

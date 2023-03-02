@@ -57,3 +57,9 @@ enum ShipRarity {
     required this.avatarBackground,
   });
 }
+
+extension ShipRarityCompare on ShipRarity {
+  int compareTo(ShipRarity shipRarity) {
+    return value.compareTo(shipRarity.value);
+  }
+}

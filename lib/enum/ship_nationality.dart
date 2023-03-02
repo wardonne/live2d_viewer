@@ -29,3 +29,9 @@ enum ShipNationality {
     required this.label,
   });
 }
+
+extension ShipNationalityCompare on ShipNationality {
+  int compareTo(ShipNationality shipNationality) {
+    return value.compareTo(shipNationality.value);
+  }
+}

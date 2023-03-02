@@ -51,39 +51,21 @@ class CharacterModel extends BaseModel {
   }
 
   GunRank get gunRank {
-    switch (rank) {
-      case 1:
-        return GunRank.rank1;
-      case 2:
-        return GunRank.rank2;
-      case 3:
-        return GunRank.rank3;
-      case 4:
-        return GunRank.rank4;
-      case 5:
-        return GunRank.rank5;
-      default:
-        return GunRank.rank1;
+    for (final item in GunRank.values) {
+      if (item.value == rank) {
+        return item;
+      }
     }
+    return GunRank.rank1;
   }
 
   GunType get gunType {
-    switch (type) {
-      case 1:
-        return GunType.hg;
-      case 2:
-        return GunType.smg;
-      case 3:
-        return GunType.rf;
-      case 4:
-        return GunType.ar;
-      case 5:
-        return GunType.mg;
-      case 6:
-        return GunType.sg;
-      default:
-        return GunType.hg;
+    for (final item in GunType.values) {
+      if (item.value == type) {
+        return item;
+      }
     }
+    return GunType.hg;
   }
 
   String get destroyAvatar => avatar.destroyAvatar;
@@ -106,5 +88,12 @@ class CharacterModel extends BaseModel {
 
   void reset() {
     activeSkinIndex = 0;
+  }
+
+  int compareTo(CharacterModel character) {
+    int result = character.rank.compareTo(rank);
+    result = result == 0 ? character.type.compareTo(type) : result;
+    result = result == 0 ? code.compareTo(character.code) : result;
+    return result;
   }
 }

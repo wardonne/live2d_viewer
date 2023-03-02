@@ -3,17 +3,14 @@ import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/controllers/visible_controller.dart';
 import 'package:live2d_viewer/generated/l10n.dart';
-import 'package:live2d_viewer/models/azurlane/models.dart';
-import 'package:live2d_viewer/pages/azurlane/components/filter_form_name_input.dart';
-import 'package:live2d_viewer/pages/azurlane/components/filter_form_nationality_selection.dart';
-import 'package:live2d_viewer/pages/azurlane/components/filter_form_rarity_selection.dart';
-import 'package:live2d_viewer/pages/azurlane/components/filter_form_type_selection.dart';
-import 'package:live2d_viewer/widget/widget.dart';
+import 'package:live2d_viewer/models/girl_frontline/models.dart';
+import 'package:live2d_viewer/pages/girl_frontline/components/components.dart';
+import 'package:live2d_viewer/widget/buttons/buttons.dart';
+import 'package:live2d_viewer/widget/wrappers/wrapper.dart';
 
 class FilterForm extends StatefulWidget {
   final VisibleController visibleController;
   final ValueNotifyWrapper<FilterFormModel> filterController;
-
   const FilterForm({
     super.key,
     required this.visibleController,
@@ -29,11 +26,9 @@ class FilterForm extends StatefulWidget {
 class FilterFormState extends State<FilterForm> {
   final formKey = GlobalKey<FormState>();
   final nameKey = GlobalKey<FilterFormNameInputState>();
-  final rarityKey = GlobalKey<FilterFormRaritySelectionState>();
+  final rankKey = GlobalKey<FilterFormRankSelectionState>();
   final typeKey = GlobalKey<FilterFormTypeSelectionState>();
-  final nationalityKey = GlobalKey<FilterFormNationalitySelectionState>();
   final submitKey = GlobalKey<FormSubmitButtonState>();
-
   late final FilterFormModel model;
 
   @override
@@ -73,31 +68,15 @@ class FilterFormState extends State<FilterForm> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: FilterFormNameInput(
-                    key: nameKey,
-                    model: model,
-                  ),
+                  child: FilterFormNameInput(key: nameKey, model: model),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: FilterFormRaritySelection(
-                    key: rarityKey,
-                    model: model,
-                  ),
+                  child: FilterFormRankSelection(model: model),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: FilterFormTypeSelection(
-                    key: typeKey,
-                    model: model,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: FilterFormNationalitySelection(
-                    key: nationalityKey,
-                    model: model,
-                  ),
+                  child: FilterFormTypeSelection(model: model),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
