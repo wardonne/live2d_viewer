@@ -51,42 +51,43 @@ class CharacterDetailState extends RefreshableState<CharacterDetail> {
         ModalRoute.of(context)!.settings.arguments as CharacterModel;
     final controller = WebviewController();
     controller.webMessage.listen(webMessageListener);
-    return FutureBuilder(
-      future: service.loadCharacterHTML(character.activeSkin, reload: _reload),
-      builder: (context, snapshot) {
-        const loading = LoadingAnimation(size: 30.0);
-        if (snapshot.connectionState != ConnectionState.done) {
-          return loading;
-        }
-        if (snapshot.hasError) {
-          return ErrorDialog(message: snapshot.error.toString());
-        } else if (snapshot.hasData) {
-          _reload = false;
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(character.activeSkin.name),
-              actions: const [
-                Padding(
-                  padding: EdgeInsets.only(right: 20),
-                  child: LanguageSelection(),
-                )
-              ],
-            ),
-            bottomNavigationBar: CharacterDetailBottomToolbar(
-              character: character,
-              webviewController: controller,
-              state: this,
-            ),
-            body: Live2DViewer(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(character.activeSkin.name),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 20),
+            child: LanguageSelection(),
+          )
+        ],
+      ),
+      bottomNavigationBar: CharacterDetailBottomToolbar(
+        character: character,
+        webviewController: controller,
+        state: this,
+      ),
+      body: FutureBuilder(
+        future:
+            service.loadCharacterHTML(character.activeSkin, reload: _reload),
+        builder: (context, snapshot) {
+          const loading = LoadingAnimation(size: 30.0);
+          if (snapshot.connectionState != ConnectionState.done) {
+            return loading;
+          }
+          if (snapshot.hasData) {
+            _reload = false;
+            return Live2DViewer(
               controller: controller,
               html: snapshot.data!,
               virtualHosts: [ApplicationConstants.virtualHost],
-            ),
-          );
-        } else {
-          return loading;
-        }
-      },
+            );
+          } else if (snapshot.hasError) {
+            return ErrorDialog(message: snapshot.error.toString());
+          } else {
+            return loading;
+          }
+        },
+      ),
     );
   }
 }

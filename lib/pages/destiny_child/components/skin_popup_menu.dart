@@ -47,7 +47,7 @@ class _SkinPopupMenuState extends State<SkinPopupMenu> {
       pressType: PressType.singleClick,
       child: Tooltip(
         message: S.of(context).tooltipShowSkins,
-        child: const Icon(IconFont.iconSkin, size: 18),
+        child: const Icon(IconFont.iconSkin),
       ),
     );
   }
