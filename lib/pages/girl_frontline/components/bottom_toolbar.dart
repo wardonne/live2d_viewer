@@ -7,6 +7,7 @@ import 'package:live2d_viewer/generated/l10n.dart';
 import 'package:live2d_viewer/models/girl_frontline/models.dart';
 import 'package:live2d_viewer/pages/girl_frontline/character_detail.dart';
 import 'package:live2d_viewer/pages/girl_frontline/components/components.dart';
+import 'package:live2d_viewer/states/refreshable_state.dart';
 import 'package:live2d_viewer/widget/buttons/image_button.dart';
 import 'package:live2d_viewer/widget/toolbar.dart';
 import 'package:provider/provider.dart';
@@ -16,11 +17,13 @@ class BottomToolbar extends StatefulWidget {
   final CharacterModel character;
   final WebviewController? webviewController;
   final BottomToolbarController? bottomToolbarController;
+  final RefreshableState state;
   const BottomToolbar({
     super.key,
     required this.character,
     this.webviewController,
     this.bottomToolbarController,
+    required this.state,
   });
 
   @override
@@ -101,10 +104,11 @@ class BottomToolbarState extends State<BottomToolbar> {
                 width: 20.0,
               ),
               onPressed: () => controller.mode = DetailMode.image,
-            ),
-            WebviewRefreshButton(controller: widget.webviewController!),
-            WebviewConsoleButton(controller: widget.webviewController!),
+            )
           ],
+          ToolbarRefreshButton(widgetState: widget.state),
+          if (!controller.isImage)
+            WebviewConsoleButton(controller: widget.webviewController!),
         ],
       ),
     );

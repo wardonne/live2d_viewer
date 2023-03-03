@@ -31,14 +31,15 @@ class SpineUtil {
     required String baseURL,
     required String skeletonURL,
     required String atlasURL,
+    bool reload = false,
   }) async {
-    final localSkel = await http.download(skeletonURL);
-    final localAtlas = await http.download(atlasURL);
+    final localSkel = await http.download(skeletonURL, reload: reload);
+    final localAtlas = await http.download(atlasURL, reload: reload);
     final images = await listTexture2DFromAltas(localAtlas);
     File? localTexture;
     for (final image in images) {
       String imageURL = '$baseURL/$image';
-      localTexture = await http.download(imageURL);
+      localTexture = await http.download(imageURL, reload: reload);
     }
     return <String, String>{
       'atlas': localAtlas.path,

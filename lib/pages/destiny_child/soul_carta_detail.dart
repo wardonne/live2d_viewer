@@ -6,6 +6,7 @@ import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/models/destiny_child/soul_carta_model.dart';
 import 'package:live2d_viewer/services/destiny_child_service.dart';
 import 'package:live2d_viewer/services/http_service.dart';
+import 'package:live2d_viewer/states/refreshable_state.dart';
 import 'package:live2d_viewer/widget/widget.dart';
 import 'package:webview_windows/webview_windows.dart';
 
@@ -18,9 +19,18 @@ class SoulCartaDetail extends StatefulWidget {
   }
 }
 
-class SoulCartaDetailState extends State<SoulCartaDetail> {
+class SoulCartaDetailState extends RefreshableState<SoulCartaDetail> {
   final HTTPService http = HTTPService();
   final DestinyChildService service = DestinyChildService();
+
+  bool _reload = false;
+
+  @override
+  void reload({bool forceReload = false}) {
+    setState(() {
+      _reload = forceReload;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,17 +45,20 @@ class SoulCartaDetailState extends State<SoulCartaDetail> {
         height: Styles.bottomAppBarHeight,
         color: Styles.appBarColor,
         endActions: [
-          if (soulCarta.useLive2d) ...[
-            WebviewRefreshButton(controller: webviewController),
+          ToolbarRefreshButton(widgetState: this),
+          if (soulCarta.useLive2d)
             WebviewConsoleButton(controller: webviewController),
-          ],
         ],
       ),
       body: FutureBuilder(
         future: soulCarta.useLive2d
             ? service.loadSoulCartaHTML(soulCarta)
-            : http.download(soulCarta.imageURL),
+            : http.download(soulCarta.imageURL, reload: _reload),
         builder: (context, snapshot) {
+          const loading = LoadingAnimation(size: 30.0);
+          if (snapshot.connectionState != ConnectionState.done) {
+            return loading;
+          }
           if (snapshot.hasError) {
             return ErrorDialog(message: snapshot.error.toString());
           } else if (snapshot.hasData) {
@@ -57,7 +70,7 @@ class SoulCartaDetailState extends State<SoulCartaDetail> {
                   )
                 : ImageViewer(image: snapshot.data! as File);
           } else {
-            return const LoadingAnimation(size: 30.0);
+            return loading;
           }
         },
       ),

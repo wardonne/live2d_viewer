@@ -5,6 +5,7 @@ import 'package:live2d_viewer/models/azurlane/models.dart';
 import 'package:live2d_viewer/pages/azurlane/components/character_spine_painting.dart';
 import 'package:live2d_viewer/pages/azurlane/components/components.dart';
 import 'package:live2d_viewer/services/azurlane_service.dart';
+import 'package:live2d_viewer/states/refreshable_state.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_windows/webview_windows.dart';
 
@@ -17,14 +18,21 @@ class CharacterDetail extends StatefulWidget {
   }
 }
 
-class CharacterDetailState extends State<CharacterDetail> {
+class CharacterDetailState extends RefreshableState<CharacterDetail> {
   final service = AzurlaneService();
   WebviewController? webviewController;
   BottomToolbarController? bottomToolbarController;
   CharacterImageController? characterImageController;
 
-  late final CharacterModel character;
-  late final SkinModel skin;
+  late CharacterModel character;
+  late SkinModel skin;
+
+  bool _reload = false;
+
+  @override
+  void reload({bool forceReload = false}) {
+    setState(() => _reload = forceReload);
+  }
 
   Widget _buildBottomToolbar(BuildContext context) {
     return BottomToolbar(
@@ -32,6 +40,7 @@ class CharacterDetailState extends State<CharacterDetail> {
       webviewController: webviewController,
       bottomToolbarController: bottomToolbarController,
       characterImageController: characterImageController,
+      state: this,
     );
   }
 
@@ -42,23 +51,41 @@ class CharacterDetailState extends State<CharacterDetail> {
         return CharacterImage(
           character: character,
           controller: characterImageController!,
+          reload: _reload,
         );
       case DetailMode.spine:
         return CharacterSpine(
           character: character,
           controller: webviewController!,
+          reload: _reload,
         );
       case DetailMode.spinepainting:
         return CharacterSpinePainting(
           character: character,
           controller: webviewController!,
+          reload: _reload,
         );
       case DetailMode.live2d:
         return CharacterLive2D(
           character: character,
           webviewController: webviewController!,
           bottomToolbarController: bottomToolbarController!,
+          reload: _reload,
         );
+    }
+  }
+
+  void webMessageListener(message) {
+    final event = message['event'] as String;
+    final data = message['data'];
+    if (WebMessage.animations.label == event) {
+      final items =
+          (data['items'] as List<dynamic>).map((e) => e as String).toList();
+      bottomToolbarController!.animations = items;
+    } else if (WebMessage.snapshot.label == event) {
+      service.saveScreenshot(data as String);
+    } else if (WebMessage.video.label == event) {
+      service.saveVideo(data as String);
     }
   }
 
@@ -80,20 +107,7 @@ class CharacterDetailState extends State<CharacterDetail> {
           bottomToolbarController =
               BottomToolbarController(animations: [], motions: []);
           webviewController = WebviewController();
-          webviewController!.webMessage.listen((message) {
-            final event = message['event'] as String;
-            final data = message['data'];
-            if (WebMessage.animations.label == event) {
-              final items = (data['items'] as List<dynamic>)
-                  .map((e) => e as String)
-                  .toList();
-              bottomToolbarController!.animations = items;
-            } else if (WebMessage.snapshot.label == event) {
-              service.saveScreenshot(data as String);
-            } else if (WebMessage.video.label == event) {
-              service.saveVideo(data as String);
-            }
-          });
+          webviewController!.webMessage.listen(webMessageListener);
         } else {
           characterImageController = CharacterImageController(0);
         }

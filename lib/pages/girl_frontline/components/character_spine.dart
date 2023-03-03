@@ -12,10 +12,12 @@ import 'package:webview_windows/webview_windows.dart';
 class CharacterSpine extends StatefulWidget {
   final CharacterModel character;
   final WebviewController controller;
+  final bool reload;
   const CharacterSpine({
     super.key,
     required this.character,
     required this.controller,
+    required this.reload,
   });
 
   @override
@@ -48,7 +50,10 @@ class CharacterSpineState extends State<CharacterSpine> {
     final restSpine = widget.character.activeSkin.spine!['rest']!;
     final isRest = context.watch<CharacterDetailController>().isRest;
     return FutureBuilder(
-      future: service.loadSpineHtml(isRest ? restSpine : normalSpine),
+      future: service.loadSpineHtml(
+        isRest ? restSpine : normalSpine,
+        reload: widget.reload,
+      ),
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return const LoadingAnimation(size: 30.0);

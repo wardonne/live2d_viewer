@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/services.dart';
 import 'package:image/image.dart';
 import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/enum/spine_painting_layer_type.dart';
@@ -48,11 +47,12 @@ class AzurlaneService extends BaseService {
     return filteredList..sort((a, b) => a.compareTo(b));
   }
 
-  Future<String> loadSpineHtml(SpineModel spine) async {
+  Future<String> loadSpineHtml(SpineModel spine, {bool reload = false}) async {
     final resource = await SpineUtil().downloadResource(
-      baseURL: AzurlaneConstants.characterSpineURL,
+      baseURL: '${AzurlaneConstants.characterSpineURL}/${spine.skin.code}',
       skeletonURL: spine.skelURL,
       atlasURL: spine.atlasURL,
+      reload: reload,
     );
 
     if (resource['texture'] as String == '') {
@@ -67,18 +67,20 @@ class AzurlaneService extends BaseService {
       skelUrl: skelUri.toString(),
       animation: AzurlaneConstants.defaultSDAnimation,
     );
-
-    final html =
-        await rootBundle.loadString(ResourceConstants.spineVersion3652Html);
+    final html = await AssetsUtil().loadString(
+      ResourceConstants.spineVersion3652Html,
+      reload: reload,
+    );
     return WebviewService.renderHtml(html, data);
   }
 
-  Future<String> loadLive2DHtml(SkinModel skin) async {
+  Future<String> loadLive2DHtml(SkinModel skin, {bool reload = false}) async {
     final modelURL = skin.live2dURL;
     final baseURL = PathUtil().parent(modelURL);
     final localModelJSON = await Live2DUtil().downloadResourceV3(
       baseURL: baseURL,
       modelURL: modelURL,
+      reload: reload,
     );
 
     final modelContent = jsonDecode(localModelJSON.readAsStringSync())
@@ -95,13 +97,21 @@ class AzurlaneService extends BaseService {
     final live2dUri = PathUtil().localAssetsUrl(localModelJSON.path);
     final data = Live2DHtmlData(
       live2d: live2dUri.toString(),
+      movable: false,
     );
-    final html = await rootBundle.loadString(ResourceConstants.live2dHtml);
+    final html = await AssetsUtil().loadString(
+      ResourceConstants.live2dHtml,
+      reload: reload,
+    );
     return WebviewService.renderHtml(html, data);
   }
 
-  Future<String> loadSpinePaintingHtml(SkinModel skin) async {
-    final spinePaintingConfig = await http.download(skin.spinePaintingURL);
+  Future<String> loadSpinePaintingHtml(SkinModel skin,
+      {bool reload = false}) async {
+    final spinePaintingConfig = await http.download(
+      skin.spinePaintingURL,
+      reload: reload,
+    );
     final spinePaintingModel = SpinePaintingModel.fromJson(
         jsonDecode(spinePaintingConfig.readAsStringSync())
             as Map<String, dynamic>);
@@ -114,6 +124,7 @@ class AzurlaneService extends BaseService {
             baseURL: baseUrl,
             skeletonURL: '$baseUrl/${layer.skel}',
             atlasURL: '$baseUrl/${layer.atlas}',
+            reload: reload,
           );
           return <String, String>{
             'type': layer.type.value,
@@ -127,7 +138,10 @@ class AzurlaneService extends BaseService {
         }());
       } else if (layer.type == SpinePaintingLayerType.image) {
         futures.add(() async {
-          final texture = await http.download('$baseUrl/${layer.texture}');
+          final texture = await http.download(
+            '$baseUrl/${layer.texture}',
+            reload: reload,
+          );
           return <String, dynamic>{
             'type': layer.type.value,
             'texture': PathUtil().localAssetsUrl(texture.path).toString(),
@@ -138,8 +152,10 @@ class AzurlaneService extends BaseService {
       }
     }
     final layers = await Future.wait(futures);
-    final html = await rootBundle
-        .loadString(ResourceConstants.azurlaneSpintPaintingHtml);
+    final html = await AssetsUtil().loadString(
+      ResourceConstants.azurlaneSpintPaintingHtml,
+      reload: reload,
+    );
     return WebviewService.renderHtml(html, SpineLayerHtmlData(layers: layers));
   }
 
@@ -167,24 +183,24 @@ class AzurlaneService extends BaseService {
     });
   }
 
-  Future<File> setFace(SkinModel skin) async {
+  Future<File> setFace(SkinModel skin, {bool reload = false}) async {
     final cachedImage = File(PathUtil().join([
       AzurlaneConstants.cachedFacePaintingPath,
       skin.code,
       '${skin.activeFaceIndex}.png',
     ]));
-    if (cachedImage.existsSync()) {
+    if (cachedImage.existsSync() && !reload) {
       return cachedImage;
     }
 
     final painting = await http.download(skin.paintingURL);
-    final face = await http.download(skin.activeFaceURL);
-    final faceRect = await http.download(skin.faceRectURL);
+    final face = await http.download(skin.activeFaceURL, reload: reload);
+    final faceRect = await http.download(skin.faceRectURL, reload: reload);
     final faceRectModel = FaceRectModel.fromJson(
         jsonDecode(faceRect.readAsStringSync()) as Map<String, dynamic>);
 
-    var paintingImg = decodePng(painting.readAsBytesSync());
-    var faceImg = decodePng(face.readAsBytesSync());
+    Image? paintingImg = decodePng(painting.readAsBytesSync());
+    Image? faceImg = decodePng(face.readAsBytesSync());
 
     paintingImg = flip(paintingImg!, direction: FlipDirection.vertical);
     faceImg = flip(faceImg!, direction: FlipDirection.vertical);

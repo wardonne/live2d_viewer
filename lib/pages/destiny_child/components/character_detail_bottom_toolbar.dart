@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/components/global_components.dart';
-import 'package:live2d_viewer/components/snapshot_button.dart';
 import 'package:live2d_viewer/constants/styles.dart';
 import 'package:live2d_viewer/models/destiny_child/character_model.dart';
 import 'package:live2d_viewer/pages/destiny_child/components/components.dart';
+import 'package:live2d_viewer/states/refreshable_state.dart';
 import 'package:live2d_viewer/widget/toolbar.dart';
 import 'package:webview_windows/webview_windows.dart';
 
 class CharacterDetailBottomToolbar extends StatelessWidget {
   final CharacterModel character;
   final WebviewController webviewController;
+  final RefreshableState state;
 
   const CharacterDetailBottomToolbar({
     super.key,
     required this.character,
     required this.webviewController,
+    required this.state,
   });
 
   @override
@@ -43,7 +45,7 @@ class CharacterDetailBottomToolbar extends StatelessWidget {
           min: 0.1,
           webviewController: webviewController,
         ),
-        WebviewRefreshButton(controller: webviewController),
+        ToolbarRefreshButton(widgetState: state),
         WebviewConsoleButton(controller: webviewController),
       ],
     );

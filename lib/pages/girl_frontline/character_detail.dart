@@ -5,6 +5,7 @@ import 'package:live2d_viewer/models/girl_frontline/character_model.dart';
 import 'package:live2d_viewer/models/girl_frontline/skin_model.dart';
 import 'package:live2d_viewer/pages/girl_frontline/components/components.dart';
 import 'package:live2d_viewer/services/girl_frontline_service.dart';
+import 'package:live2d_viewer/states/refreshable_state.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_windows/webview_windows.dart';
 
@@ -17,22 +18,25 @@ class CharacterDetail extends StatefulWidget {
   }
 }
 
-class CharacterDetailState extends State<CharacterDetail> {
+class CharacterDetailState extends RefreshableState<CharacterDetail> {
   WebviewController? webviewController;
-
   BottomToolbarController? bottomToolbarController;
-
   final service = GirlFrontlineService();
+  late CharacterModel character;
+  late SkinModel skin;
+  bool _reload = false;
 
-  late final CharacterModel character;
-
-  late final SkinModel skin;
+  @override
+  void reload({bool forceReload = false}) {
+    setState(() => _reload = forceReload);
+  }
 
   Widget _buildBottomToolbar(BuildContext context) {
     return BottomToolbar(
       character: character,
       webviewController: webviewController,
       bottomToolbarController: bottomToolbarController,
+      state: this,
     );
   }
 
@@ -40,19 +44,35 @@ class CharacterDetailState extends State<CharacterDetail> {
     final controller = context.watch<CharacterDetailController>();
     switch (controller.mode) {
       case DetailMode.image:
-        return CharacterImage(character: character);
+        return CharacterImage(character: character, reload: _reload);
       case DetailMode.spine:
       case DetailMode.spinepainting:
         return CharacterSpine(
           character: character,
           controller: webviewController!,
+          reload: _reload,
         );
       case DetailMode.live2d:
         return CharacterLive2D(
           character: character,
           webviewController: webviewController!,
           bottomToolbarController: bottomToolbarController!,
+          reload: _reload,
         );
+    }
+  }
+
+  void webMessageListener(message) {
+    final event = message['event'] as String;
+    final data = message['data'];
+    if (WebMessage.animations.label == event) {
+      final items =
+          (data['items'] as List<dynamic>).map((e) => e as String).toList();
+      bottomToolbarController!.setAnimations(items);
+    } else if (WebMessage.snapshot.label == event) {
+      service.saveScreenshot(data as String);
+    } else if (WebMessage.video.label == event) {
+      service.saveVideo(data as String);
     }
   }
 
@@ -76,20 +96,7 @@ class CharacterDetailState extends State<CharacterDetail> {
             bottomToolbarController =
                 BottomToolbarController(animations: [], motions: []);
             webviewController = WebviewController();
-            webviewController!.webMessage.listen((message) {
-              final event = message['event'] as String;
-              final data = message['data'];
-              if (WebMessage.animations.label == event) {
-                final items = (data['items'] as List<dynamic>)
-                    .map((e) => e as String)
-                    .toList();
-                bottomToolbarController!.setAnimations(items);
-              } else if (WebMessage.snapshot.label == event) {
-                service.saveScreenshot(data as String);
-              } else if (WebMessage.video.label == event) {
-                service.saveVideo(data as String);
-              }
-            });
+            webviewController!.webMessage.listen(webMessageListener);
           }
           return Scaffold(
             appBar: AppBar(

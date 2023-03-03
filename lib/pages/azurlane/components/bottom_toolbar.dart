@@ -7,6 +7,7 @@ import 'package:live2d_viewer/models/azurlane/models.dart';
 import 'package:live2d_viewer/pages/azurlane/azurlane.dart';
 import 'package:live2d_viewer/pages/azurlane/components/components.dart';
 import 'package:live2d_viewer/pages/azurlane/components/face_popup_menu.dart';
+import 'package:live2d_viewer/states/refreshable_state.dart';
 import 'package:live2d_viewer/widget/buttons/buttons.dart';
 import 'package:live2d_viewer/widget/toolbar.dart';
 import 'package:provider/provider.dart';
@@ -17,12 +18,14 @@ class BottomToolbar extends StatefulWidget {
   final WebviewController? webviewController;
   final BottomToolbarController? bottomToolbarController;
   final CharacterImageController? characterImageController;
+  final RefreshableState state;
   const BottomToolbar({
     super.key,
     this.webviewController,
     this.bottomToolbarController,
     this.characterImageController,
     required this.character,
+    required this.state,
   });
 
   @override
@@ -73,15 +76,6 @@ class BottomToolbarState extends State<BottomToolbar> {
               tooltip: S.of(context).tooltipLive2D,
               onPressed: () => controller.mode = DetailMode.live2d,
             ),
-          if (!controller.isImage) ...[
-            ImageButton(
-              icon: const Icon(Icons.image),
-              onPressed: () => controller.mode = DetailMode.image,
-            ),
-            SnapshotButton(webviewController: widget.webviewController!),
-            WebviewRefreshButton(controller: widget.webviewController!),
-            WebviewConsoleButton(controller: widget.webviewController!),
-          ],
           if (controller.isImage &&
               skin.faces != null &&
               skin.faces!.length > 1)
@@ -89,6 +83,16 @@ class BottomToolbarState extends State<BottomToolbar> {
               skin: skin,
               controller: widget.characterImageController!,
             ),
+          if (!controller.isImage) ...[
+            ImageButton(
+              icon: const Icon(Icons.image),
+              onPressed: () => controller.mode = DetailMode.image,
+            ),
+            SnapshotButton(webviewController: widget.webviewController!)
+          ],
+          ToolbarRefreshButton(widgetState: widget.state),
+          if (!controller.isImage)
+            WebviewConsoleButton(controller: widget.webviewController!),
         ],
       ),
     );

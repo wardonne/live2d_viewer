@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:live2d_viewer/components/global_components.dart';
+import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/controllers/load_controller.dart';
 
 class SoulCartaAvatar extends StatelessWidget {
@@ -17,7 +18,12 @@ class SoulCartaAvatar extends StatelessWidget {
       animation: controller,
       builder: (context, child) {
         if (controller.load) {
-          return RefreshableAvatar(path: avatar, width: 100, height: 100);
+          return RefreshableAvatar(
+            path: avatar,
+            width: 100,
+            height: 100,
+            queueKey: QueueKeys.dcSoulCartaAvatar,
+          );
         } else {
           return const SizedBox(
             width: 100,

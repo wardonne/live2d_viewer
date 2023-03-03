@@ -6,3 +6,4 @@ export 'path_util.dart';
 export 'live2d_util.dart';
 export 'ffmpeg_util.dart';
 export 'image_util.dart';
+export 'assets_util.dart';

@@ -15,11 +15,13 @@ class CharacterLive2D extends StatefulWidget {
   final CharacterModel character;
   final WebviewController webviewController;
   final BottomToolbarController bottomToolbarController;
+  final bool reload;
   const CharacterLive2D({
     super.key,
     required this.character,
     required this.webviewController,
     required this.bottomToolbarController,
+    required this.reload,
   });
 
   @override
@@ -46,10 +48,15 @@ class CharacterLive2DState extends State<CharacterLive2D> {
     controller = widget.webviewController;
     final isDestory = context.watch<CharacterDetailController>().isDestory;
     return FutureBuilder(
-      future: service.loadLive2DHtml(skin.live2d!, isDestory: isDestory),
+      future: service.loadLive2DHtml(
+        skin.live2d!,
+        isDestory: isDestory,
+        reload: widget.reload,
+      ),
       builder: (context, snapshot) {
+        const loading = LoadingAnimation(size: 30.0);
         if (snapshot.connectionState != ConnectionState.done) {
-          return const LoadingAnimation(size: 30.0);
+          return loading;
         }
         if (snapshot.hasData) {
           final html = snapshot.data!;
@@ -65,7 +72,7 @@ class CharacterLive2DState extends State<CharacterLive2D> {
         } else if (snapshot.hasError) {
           return ErrorDialog(message: '${snapshot.error}');
         } else {
-          return const LoadingAnimation(size: 30.0);
+          return loading;
         }
       },
     );

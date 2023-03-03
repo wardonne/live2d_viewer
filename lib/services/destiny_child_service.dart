@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/services.dart';
 import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/models/destiny_child/models.dart';
 import 'package:live2d_viewer/models/live2d_html_data.dart';
@@ -32,10 +31,12 @@ class DestinyChildService extends BaseService {
         .toList();
   }
 
-  Future<String> loadCharacterHTML(SkinModel skin) async {
+  Future<String> loadCharacterHTML(SkinModel skin,
+      {bool reload = false}) async {
     final modelJSONFile = await Live2DUtil().downloadResourceV2(
       baseURL: skin.live2dURL,
       modelURL: skin.modelURL,
+      reload: reload,
     );
     final modelContent =
         jsonDecode(modelJSONFile.readAsStringSync()) as Map<String, dynamic>? ??
@@ -60,19 +61,25 @@ class DestinyChildService extends BaseService {
 
     final live2dUri = PathUtil().localAssetsUrl(modelJSONFile.path);
 
-    final data = Live2DHtmlData(
-      live2d: live2dUri.toString(),
+    final data = Live2DHtmlData(live2d: live2dUri.toString());
+    final html = await AssetsUtil().loadString(
+      ResourceConstants.live2dHtml,
+      reload: reload,
     );
-    final html = await rootBundle.loadString(ResourceConstants.live2dHtml);
     return WebviewService.renderHtml(html, data);
   }
 
-  Future<String> loadSoulCartaHTML(SoulCartaModel soulCarta) async {
+  Future<String> loadSoulCartaHTML(SoulCartaModel soulCarta,
+      {bool reload = false}) async {
     final modelJSON = await Live2DUtil().downloadResourceV2(
       baseURL: soulCarta.live2dURL!,
       modelURL: soulCarta.modelURL!,
+      reload: reload,
     );
-    final backgroundImage = await http.download(soulCarta.imageURL);
+    final backgroundImage = await http.download(
+      soulCarta.imageURL,
+      reload: reload,
+    );
     final live2dUri = Uri(
       scheme: ApplicationConstants.localAssetsURL.scheme,
       host: ApplicationConstants.localAssetsURL.host,
@@ -88,8 +95,10 @@ class DestinyChildService extends BaseService {
       canSetMotion: false,
       movable: false,
     );
-    final html =
-        await rootBundle.loadString(ResourceConstants.live2dVersion2Html);
+    final html = await AssetsUtil().loadString(
+      ResourceConstants.live2dVersion2Html,
+      reload: reload,
+    );
     return WebviewService.renderHtml(html, data);
   }
 

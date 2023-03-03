@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/services.dart';
 import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/errors/texture_download_error.dart';
 import 'package:live2d_viewer/models/girl_frontline/models.dart';
@@ -39,11 +38,12 @@ class GirlFrontlineService extends BaseService {
     return filteredList;
   }
 
-  Future<String> loadSpineHtml(SpineModel spine) async {
+  Future<String> loadSpineHtml(SpineModel spine, {bool reload = false}) async {
     final resource = await SpineUtil().downloadResource(
       baseURL: spine.resourceURL,
       skeletonURL: spine.skelURL,
       atlasURL: spine.atlasURL,
+      reload: reload,
     );
 
     if (resource['texture'] as String == '') {
@@ -59,19 +59,21 @@ class GirlFrontlineService extends BaseService {
       skelUrl: skelUri.toString(),
       textureUrl: textureUri.toString(),
     );
-
-    final html =
-        await rootBundle.loadString(ResourceConstants.spineVersion2127Html);
+    final html = await AssetsUtil().loadString(
+      ResourceConstants.spineVersion2127Html,
+      reload: reload,
+    );
     return WebviewService.renderHtml(html, data);
   }
 
   Future<String> loadLive2DHtml(Live2DModel live2d,
-      {bool isDestory = false}) async {
+      {bool isDestory = false, bool reload = false}) async {
     final modelURL = isDestory ? live2d.destroyLive2D : live2d.normalLive2D;
     final baseURL = PathUtil().parent(modelURL);
     final localModelJSON = await Live2DUtil().downloadResourceV3(
       baseURL: baseURL,
       modelURL: modelURL,
+      reload: reload,
     );
 
     final modelContent = jsonDecode(localModelJSON.readAsStringSync())
@@ -88,7 +90,10 @@ class GirlFrontlineService extends BaseService {
     final data = Live2DHtmlData(
       live2d: live2dUri.toString(),
     );
-    final html = await rootBundle.loadString(ResourceConstants.live2dHtml);
+    final html = await AssetsUtil().loadString(
+      ResourceConstants.live2dHtml,
+      reload: reload,
+    );
     return WebviewService.renderHtml(html, data);
   }
 

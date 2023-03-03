@@ -38,7 +38,6 @@ class WebViewState extends State<WebView> {
   Future<void> initPlatformState() async {
     try {
       await _controller.initialize();
-
       if (widget.virtualHosts != null) {
         for (final item in widget.virtualHosts!) {
           await _controller.addVirtualHostNameMapping(

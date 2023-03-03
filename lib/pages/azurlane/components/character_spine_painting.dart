@@ -10,11 +10,12 @@ import 'package:webview_windows/webview_windows.dart';
 class CharacterSpinePainting extends StatefulWidget {
   final CharacterModel character;
   final WebviewController controller;
-
+  final bool reload;
   const CharacterSpinePainting({
     super.key,
     required this.character,
     required this.controller,
+    required this.reload,
   });
 
   @override
@@ -32,7 +33,7 @@ class CharacterSpinePaintingState extends State<CharacterSpinePainting> {
     final skin = widget.character.activeSkin;
     const loading = LoadingAnimation(size: 30);
     return FutureBuilder(
-      future: service.loadSpinePaintingHtml(skin),
+      future: service.loadSpinePaintingHtml(skin, reload: widget.reload),
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return loading;

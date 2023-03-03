@@ -54,6 +54,9 @@ class CharacterCard extends StatelessWidget {
               avatar: _isSkin ? skin!.avatarURL : character.avatarURL,
               contextMenu: !_isSkin,
               controller: loadController,
+              queueKey: _isSkin
+                  ? QueueKeys.dcSkinAvatar
+                  : QueueKeys.dcCharacterAvatar,
             ),
             onVisibilityChanged: (info) => loadController.load = true,
           ),

@@ -1,8 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/models/nikke/models.dart';
 import 'package:live2d_viewer/models/spine_html_data.dart';
@@ -30,12 +27,12 @@ class NikkeService extends BaseService {
     }).toList();
   }
 
-  Future<String> loadHtml(ActionModel action) async {
-    debugPrint(action.skelURL);
+  Future<String> loadHtml(ActionModel action, {bool reload = false}) async {
     final resource = await SpineUtil().downloadResource(
       baseURL: action.spineURL,
       skeletonURL: action.skelURL,
       atlasURL: action.atlasURL,
+      reload: reload,
     );
 
     final skelUri = PathUtil().localAssetsUrl(resource['skel'] as String);
@@ -46,8 +43,10 @@ class NikkeService extends BaseService {
       atlasUrl: atlasUri.toString(),
       animation: action.animation,
     );
-    final html =
-        await rootBundle.loadString(ResourceConstants.spineVersion40Html);
+    final html = await AssetsUtil().loadString(
+      ResourceConstants.spineVersion40Html,
+      reload: reload,
+    );
     return WebviewService.renderHtml(html, data);
   }
 
