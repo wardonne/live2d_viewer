@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:live2d_viewer/components/global_components.dart';
-import 'package:live2d_viewer/components/toolbar_refresh_button.dart';
 import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/generated/l10n.dart';
 import 'package:live2d_viewer/pages/destiny_child/soul_carta_list.dart';
 import 'package:live2d_viewer/states/refreshable_state.dart';
 import 'package:live2d_viewer/widget/widget.dart';
-
-import 'character_list.dart';
+import 'package:live2d_viewer/pages/destiny_child/character_list.dart';
 
 class DestinyChildPage extends StatefulWidget {
   const DestinyChildPage({super.key});
@@ -17,13 +16,9 @@ class DestinyChildPage extends StatefulWidget {
 
 class DestinyChildPageState extends State<DestinyChildPage> {
   int _activeIndex = 0;
-
   final _characterListStateKey = GlobalKey<CharacterListState>();
-
   final _soulCartaListStateKey = GlobalKey<SoulCartaListState>();
-
   late final List<Widget> _pages;
-
   late final List<GlobalKey<RefreshableState<StatefulWidget>>> _keys;
 
   @override
@@ -37,6 +32,25 @@ class DestinyChildPageState extends State<DestinyChildPage> {
       SoulCartaList(key: _soulCartaListStateKey),
     ];
     super.initState();
+    hotKeyManager.register(
+      HotKeys.find,
+      keyDownHandler: (hotKey) {
+        if (ModalRoute.of(context)!.isCurrent) {
+          final activeKey = _keys[_activeIndex];
+          if (_activeIndex == 0) {
+            (activeKey as GlobalKey<CharacterListState>)
+                .currentState!
+                .showFilter();
+          }
+        }
+      },
+    );
+  }
+
+  @override
+  dispose() {
+    hotKeyManager.unregister(HotKeys.find);
+    super.dispose();
   }
 
   _changeTo(int index) {
@@ -51,6 +65,13 @@ class DestinyChildPageState extends State<DestinyChildPage> {
       appBar: AppBar(
         title: Text(S.of(context).destinyChild),
         actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 10),
+            child: ImageButton(
+              icon: const Icon(Icons.filter_list),
+              onPressed: () => '',
+            ),
+          ),
           Container(
             margin: const EdgeInsets.only(right: 10),
             child: ToolbarRefreshButton(widgetKey: _keys[_activeIndex]),

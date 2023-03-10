@@ -13,11 +13,20 @@ class DestinyChildService extends BaseService {
     return DestinyChildConstants.modelJSONFormat.replaceAll('%s', code);
   }
 
-  Future<List<CharacterModel>> characters({bool reload = false}) async {
+  Future<List<CharacterModel>> characters(
+      {FilterFormModel? filter, bool reload = false}) async {
     const url = DestinyChildConstants.characterDataURL;
     final localFile = await http.download(url, reload: reload);
     final list = jsonDecode(localFile.readAsStringSync()) as List<dynamic>;
     return list
+        .where((item) {
+          if (filter == null) return true;
+          if (filter.name.isNotEmpty &&
+              (item['name'] as String? ?? '') != filter.name) {
+            return false;
+          }
+          return true;
+        })
         .map((item) => CharacterModel.fromJson(item as Map<String, dynamic>))
         .toList();
   }
