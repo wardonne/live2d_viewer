@@ -190,7 +190,7 @@ class Publisher
             throw new Exception('need indicate the version number if you just want to publish');
         }
         $package = 'dist' . DIRECTORY_SEPARATOR . $this->version;
-        $executable = $package . DIRECTORY_SEPARATOR . 'live2d_viewer-' . $this->version . '-windows-setup.exe';
+        $executable = $package . DIRECTORY_SEPARATOR . 'live2d_viewer-' . $this->version . '-windows.exe';
         $signature = $this->getSignature($executable);
         $this->updateAppcast(basename($executable), $signature);
 
@@ -225,6 +225,7 @@ class Publisher
         $signature = [];
         $this->output('Signation: ' . $executable, true);
         $signatureCommand = 'flutter pub run auto_updater:sign_update ' . $executable;
+        // $signatureCommand = '.\windows\flutter\ephemeral\.plugin_symlinks\auto_updater\windows\WinSparkle-0.7.0\bin\sign_update.bat ' . $executable . ' .\dsa_priv.pem';
         if(!exec($signatureCommand, $signature)) {
             throw new Exception('signature failed, command: ' . $signatureCommand);
         }
