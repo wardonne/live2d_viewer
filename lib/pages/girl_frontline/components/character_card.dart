@@ -130,7 +130,7 @@ class CharacterCardState extends State<CharacterCard> {
             Positioned(
               top: -2.5,
               right: 0,
-              child: CharacterStar(rank: character.rank ?? 1),
+              child: CharacterStar(rank: character.rank),
             ),
             Positioned(
               top: 0,
