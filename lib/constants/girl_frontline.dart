@@ -5,7 +5,7 @@ class GirlFrontlineConstants {
   static const String name = 'girlFrontline';
 
   static const String assetsURL =
-      '${ApplicationConstants.assetsURL}/girl-frontline';
+      'https://raw.githubusercontent.com/wardonne/GFL-resource/refs/heads/main';
   static const String characterDataURL = '$assetsURL/character/data.json';
   static const String characterAvatarURL = '$assetsURL/character/avatars';
   static const String characterImageURL = '$assetsURL/character/images';

@@ -24,8 +24,7 @@ class RegistryUtil {
   static void create({
     required String path,
     required String name,
-    required RegistryValueType type,
-    required Object data,
+    required String data,
   }) {
     RegistryKey registryKey = Registry.openPath(
       RegistryHive.currentUser,
@@ -41,7 +40,7 @@ class RegistryUtil {
             path: currentPath.join('\\'));
       }
     });
-    registryKey.createValue(RegistryValue(name, type, data));
+    registryKey.createValue(RegistryValue.string(name, data));
   }
 
   static Object? get({
@@ -53,6 +52,6 @@ class RegistryUtil {
       RegistryHive.currentUser,
       path: path,
     );
-    return registryKey.getValue(name)?.data ?? defaultValue;
+    return registryKey.getStringValue(name) ?? defaultValue;
   }
 }

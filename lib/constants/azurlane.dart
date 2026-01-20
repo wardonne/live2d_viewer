@@ -5,7 +5,7 @@ import 'package:live2d_viewer/utils/path_util.dart';
 class AzurlaneConstants {
   static const String name = 'azurlane';
 
-  static const String assetsURL = '${ApplicationConstants.assetsURL}/azurlane';
+  static const String assetsURL = 'https://raw.githubusercontent.com/wardonne/azurlane-resource/refs/heads/master';
   static const String characterDataURL = '$assetsURL/character/data.json';
   static const String characterAvatarURL = '$assetsURL/character/avatars';
   static const String characterLive2DURL = '$assetsURL/character/live2d';

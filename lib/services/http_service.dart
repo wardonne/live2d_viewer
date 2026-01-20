@@ -11,7 +11,7 @@ import 'package:retry/retry.dart';
 class HTTPService {
   final CacheService cache = CacheService();
 
-  final Dio http = Dio(BaseOptions(receiveTimeout: 0));
+  final Dio http = Dio(BaseOptions(receiveTimeout: Duration.zero));
 
   final CancelToken cancelToken = CancelToken();
 

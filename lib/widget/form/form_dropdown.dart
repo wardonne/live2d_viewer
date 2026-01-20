@@ -26,11 +26,21 @@ class FormDropdown<T> extends StatelessWidget {
       onSaved: onSaved,
       validator: validator,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      buttonHeight: 52,
-      buttonPadding: const EdgeInsets.only(left: 10, right: 10),
-      dropdownDecoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
+      buttonStyleData: ButtonStyleData(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+        ),
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        height: 52,
+        overlayColor: const WidgetStateColor.fromMap({
+          WidgetState.focused: Colors.transparent,
+        }),
       ),
+      // buttonHeight: 52,
+      // buttonPadding: const EdgeInsets.only(left: 10, right: 10),
+      // dropdownDecoration: BoxDecoration(
+      //   borderRadius: BorderRadius.circular(4),
+      // ),
       decoration: const InputDecoration(
         isDense: true,
         contentPadding: EdgeInsets.zero,
@@ -38,8 +48,8 @@ class FormDropdown<T> extends StatelessWidget {
           borderSide: BorderSide(color: Colors.white70),
         ),
       ),
-      focusColor: Colors.transparent,
-      buttonSplashColor: Colors.transparent,
+      // focusColor: Colors.transparent,
+      // buttonSplashColor: Colors.transparent,
     );
   }
 }

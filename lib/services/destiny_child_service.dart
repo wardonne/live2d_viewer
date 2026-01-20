@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/models/destiny_child/models.dart';
 import 'package:live2d_viewer/models/live2d_html_data.dart';
@@ -16,6 +17,7 @@ class DestinyChildService extends BaseService {
   Future<List<CharacterModel>> characters(
       {FilterFormModel? filter, bool reload = false}) async {
     const url = DestinyChildConstants.characterDataURL;
+    debugPrint('Loading Destiny Child characters from $url');
     final localFile = await http.download(url, reload: reload);
     final list = jsonDecode(localFile.readAsStringSync()) as List<dynamic>;
     return list

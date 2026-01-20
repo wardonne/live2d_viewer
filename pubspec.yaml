@@ -35,31 +35,34 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  window_manager: ^0.2.8
-  webview_windows: 0.2.1
-  extended_image: ^6.3.4
+  window_manager: ^0.4.3
+  webview_windows: ^0.4.0
+  extended_image: ^10.0.1
   provider: ^6.0.5
   validatorless: ^1.2.3
-  dropdown_button2: ^1.9.2
-  file_picker: ^5.2.4
+  dropdown_button2: ^2.3.9
+  file_picker: ^10.1.5
   path_provider: ^2.0.11
   url_launcher: ^6.1.7
-  dart_vlc: ^0.4.0
+  # media_kit: ^1.1.11 # Primary package.
+  # media_kit_video: ^1.2.5 # For video rendering.
+  # media_kit_libs_video: ^1.0.5 # Native video dependencies.
   hotkey_manager:
     git: 
+      path: packages/hotkey_manager
       url: https://github.com/leanflutter/hotkey_manager.git
       ref: main
   custom_pop_up_menu: ^1.2.4
-  auto_updater: ^0.1.6
-  win32_registry: ^1.0.2
-  intl: ^0.17.0
+  auto_updater: ^1.0.0
+  win32_registry: ^2.1.0
+  intl: ^0.19.0
   intl_generator: ^0.4.1
-  dio: ^4.0.6
+  dio: ^5.8.0+1
   crypto: ^3.0.2
   loading_animation_widget: ^1.2.0+4
   contextmenu: ^3.0.0
   retry: ^3.1.0
-  visibility_detector: ^0.3.3
+  visibility_detector: ^0.4.0+2
   queue: ^3.1.0+2
   image: ^4.0.15
   args: ^2.4.0
@@ -75,7 +78,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^5.0.0
   build_runner: ^2.3.2
   json_annotation: ^4.7.0
 
@@ -106,6 +109,7 @@ flutter:
     - assets/images/al/iconbg/
     - assets/images/al/iconframe/
     - assets/images/gf/
+    - assets/js/
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

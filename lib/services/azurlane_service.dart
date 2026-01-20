@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/rendering.dart';
 import 'package:image/image.dart';
 import 'package:live2d_viewer/constants/constants.dart';
 import 'package:live2d_viewer/enum/spine_painting_layer_type.dart';
@@ -21,6 +22,7 @@ class AzurlaneService extends BaseService {
     const url = AzurlaneConstants.characterDataURL;
     final localFile = await http.download(url, reload: reload);
     final list = jsonDecode(localFile.readAsStringSync()) as List<dynamic>;
+    debugPrint('Azurlane characters loaded: ${list.length}');
     final filteredList = list
         .where((item) {
           item = item as Map<String, dynamic>;

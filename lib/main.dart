@@ -1,9 +1,8 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:auto_updater/auto_updater.dart';
-import 'package:dart_vlc/dart_vlc.dart';
-import 'package:flutter/foundation.dart';
+// import 'package:auto_updater/auto_updater.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:live2d_viewer/constants/constants.dart';
@@ -18,20 +17,17 @@ import 'package:path/path.dart' as p;
 import 'app.dart';
 
 void main(List<String> args) async {
-  DartVLC.initialize();
-
   WidgetsFlutterBinding.ensureInitialized();
-
   await windowManager.ensureInitialized();
 
   await hotKeyManager.unregisterAll();
 
-  if (kReleaseMode) {
-    String feedURL = 'https://appcast.wardonet.cn/live2d-viewer/appcast.xml';
-    await autoUpdater.setFeedURL(feedURL);
-    await autoUpdater.setScheduledCheckInterval(3600);
-    await autoUpdater.checkForUpdates(inBackground: true);
-  }
+  // if (kReleaseMode) {
+  //   String feedURL = 'https://appcast.wardonet.cn/live2d-viewer/appcast.xml';
+  //   await autoUpdater.setFeedURL(feedURL);
+  //   await autoUpdater.setScheduledCheckInterval(3600);
+  //   await autoUpdater.checkForUpdates(inBackground: true);
+  // }
 
   hotKeyManager.register(
     HotKeys.fullscreen,

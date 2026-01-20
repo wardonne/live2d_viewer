@@ -4,7 +4,7 @@ import 'package:live2d_viewer/utils/utils.dart';
 class NikkeConstants {
   static const String name = 'nikke';
 
-  static const String assetsURL = '${ApplicationConstants.assetsURL}/nikke';
+  static const String assetsURL = 'https://minio.wardonet.cn/live2d/nikke';
   static const String characterDataURL = '$assetsURL/character/data.json';
   static const String characterSpineURL =
       '${NikkeConstants.assetsURL}/character/spine';

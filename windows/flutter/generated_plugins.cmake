@@ -3,10 +3,9 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  auto_updater
-  dart_vlc
-  hotkey_manager
-  screen_retriever
+  auto_updater_windows
+  hotkey_manager_windows
+  screen_retriever_windows
   url_launcher_windows
   webview_windows
   window_manager

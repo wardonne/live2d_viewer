@@ -1,19 +1,20 @@
+import 'package:flutter/services.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 
 class HotKeys {
   static HotKey fullscreen = HotKey(
-    KeyCode.f11,
+    key: PhysicalKeyboardKey.f11,
     scope: HotKeyScope.inapp,
   );
 
   static HotKey find = HotKey(
-    KeyCode.keyF,
-    modifiers: [KeyModifier.control],
+    key: PhysicalKeyboardKey.keyF,
+    modifiers: [HotKeyModifier.control],
     scope: HotKeyScope.inapp,
   );
 
   static HotKey enter = HotKey(
-    KeyCode.enter,
+    key: PhysicalKeyboardKey.enter,
     scope: HotKeyScope.inapp,
   );
 }
